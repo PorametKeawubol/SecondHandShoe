@@ -12,10 +12,10 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "title": {
+    "products_name": {
       "type": "string"
     },
-    "description": {
+    "details": {
       "type": "text"
     },
     "price": {
@@ -31,6 +31,21 @@
         "videos",
         "audios"
       ]
+    },
+    "location": {
+      "type": "text"
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::category.category",
+      "mappedBy": "shoe"
+    },
+    "payment": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::payment.payment",
+      "mappedBy": "shoe"
     }
   }
 }
