@@ -1,8 +1,8 @@
 import React from 'react';
-import ListShoes from './Component/Home/LIstShoes';
+import ListShoes from '../Component/Home/LIstShoes';
 import { useState,useEffect } from 'react';
 import axios from "axios"
-import Header from './Component/Header'
+import Header from '../Component/Header'
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:1337"
 function HomePage() {
     const [isLoading, setIsLoading] = useState(true);

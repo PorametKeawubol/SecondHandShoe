@@ -1,5 +1,5 @@
 import {useState } from 'react'
-import logo from '../Component/logoSecondHandShoe.png'; // import your image
+import logo from '../Component/Picture/logoSecondHandShoe.png'; // import your image
 import { Dialog} from '@headlessui/react'
 
 

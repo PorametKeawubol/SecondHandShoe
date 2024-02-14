@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Loginfrom from './Loginfrom';
-import RegisterForm from './RegisterForm'; // นำเข้า RegisterForm มาก่อนใช้งาน
-import HomePage from './HomePage';
+import Loginfrom from './AllPage/Loginfrom';
+import RegisterForm from './AllPage/RegisterForm'; // นำเข้า RegisterForm มาก่อนใช้งาน
+import HomePage from './AllPage/HomePage';
 import Loading from './Component/Loading';
 function App() {
   return (
