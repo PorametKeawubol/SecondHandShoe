@@ -1,9 +1,26 @@
-import React from 'react';
+// LoginForm.js
+import React, { useState, useEffect, useRef } from 'react';
 
-function Loginfrom() {
+function LoginForm({ toggleModal, toggleRegisterModal }) {
+  const [showModal, setShowModal] = useState(true);
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        toggleModal();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalRef, toggleModal]);
+
   return (
-    <div className="bg-gray-100 min-h-screen flex justify-center items-center">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96 flex flex-col items-center">
+    <div className="fixed inset-0 z-10 overflow-y-auto bg-gray-100 bg-opacity-50 flex justify-center items-center">
+      <div ref={modalRef} className="bg-white p-8 rounded-lg shadow-md w-96 flex flex-col items-center">
         <h2 className="text-2xl font-semibold mb-4 text-center">LOGIN</h2>
         <form className="w-full">
           <div className="mb-4">
@@ -18,11 +35,12 @@ function Loginfrom() {
         </form>
         <p className="mt-4 text-gray-600">
           Don't Have Account ?
-          <a href="/register" className="text-blue-500 hover:underline ml-1">Register Now</a>
+          <button onClick={toggleRegisterModal} className="text-blue-500 hover:underline ml-1">Register Now</button>
         </p>
+        <button onClick={toggleModal} className="text-blue-500 hover:underline ml-1">Maybe not now</button>
       </div>
     </div>
   );
 }
 
-export default Loginfrom;
+export default LoginForm;
