@@ -1,8 +1,25 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  content: ['./src/**/*.{html,js}'],
   theme: {
-    extend: {},
+    fontFamily: {
+      sans: ['Graphik', 'sans-serif'],
+      serif: ['Merriweather', 'serif'],
+    },
+    fontSize: {
+      sm: ['14px', '20px'],
+      base: ['16px', '24px'],
+      lg: ['20px', '28px'],
+      xl: ['24px', '32px'],
+    },
+    extend: {
+      spacing: {
+        '8xl': '96rem',
+        '9xl': '128rem',
+      },
+      borderRadius: {
+        '4xl': '2rem',
+      }
+    }
   },
-  plugins: [],
 }
