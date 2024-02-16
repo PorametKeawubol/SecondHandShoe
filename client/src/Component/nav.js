@@ -3,7 +3,7 @@ import { Menu } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 import { Bars4Icon } from '@heroicons/react/20/solid';
 
-const HamburgerMenu = ({ handleLogout, isLoggedIn }) => {
+const HamburgerMenu = ({ handleLogout }) => {
   return (
     <div className="relative">
       <Menu as="div" className="relative inline-block text-left">
@@ -59,13 +59,11 @@ const HamburgerMenu = ({ handleLogout, isLoggedIn }) => {
                     </Link>
                   )}
                 </Menu.Item>
-                {isLoggedIn && (
-                  <Menu.Item>
-                    <button onClick={handleLogout} className="group flex rounded-md items-center w-full px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none">
-                      Logout
-                    </button>
-                  </Menu.Item>
-                )}
+                <Menu.Item>
+                  <button onClick={handleLogout} className="group flex rounded-md items-center w-full px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none">
+                    Logout
+                  </button>
+                </Menu.Item>
               </div>
             </Menu.Items>
           </>

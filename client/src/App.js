@@ -1,17 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Loginfrom from './AllPage/Loginfrom';
-import RegisterForm from './AllPage/RegisterForm'; // นำเข้า RegisterForm มาก่อนใช้งาน
-import HomePage from './AllPage/HomePage';
-import Loading from './Component/Loading';
+import HomePage from './AllPage/testHeaderloginpage';
+import axios from 'axios';
+axios.defaults.headers.common['Authorization'] = null
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/Home" element={<HomePage />}></Route>
-        <Route path="/login" element={<Loginfrom />}></Route>
-        <Route path="/register" element={<RegisterForm />}></Route>{/* ใช้งาน RegisterForm ที่นี่ */}
-        <Route path="/Loading" element={<Loading />}></Route> 
       </Routes>
     </BrowserRouter>
   )

@@ -1,15 +1,17 @@
-import React from 'react';
+/*import React from 'react';
 import ListShoes from '../Component/Home/LIstShoes';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from "axios"
 import Header from '../Component/Header'
+import Nav from '../Component/nav';
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:1337"
+
 function HomePage() {
     const [isLoading, setIsLoading] = useState(true);
     const [Data, setData] = useState([]);
     const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA3NjYwNjAxLCJleHAiOjE3MTAyNTI2MDF9.KXflgepIDpSvKlFCw3ajAeiDX7zizpYa1h4z1pI2GKc";
     
-    useEffect(()=>{
+    useEffect(() => {
         setIsLoading(true)
         getData()
         setTimeout(() => {
@@ -41,24 +43,22 @@ function HomePage() {
           setIsLoading(false);
         }
     };
-    console.log(Data)
-    const shoes = {
-        id : ""
-    };
-
 
     return (
         <>
-            {isLoading ? <div class='size-full place-content-center '>Loading....</div> :
+            {isLoading ? <div className='size-full place-content-center'>Loading....</div> :
                 <div>
-                    <Header/>
-                    <p>Hello word</p>
-                    <ListShoes data={Data}/>
+                    <Header />
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <p>Hello word</p>
+                        <Nav/>
+
+                    </div>
+                    <ListShoes data={Data} />
                 </div>
             }
-            
         </>
     );
 }
 
-export default HomePage;
+export default HomePage;*/
