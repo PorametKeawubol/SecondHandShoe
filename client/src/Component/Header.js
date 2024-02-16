@@ -27,7 +27,7 @@ export default function Example() {
           </div>
           <div>
             <button onClick={toggleLoginModal} className="font-semibold leading-6 text-white focus:outline-none">
-              Log in → <span aria-hidden="true">&rarr;</span>
+              Log in <span aria-hidden="true">&rarr;</span>
             </button>
           </div>
         </nav>

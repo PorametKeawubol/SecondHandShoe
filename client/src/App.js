@@ -4,14 +4,17 @@ import Loginfrom from './AllPage/Loginfrom';
 import RegisterForm from './AllPage/RegisterForm'; // นำเข้า RegisterForm มาก่อนใช้งาน
 import HomePage from './AllPage/HomePage';
 import Loading from './Component/Loading';
+import ProfilePage from './AllPage/ProfilePage';
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/Home" element={<HomePage />}></Route>
         <Route path="/login" element={<Loginfrom />}></Route>
-        <Route path="/register" element={<RegisterForm />}></Route>{/* ใช้งาน RegisterForm ที่นี่ */}
+        <Route path="/register" element={<RegisterForm />}></Route>
         <Route path="/Loading" element={<Loading />}></Route> 
+        <Route path="/Profile" element={<ProfilePage />}></Route>
       </Routes>
     </BrowserRouter>
   )
