@@ -1,21 +1,85 @@
-import React, { useState, useEffect} from 'react';
-import Header from '../Component/Header'
+import React, { useState, useEffect } from 'react';
+import Header from '../Component/Header';
 import Pfp from '../Component/Picture/ProfilePic.png';
+import axios from 'axios';
+import { FaShoppingCart, FaTruck, FaGift, FaStar, FaShip, FaSuitcase, FaReply, FaHistory, FaStoreAlt } from 'react-icons/fa'; // เพิ่มไอคอน FaHistory และ FaStoreAlt
+import { Link } from 'react-router-dom';
 
 function Profile() {
+    const [username, setUsername] = useState('');
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get('http://localhost:1337/api/users/me', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('authToken')}`
+                    }
+                });
+
+                const userData = response.data;
+                setUsername(userData.username);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     return (
         <div>
-            <Header/>
-            <header className="bg-black py-1" style={{ backgroundColor: '#676666', display: 'flex'}}></header>
-            <header className="bg-black py-30" style={{ backgroundColor: 'black', display: 'flex', top: 'center'  }}>
+            <Header />
+            <header className="bg-black py-1" style={{ backgroundColor: '#676666', display: 'flex' }}></header>
+            <header className="bg-black py-30" style={{ backgroundColor: 'black', display: 'flex', top: 'center' }}>
                 <div className="px-4 lg:px-8" style={{ display: 'flex', alignItems: 'center' }}>
-                    <img src={Pfp} alt="Profile Picture" className="mr-4" style={{ maxWidth: '400px' }} />
+                    <img src={Pfp} alt="Profile Picture" className="mr-4" style={{ maxWidth: '200px', marginBottom: '10px', marginTop: '90px' }} />
                     <div>
-                        <h1 style={{ fontSize: '30px' ,color: 'white' }}>Username</h1>
+                        <h1 style={{ fontSize: '40px', color: 'white', marginTop: '70px' }}>{username}</h1>
                     </div>
                 </div>
             </header>
+            <div className="ml-2 flex items-center" style={{ marginTop: '20px' }}> {/* เพิ่ม marginTop เพื่อขยับลงมา */}
+                <FaHistory size={40} className="mr-2" /> {/* เพิ่มรูปไอคอน FaHistory และเปลี่ยนขนาดเป็น 40px */}
+                <h2 style={{ fontSize: '24px', color: 'black', marginBottom: 0 }}>Purchase History</h2> {/* เพิ่ม marginBottom เพื่อให้ข้อความอยู่ใต้รูป */}
+            </div>
+            <div className="flex justify-center mt-8">
+                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-4 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                    <FaShoppingCart className="mr-2" size={40} />
+                    <span>Cart</span>
+                </button>
+                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-4 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                    <FaTruck size={40} />
+                    <span>To receive</span>
+                </button>
+                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-4 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                    <FaGift size={40} />
+                    <span>To ship</span>
+                </button>
+            </div>
+            <div className="flex justify-center mt-4">
+                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-4 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                    <FaStar size={40} />
+                    <span>To rate</span>
+                </button>
+                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-4 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                    <FaStoreAlt size={40} />
+                    <span>Post sell</span>
+                </button>
+
+                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                    <FaSuitcase size={40} />
+                    <span>Your item</span>
+                </button>
+            </div>
+
+
+
+            <div className="flex justify-start mt-8 mb-8">
+                <Link to="/" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded border border-black flex items-center">
+                    <FaReply size={20} /> <span className="ml-2">Return</span>
+                </Link>
+            </div>
         </div>
     )
 }

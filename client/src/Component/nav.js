@@ -26,12 +26,12 @@ const HamburgerMenu = ({ handleLogout }) => {
                 <Menu.Item>
                   {({ active }) => (
                     <Link
-                      to="/Home"
+                      to="/Profile"
                       className={`${
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                       } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                     >
-                      Home
+                      Profile
                     </Link>
                   )}
                 </Menu.Item>
