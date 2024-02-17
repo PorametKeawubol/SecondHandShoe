@@ -9,7 +9,7 @@ const Shoe = ({ shoe }) => {
   const { addToCart } = useContext(CartContext);
 
   // destructure Shoe
-  const { id, image, category, title, price } = shoe;
+  const { id, image, category, products_name, price } = shoe;
   return (
     <div>
       <div className="border border-[#e4e4e4] h-[300px] mb-4 relative overflow-hidden group transition">
@@ -38,11 +38,11 @@ const Shoe = ({ shoe }) => {
           </Link>
         </div>
       </div>
-      {/* category, title & price */}
+      {/* category, products_name & price */}
       <div>
         <div className="tex-sm capitalize text-gray-500 mb-1">{category}</div>
         <Link to={`/shoe/${id}`}>
-          <h2 className="font-semibold mb-1">{title}</h2>
+          <h2 className="font-semibold mb-1">{products_name}</h2>
         </Link>
 
         <h2 className="font-semibbold">$ {price}</h2>

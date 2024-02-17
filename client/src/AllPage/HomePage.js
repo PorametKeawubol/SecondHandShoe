@@ -11,10 +11,8 @@ axios.defaults.baseURL =
 function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const { shoes } = useContext(ShoeContext);
-  console.log(shoes);
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA3NjYwNjAxLCJleHAiOjE3MTAyNTI2MDF9.KXflgepIDpSvKlFCw3ajAeiDX7zizpYa1h4z1pI2GKc";
-
+  console.log("🚀 ~ HomePage ~ shoes:", shoes)
+  
   useEffect(() => {
     setIsLoading(true);
     
@@ -28,16 +26,14 @@ function HomePage() {
   // get only men's and women's clothing category
   const filteredShoes = shoes.filter((item) => {
     return (
-      item.category === "men's clothing" || item.category === "women's clothing" || item.category === "jewelery"
+      item.category === "man" || item.category === "woman" || item.category === "Nike"
     );
   });
 
   return (
-    <div>
+    <div className="flex flex-col">
       <Header />
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        
-      </div>
+
       <section className="py-20">
         <div className="container mx-auto">
           <h1 className="text-3xl font-semibold mb-10 text-center">
@@ -50,6 +46,7 @@ function HomePage() {
           </div>
         </div>
       </section>
+      
     </div>
   );
 }
