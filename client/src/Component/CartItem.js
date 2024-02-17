@@ -9,7 +9,10 @@ const CartItem = ({ item }) => {
   const { removeFromCart, increaseAmount, decreaseAmount } = useContext(CartContext);
   // destructure item
   const { id, products_name, image, price, amount } = item;
-
+  if (item.amount >1){
+    item.amount=1
+  }
+    
   return (
     <div className="flex gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500">
       <div className="w-full min-h-[150px] flex items-center gap-x-4">

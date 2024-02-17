@@ -61,7 +61,7 @@ export default function Example() {
      };
 
      return (
-          <header className="bg-while fixed top-0 left-0 right-0 z-50">
+          <header className="bg-white fixed top-0 left-0 right-0 z-50">
                <div className="px-4 lg:px-8">
                     <nav
                          className="flex items-center justify-between mx-auto py-4"
