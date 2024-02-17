@@ -43,9 +43,10 @@ const ShoeProvider = ({ children }) => {
         console.error("Error fetching shoes:", error);
       }
     };
+
     
     return (
-      <ShoeContext.Provider value={{ shoes }}>
+      <ShoeContext.Provider value={{ shoes, setShoes }}>
         {children}
       </ShoeContext.Provider>
     );
