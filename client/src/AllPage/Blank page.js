@@ -9,7 +9,7 @@ const styles = {
     },
 };
 
-function HomePage() {
+function HomePage1() {
     return (
         <div>
             <Header />
@@ -20,4 +20,4 @@ function HomePage() {
     );
 }
 
-export default HomePage;
+export default HomePage1;

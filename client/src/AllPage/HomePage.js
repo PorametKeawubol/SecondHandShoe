@@ -1,64 +1,56 @@
-/*import React from 'react';
-import ListShoes from '../Component/Home/LIstShoes';
-import { useState, useEffect } from 'react';
-import axios from "axios"
-import Header from '../Component/Header'
-import Nav from '../Component/nav';
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:1337"
+import React from "react";
+import { useState, useEffect,useContext  } from "react";
+import axios from "axios";
+import Header from "../Component/Header";
+import Nav from "../Component/nav";
+import { ShoeContext } from "../contexts/ShoeContext";
+import Shoe from '../Component/Shoe';
+axios.defaults.baseURL =
+  process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
 function HomePage() {
-    const [isLoading, setIsLoading] = useState(true);
-    const [Data, setData] = useState([]);
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA3NjYwNjAxLCJleHAiOjE3MTAyNTI2MDF9.KXflgepIDpSvKlFCw3ajAeiDX7zizpYa1h4z1pI2GKc";
+  const [isLoading, setIsLoading] = useState(true);
+  const { shoes } = useContext(ShoeContext);
+  console.log(shoes);
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA3NjYwNjAxLCJleHAiOjE3MTAyNTI2MDF9.KXflgepIDpSvKlFCw3ajAeiDX7zizpYa1h4z1pI2GKc";
+
+  useEffect(() => {
+    setIsLoading(true);
     
-    useEffect(() => {
-        setIsLoading(true)
-        getData()
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 1000)
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
-    },[])
+  
 
-    const getData = async () => {
-        try {
-          const response = await axios.get(`/api/shoes?populate=picture`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-          setData(response.data.data.map(d => ({
-            id: d.id,
-            attributes: d.attributes,
-            products_name: d.attributes.products_name,
-            details:d.attributes.details,
-            price:d.attributes.price,
-            location: d.attributes.location,
-            picture:d.attributes.picture.data
-        }
-        )));
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        } finally {
-          setIsLoading(false);
-        }
-    };
-
+  // get only men's and women's clothing category
+  const filteredShoes = shoes.filter((item) => {
     return (
-        <>
-            {isLoading ? <div className='size-full place-content-center'>Loading....</div> :
-                <div>
-                    <Header />
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <p>Hello word</p>
-                        <Nav/>
-
-                    </div>
-                    <ListShoes data={Data} />
-                </div>
-            }
-        </>
+      item.category === "men's clothing" || item.category === "women's clothing" || item.category === "jewelery"
     );
-}
+  });
 
-export default HomePage;*/
+  return (
+    <div>
+      <Header />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        
+      </div>
+      <section className="py-20">
+        <div className="container mx-auto">
+          <h1 className="text-3xl font-semibold mb-10 text-center">
+            Explore Our Shoes
+          </h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
+            {filteredShoes.map((shoe) => {
+              return <Shoe shoe={shoe} key={shoe.id} />;
+            })}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+export default HomePage;
