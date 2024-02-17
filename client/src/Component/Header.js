@@ -8,6 +8,7 @@ import axios from "axios";
 import { BsBag } from "react-icons/bs";
 import { SidebarContext } from "../contexts/SidebarContext";
 import { CartContext } from "../contexts/CartContext";
+import { useNavigate } from 'react-router-dom';
 
 export default function Example() {
      const [showLoginModal, setShowLoginModal] = useState(false);
@@ -16,6 +17,7 @@ export default function Example() {
      const [isActive, setIsActive] = useState(false);
      const { isOpen, setIsOpen } = useContext(SidebarContext);
      const { itemAmount } = useContext(CartContext);
+     const navigate = useNavigate()
 
      useEffect(() => {
           window.addEventListener("scroll", () => {
@@ -58,6 +60,7 @@ export default function Example() {
 
           // Remove token from Axios headers
           delete axios.defaults.headers.common["Authorization"];
+          navigate('/')
      };
 
      return (
