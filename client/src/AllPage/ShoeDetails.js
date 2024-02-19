@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import { ShoeContext } from "../contexts/ShoeContext";
+import Header from "../Component/Header";
+import { GrLocation } from "react-icons/gr";
 
 const ShoeDetails = () => {
   // get the Shoe id from url
@@ -24,9 +26,10 @@ const ShoeDetails = () => {
   }
 
   // destructure Shoe
-  const { title, price, description, image } = shoe;
+  const { products_name, price, details, image,location } = shoe;
   return (
     <section className="pt-[450px] md:pt-32 pb-[400px] md:pb-12 lg:py-32 h-screen flex items-center">
+      <Header />
       <div className="container mx-auto">
         {/* image and text wrapper */}
         <div className="flex flex-col lg:flex-row items-center">
@@ -36,10 +39,15 @@ const ShoeDetails = () => {
           </div>
           {/* text */}
           <div className="flex-1 text-center lg:text-left">
-            <h1 className="text-[26px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">{title}</h1>
+            <h1 className="text-[26px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">{products_name}</h1>
             <div className="text-2xl text-red-500 font-medium mb-6">$ {price}</div>
-            <p className="mb-8">{description}</p>
-            <button onClick={()=>addToCart(shoe, shoe.id)} className='bg-primary py-4 px-8 text-white'>Add to cart</button>
+            <p className="mb-2 flex items-center">
+  <GrLocation />
+  <span className="ml-2">location {location}</span>
+</p>
+            <p className="mb-8">{details}</p>
+            <button onClick={()=>addToCart(shoe, shoe.id)} className='bg-black py-4 px-8 text-white'>Add to cart</button>
+            <button className="bg-red-600 py-4 px-8 ml-6 text-white">Buy now</button>
           </div>
         </div>
       </div>

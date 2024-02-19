@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from './AllPage/HomePage';
 import axios from 'axios';
 import Sidebar from './Component/Sidebar';
-import ShoeDetails from './AllPage/HomePage';
+import ShoeDetails from './AllPage/ShoeDetails';
 import Profile from './AllPage/ProfilePage';
+
 
 
 axios.defaults.headers.common['Authorization'] = null
