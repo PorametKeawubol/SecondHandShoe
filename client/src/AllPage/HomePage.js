@@ -13,7 +13,8 @@ axios.defaults.baseURL =
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
-  const { shoes, setShoes } = useContext(ShoeContext);
+  const { shoes } = useContext(ShoeContext);
+  const [filteredShoes, setFilteredShoes] = useState([]);
   console.log("🚀 ~ HomePage ~ shoes:", shoes)
   
   //useEffect(() => {
@@ -24,28 +25,29 @@ function HomePage() {
   //  }, 1000);
   //}, []);
 
-  
-
   // get only men's and women's clothing category
-  const filteredShoes = shoes.filter((item) => {
-    return (
-      item.category === "man" || item.category === "woman" || item.category === "Nike"
-    );
-  });
+  useEffect(() => {
+    const shoesfiltered = shoes.filter((item) => {
+      return (
+        item.category === "man" || item.category === "woman" || item.category === "Nike"
+      );
+    });
+    setFilteredShoes(shoesfiltered);
+  }, [shoes]);
 
-  const handleSearch = async() => {
+  const handleSearch = async () => {
     const search = document.getElementById("SearchKey").value;
     console.log(search)
-    if(search){
-      try{
+    if (search) {
+      try {
         const response = await axios.get(`/api/shoes?filters[products_name][$contains]=${search}`)
-        console.log('response=',response)
+        console.log('response=', response)
         if (Array.isArray(response.data.data)) {
           const searchData = response.data.data.map(shoe => {
             const { id, attributes } = shoe;
-            const { products_name,price, details, location, picture, } = attributes;
+            const { products_name, price, details, location, picture, } = attributes;
             const imageUrl = picture && picture.data && picture.data.length > 0 ? picture.data[0].attributes.url : null;
-            const image = "http://localhost:1337"+imageUrl
+            const image = "http://localhost:1337" + imageUrl
             const category = attributes.categories?.data[0]?.attributes?.name ?? 'uncategorized';
             return {
               id,
@@ -57,8 +59,14 @@ function HomePage() {
               category,
             };
           });
-          console.log('search=',searchData)
-          setShoes(searchData);
+          console.log('search=', searchData)
+          const shoesfiltered = searchData.filter((item) => {
+            return (
+              item.category === "man" || item.category === "woman" || item.category === "Nike"
+            );
+          });
+          setFilteredShoes(shoesfiltered);
+          console.log('filter=',filteredShoes)
         } else {
           console.error("Response data is not an array:", response.data.data);
         }
@@ -67,6 +75,7 @@ function HomePage() {
       }
     }
   }
+
     
   return  (
     <div className="flex flex-col">

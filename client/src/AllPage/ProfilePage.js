@@ -4,9 +4,13 @@ import Pfp from '../Component/Picture/ProfilePic.png';
 import axios from 'axios';
 import { FaShoppingCart, FaTruck, FaGift, FaStar, FaShip, FaSuitcase, FaReply, FaHistory, FaStoreAlt } from 'react-icons/fa'; // เพิ่มไอคอน FaHistory และ FaStoreAlt
 import { Link } from 'react-router-dom';
+import CartContent from '../Component/CartContent';
 
 function Profile() {
     const [username, setUsername] = useState('');
+    const Cart = () => {
+        return <CartContent />;
+       };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -45,38 +49,40 @@ function Profile() {
             </Link>
 
             <div className="flex justify-center mt-8">
-                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-4 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
-                    <FaShoppingCart className="mr-2" size={40} />
-                    <span>Cart</span>
-                </button>
-                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-4 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
-                    <FaTruck size={40} />
-                    <span>To receive</span>
-                </button>
-                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-4 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
-                    <FaGift size={40} />
-                    <span>To ship</span>
-                </button>
+
+            <Link to="/Purchases" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }} >
+                <FaShoppingCart className="mr-2" size={40} />
+                <span>Cart</span>
+            </Link>
+
+            <Link to="/Purchases?tab=toReceive" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }} >
+                <FaTruck size={40} />
+                <span>To receive</span>     
+            </Link>
+
+            <Link to="/Purchases?tab=toShip" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                <FaShip size={40} />
+                <span>To Ship</span>
+            </Link>
             </div>
+            
             <div className="flex justify-center mt-4">
-                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-4 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
                     <FaStar size={40} />
                     <span>To rate</span>
                 </button>
-                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-4 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
                     <FaStoreAlt size={40} />
                     <span>Post sell</span>
                 </button>
 
-                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
                     <FaSuitcase size={40} />
                     <span>Your item</span>
                 </button>
             </div>
 
-
-
-            <div className="flex justify-start mt-8 mb-8">
+            <div className="flex justify-start mt-20 mb-8 ml-4">
                 <Link to="/" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded border border-black flex items-center">
                     <FaReply size={20} /> <span className="ml-2">Return</span>
                 </Link>
