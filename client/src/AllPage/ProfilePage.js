@@ -39,10 +39,11 @@ function Profile() {
                     </div>
                 </div>
             </header>
-            <div className="ml-2 flex items-center" style={{ marginTop: '20px' }}> {/* เพิ่ม marginTop เพื่อขยับลงมา */}
-                <FaHistory size={40} className="mr-2" /> {/* เพิ่มรูปไอคอน FaHistory และเปลี่ยนขนาดเป็น 40px */}
-                <h2 style={{ fontSize: '24px', color: 'black', marginBottom: 0 }}>Purchase History</h2> {/* เพิ่ม marginBottom เพื่อให้ข้อความอยู่ใต้รูป */}
-            </div>
+            <Link to="/Purchases" className="ml-2 flex items-center" style={{ marginTop: '20px', textDecoration: 'none', color: 'black' }}>
+                <FaHistory size={40} className="mr-2" />
+                <h2 style={{ fontSize: '24px', color: 'black', marginBottom: 0 }}>Purchase History</h2>
+            </Link>
+
             <div className="flex justify-center mt-8">
                 <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-4 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
                     <FaShoppingCart className="mr-2" size={40} />
