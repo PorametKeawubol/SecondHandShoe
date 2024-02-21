@@ -68,7 +68,7 @@ const CartItem = ({ item }) => {
             </div>
             <div
               onClick={handleCheckout}
-              className="flex justify-center items-center bg-primary text-white font-medium cursor-pointer w-20 h-8"
+              className="flex justify-center items-center bg-primary text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2"
             >
               Checkout
             </div>

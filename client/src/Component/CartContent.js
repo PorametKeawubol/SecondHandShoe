@@ -48,7 +48,7 @@ const CartContent = () => {
                     <div
                         onClick={clearCart}
                         className="cursor-pointer py-4 bg-red-500 text-white w-12 h-full flex justify-center items-center text-xl"
-                        style={{ width: '103px',height: '103px' }} 
+                        style={{ width: '105px',height: '105px' }} 
                     >
                         <FiTrash2 size={30} />
                     </div>
