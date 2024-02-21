@@ -2,15 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Header from '../Component/Header';
 import Pfp from '../Component/Picture/ProfilePic.png';
 import axios from 'axios';
-import { FaShoppingCart, FaTruck, FaGift, FaStar, FaShip, FaSuitcase, FaReply, FaHistory, FaStoreAlt } from 'react-icons/fa'; // เพิ่มไอคอน FaHistory และ FaStoreAlt
+import { FaShoppingCart, FaTruck, FaGift, FaStar, FaShip, FaSuitcase, FaReply, FaHistory, FaStoreAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import CartContent from '../Component/CartContent';
-
 function Profile() {
     const [username, setUsername] = useState('');
-    const Cart = () => {
-        return <CartContent />;
-       };
+    const [email, setEmail] = useState('');
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -23,6 +19,7 @@ function Profile() {
 
                 const userData = response.data;
                 setUsername(userData.username);
+                setEmail(userData.email);
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -40,6 +37,7 @@ function Profile() {
                     <img src={Pfp} alt="Profile Picture" className="mr-4" style={{ maxWidth: '200px', marginBottom: '10px', marginTop: '90px' }} />
                     <div>
                         <h1 style={{ fontSize: '40px', color: 'white', marginTop: '70px' }}>{username}</h1>
+                        <p style={{ fontSize: '20px', color: 'white' }}>{email}</p>
                     </div>
                 </div>
             </header>
@@ -52,17 +50,17 @@ function Profile() {
 
             <Link to="/Purchases" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }} >
                 <FaShoppingCart className="mr-2" size={40} />
-                <span>Cart</span>
+                <span>To pay</span>
             </Link>
 
             <Link to="/Purchases?tab=toReceive" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }} >
-                <FaTruck size={40} />
-                <span>To receive</span>     
+                < FaGift  size={40} />
+                <span>To ship</span>     
             </Link>
 
             <Link to="/Purchases?tab=toShip" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
-                <FaShip size={40} />
-                <span>To Ship</span>
+                <FaTruck size={40} />
+                <span>To receive</span>     
             </Link>
             </div>
             

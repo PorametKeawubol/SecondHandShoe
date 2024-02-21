@@ -1,20 +1,10 @@
 import React, { useState } from 'react';
-import { useEffect } from 'react';
 import Header from "../Component/Header";
 import { Link } from 'react-router-dom';
 import CartContent from '../Component/CartContent'; // Import CartContent component
-import { useLocation } from 'react-router-dom';
 
 const MyPurchases = () => {
-  const location = useLocation();
   const [activeTab, setActiveTab] = useState('cart');
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const tab = params.get('tab');if (tab) {
-      handleTabChange(tab);
-    }
-  }, [location.search]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -28,11 +18,12 @@ const MyPurchases = () => {
       <BarPurchases activeTab={activeTab} handleTabChange={handleTabChange} />
       
       {/* Content */}
-      <div className="flex-1 p-4 overflow-y-auto z-20"> 
-        
+      <div className="flex-1 p-4 overflow-y-auto">
+        {/* Display content based on activeTab */}
         {activeTab === 'cart' && <Cart />}
         {activeTab === 'toReceive' && <ToReceive />}
         {activeTab === 'toShip' && <ToShip />}
+        {activeTab === 'completed' && <completed />}
       </div>
     </div>
   );
@@ -40,24 +31,30 @@ const MyPurchases = () => {
 
 const BarPurchases = ({ activeTab, handleTabChange }) => {
   return (
-    <nav className="flex justify-evenly bg-gray-200 py-2 z-20" style={{ position: 'sticky', top: '110px' }}>
+    <nav className="flex justify-evenly bg-gray-200 py-2" style={{  position: 'sticky', top: '110px' }}>
       <button
-        className={`px-4 py-2 ${activeTab === 'cart' ? 'bg-gray-400' : ''}`}
+        className={`px-4 py-2 ${activeTab === 'cart' ? 'bg-gray-400 rounded-lg' : ''}`}
         onClick={() => handleTabChange('cart')}
       >
-        Cart
+        To pay
       </button>
       <button
-        className={`px-4 py-2 ${activeTab === 'toReceive' ? 'bg-gray-400' : ''}`}
+        className={`px-4 py-2 ${activeTab === 'toShip' ? 'bg-gray-400 rounded-lg' : ''}`}
+        onClick={() => handleTabChange('toShip')}
+      >
+        To Ship
+      </button>
+      <button
+        className={`px-4 py-2 ${activeTab === 'toReceive' ? 'bg-gray-400 rounded-lg' : ''}`}
         onClick={() => handleTabChange('toReceive')}
       >
         To Receive
       </button>
       <button
-        className={`px-4 py-2 ${activeTab === 'toShip' ? 'bg-gray-400' : ''}`}
-        onClick={() => handleTabChange('toShip')}
+        className={`px-4 py-2 ${activeTab === 'completed' ? 'bg-gray-400 rounded-lg' : ''}`}
+        onClick={() => handleTabChange('completed')}
       >
-        To Ship
+        completed
       </button>
     </nav>
   );
@@ -72,6 +69,9 @@ const ToReceive = () => {
 };
 
 const ToShip = () => {
+  return <div>To Ship Content</div>;
+};
+const completed = () => {
   return <div>To Ship Content</div>;
 };
 
