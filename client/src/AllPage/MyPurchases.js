@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import Header from "../Component/Header";
 import { Link } from 'react-router-dom';
 import CartContent from '../Component/CartContent'; // Import CartContent component
+import { useLocation } from 'react-router-dom';
+
 
 const MyPurchases = () => {
   const [activeTab, setActiveTab] = useState('cart');
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = params.get('tab');if (tab) {
+      handleTabChange(tab);
+    }
+  }, [location.search]);
+
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
