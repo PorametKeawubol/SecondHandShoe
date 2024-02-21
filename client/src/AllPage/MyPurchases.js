@@ -28,8 +28,8 @@ const MyPurchases = () => {
       <BarPurchases activeTab={activeTab} handleTabChange={handleTabChange} />
       
       {/* Content */}
-      <div className="flex-1 p-4 overflow-y-auto">
-        {/* Display content based on activeTab */}
+      <div className="flex-1 p-4 overflow-y-auto z-20"> 
+        
         {activeTab === 'cart' && <Cart />}
         {activeTab === 'toReceive' && <ToReceive />}
         {activeTab === 'toShip' && <ToShip />}
@@ -40,7 +40,7 @@ const MyPurchases = () => {
 
 const BarPurchases = ({ activeTab, handleTabChange }) => {
   return (
-    <nav className="flex justify-evenly bg-gray-200 py-2" style={{ zIndex: 100, position: 'sticky', top: '110px' }}>
+    <nav className="flex justify-evenly bg-gray-200 py-2 z-20" style={{ position: 'sticky', top: '110px' }}>
       <button
         className={`px-4 py-2 ${activeTab === 'cart' ? 'bg-gray-400' : ''}`}
         onClick={() => handleTabChange('cart')}
