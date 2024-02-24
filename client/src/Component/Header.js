@@ -1,6 +1,7 @@
+// Example.js
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import LoginForm from "../AllPage/Loginfrom";
+import LoginForm from "../AllPage/Loginform";
 import RegisterForm from "../AllPage/RegisterForm";
 import logo from "../Component/Picture/logoSecondHandShoe.png";
 import Nav from "../Component/nav";
@@ -8,6 +9,9 @@ import axios from "axios";
 import { BsBag } from "react-icons/bs";
 import { SidebarContext } from "../contexts/SidebarContext";
 import { CartContext } from "../contexts/CartContext";
+import { useNavigate } from 'react-router-dom';
+
+export let isLoggedInExport; // Declare a variable to hold the export
 
 export default function Example() {
      const [showLoginModal, setShowLoginModal] = useState(false);
@@ -16,7 +20,8 @@ export default function Example() {
      const [isActive, setIsActive] = useState(false);
      const { isOpen, setIsOpen } = useContext(SidebarContext);
      const { itemAmount } = useContext(CartContext);
-
+     const navigate = useNavigate()
+     
      useEffect(() => {
           window.addEventListener("scroll", () => {
                window.scrollY > 60 ? setIsActive(true) : setIsActive(false);
@@ -32,6 +37,8 @@ export default function Example() {
           } else {
                setIsLoggedIn(false);
           }
+          // Assign the value to the export variable
+          isLoggedInExport = isLoggedIn;
      };
 
      useEffect(() => {
@@ -50,7 +57,7 @@ export default function Example() {
           setIsLoggedIn(true);
           setShowLoginModal(false);
      };
-
+ 
      const handleLogout = () => {
           setIsLoggedIn(false);
 
@@ -60,12 +67,12 @@ export default function Example() {
           // Remove token from Axios headers
           delete axios.defaults.headers.common["Authorization"];
 
-          // Refresh the window
-          window.location.reload();
+          navigate('/')
+          window.location.reload()
      };
 
      return (
-          <header className="bg-while fixed top-0 left-0 right-0 z-50">
+          <header className="bg-white fixed top-0 left-0 right-0 z-50">
                <div className="px-4 lg:px-8">
                     <nav
                          className="flex items-center justify-between mx-auto py-4"
@@ -82,14 +89,15 @@ export default function Example() {
                          </div>
                          <div className="flex ">
                               <div className="mr-8">
-                                   <div
-                                        onClick={() => setIsOpen(!isOpen)}
-                                        className="cursor-pointer flex relative"
-                                   >
-                                        <BsBag className="text-2xl" />
-                                        <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
-                                             {itemAmount}
-                                        </div>
+                                   <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer flex relative">
+                                        {isLoggedIn && (
+                                             <>
+                                                  <BsBag className="text-2xl" />
+                                                  <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
+                                                       {itemAmount}
+                                                  </div>
+                                             </>
+                                        )}
                                    </div>
                               </div>
 
@@ -110,21 +118,24 @@ export default function Example() {
                               )}
                          </div>
                     </nav>
-               </div>
+               </div >
                {showLoginModal && (
                     <LoginForm
                          toggleModal={toggleLoginModal}
                          toggleRegisterModal={toggleRegisterModal}
                          onLogin={handleLogin}
                     />
-               )}
-               {showRegisterModal && (
-                    <RegisterForm
-                         toggleModal={toggleRegisterModal}
-                         toggleLoginModal={toggleLoginModal}
-                         onLogin={handleLogin}
-                    />
-               )}
-          </header>
+               )
+               }
+               {
+                    showRegisterModal && (
+                         <RegisterForm
+                              toggleModal={toggleRegisterModal}
+                              toggleLoginModal={toggleLoginModal}
+                              onLogin={handleLogin}
+                         />
+                    )
+               }
+          </header >
      );
 }
