@@ -39,6 +39,7 @@ export default function Example() {
           }
           // Assign the value to the export variable
           isLoggedInExport = isLoggedIn;
+          console.log(isLoggedInExport)
      };
 
      useEffect(() => {
@@ -56,6 +57,7 @@ export default function Example() {
      const handleLogin = () => {
           setIsLoggedIn(true);
           setShowLoginModal(false);
+          
      };
  
      const handleLogout = () => {
@@ -124,6 +126,7 @@ export default function Example() {
                          toggleModal={toggleLoginModal}
                          toggleRegisterModal={toggleRegisterModal}
                          onLogin={handleLogin}
+                         checkAuthStatus={checkAuthStatus}
                     />
                )
                }

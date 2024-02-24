@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
-function LoginForm({ toggleModal, toggleRegisterModal, onLogin}) {
+function LoginForm({ toggleModal, toggleRegisterModal, onLogin, checkAuthStatus}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -39,11 +39,14 @@ function LoginForm({ toggleModal, toggleRegisterModal, onLogin}) {
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   
           console.log('Login successful');
+          checkAuthStatus()
           console.log(response.data); // You can handle the response accordingly
   
           // Close the login pop-up
           toggleModal();
           onLogin();
+          checkAuthStatus();
+
       } catch (error) {
           console.error('Error:', error);
           if (error.response && error.response.data && error.response.data.message) {
