@@ -58,6 +58,18 @@
       "relation": "manyToOne",
       "target": "api::color.color",
       "inversedBy": "shoes"
+    },
+    "seller": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "shoe"
+    },
+    "buyer": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "shoe"
     }
   }
 }
