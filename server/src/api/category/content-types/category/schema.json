@@ -14,12 +14,6 @@
   "attributes": {
     "name": {
       "type": "string"
-    },
-    "shoe": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::shoe.shoe",
-      "inversedBy": "categories"
     }
   }
 }

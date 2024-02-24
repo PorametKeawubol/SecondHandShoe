@@ -83,7 +83,7 @@ export default function Example() {
                          <div className="flex lg:flex-1">
                               <Link to="/">
                                    <img
-                                        className="h-20 w-auto"
+                                        className="h-16 w-auto"
                                         src={logo}
                                         alt="Logo"
                                    />

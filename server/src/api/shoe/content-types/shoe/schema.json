@@ -35,17 +35,29 @@
     "location": {
       "type": "text"
     },
-    "categories": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::category.category",
-      "mappedBy": "shoe"
-    },
     "payment": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::payment.payment",
       "mappedBy": "shoe"
+    },
+    "brand": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::brand.brand",
+      "inversedBy": "shoes"
+    },
+    "gender": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::gender.gender",
+      "inversedBy": "shoes"
+    },
+    "color": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::color.color",
+      "inversedBy": "shoes"
     }
   }
 }
