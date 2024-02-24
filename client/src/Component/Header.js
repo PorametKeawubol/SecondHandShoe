@@ -77,6 +77,7 @@ export default function Example() {
           <header className="bg-white fixed top-0 left-0 right-0 z-50">
                <div className="px-4 lg:px-8">
                     <nav
+
                          className="flex items-center justify-between mx-auto py-4"
                          aria-label="Global"
                     >
@@ -94,7 +95,7 @@ export default function Example() {
                                    <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer flex relative">
                                         {isLoggedIn && (
                                              <>
-                                                  <BsBag className="text-2xl" />
+                                                  <BsBag className="h-8 text-2xl" />
                                                   <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
                                                        {itemAmount}
                                                   </div>

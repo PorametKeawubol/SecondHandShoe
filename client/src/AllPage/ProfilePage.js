@@ -79,10 +79,10 @@ function Profile() {
                     <FaStar size={40} />
                     <span>To rate</span>
                 </button>
-                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                <Link to="/Sell" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
                     <FaStoreAlt size={40} />
                     <span>Post sell</span>
-                </button>
+                </Link>
 
                 <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
                     <FaSuitcase size={40} />

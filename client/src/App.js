@@ -7,6 +7,7 @@ import ShoeDetails from './AllPage/ShoeDetails';
 import Profile from './AllPage/ProfilePage';
 import MyPurchases from './AllPage/MyPurchases';
 import Payment from './AllPage/Payment';
+import Sellpage from './AllPage/SellPage';
 axios.defaults.headers.common['Authorization'] = null;
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/Purchases" element={<MyPurchases />} />
         <Route path="/Payment" element={<Payment />} />
         <Route path="/shoe/:id" element={<ShoeDetails />} />
+        <Route path="/Sell" element={<Sellpage />} />
       </Routes>
       <Sidebar />
     </BrowserRouter>
