@@ -53,12 +53,16 @@ export default function Example() {
 
      const handleLogout = () => {
           setIsLoggedIn(false);
+          
           // Clear the token from localStorage
           localStorage.removeItem("authToken");
-
+      
           // Remove token from Axios headers
           delete axios.defaults.headers.common["Authorization"];
-     };
+      
+          // Refresh the window
+          window.location.reload();
+      };
 
      return (
           <header className="bg-while fixed top-0 left-0 right-0 z-50">
