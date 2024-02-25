@@ -24,17 +24,15 @@ function HomePage() {
   //}, []);
 
   // get only men's and women's clothing category
+  const newfilter = (filtered)=>{
+    setFilteredShoes(filtered)
+  }
   useEffect(() => {
     const shoesfiltered = shoes.filter((item) => {
       return (
-        item.status == false &&
-        item.brandType === "nike" &&
-        item.colorType === "black" &&
-        item.genderType === "male"
+        item.status === false 
       ); // &&คือ and , ||คือ or
     });
-    console.log("🚀 ~ shoesfiltered ~ shoesfiltered:", shoesfiltered);
-
     setFilteredShoes(shoesfiltered);
   }, [shoes]);
 
@@ -42,7 +40,7 @@ function HomePage() {
     <div className="flex flex-col">
       <Header />
       <div className="mt-24">
-        <Searchbar />
+        <Searchbar onnewfilter={newfilter}/>
       </div>
       <section className="py-20">
         <div className="container mx-auto">
