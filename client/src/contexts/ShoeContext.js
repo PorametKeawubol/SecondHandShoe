@@ -33,11 +33,13 @@ const ShoeProvider = ({ children }) => {
             status,
             seller,
           } = attributes;
-          const imageUrl =
+          const image =
             picture && picture.data && picture.data.length > 0
-              ? picture.data[0].attributes.url
-              : null;
-          const image = "http://localhost:1337" + imageUrl;
+              ? picture.data.map(
+                  (img) => "http://localhost:1337" + img.attributes.url
+                )
+              : [];
+
           const brandType = brand?.data?.attributes.name;
           const colorType = color?.data?.attributes.name;
           const genderType = gender?.data?.attributes.name;
