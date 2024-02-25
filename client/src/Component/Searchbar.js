@@ -34,43 +34,53 @@ function Searchbar({onnewfilter}) {
           setIsDropdownOpenBrand(false);
      };
      const handleSearch = () => {
+        setIsDropdownOpenBrand(false);
+        setIsDropdownOpenColor(false);
+        setIsDropdownOpenGender(false);
         const shoesFiltered = shoes.filter((item) => {
             if (brand === "all" && color === "all" && gender === "all") {
                 return (
-                    item
+                    item.status === false 
                 );
             } else if (brand === "all" && color !== "all" && gender !== "all") {
                 return (
                     item.colorType === color &&
-                    item.genderType === gender
+                    item.genderType === gender &&
+                    item.status === false 
                 );
             } else if (brand !== "all" && color === "all" && gender !== "all") {
                 return (
                     item.brandType === brand &&
-                    item.genderType === gender
+                    item.genderType === gender &&
+                    item.status === false 
                 );
             } else if (brand !== "all" && color !== "all" && gender === "all") {
                 return (
                     item.brandType === brand &&
-                    item.colorType === color
+                    item.colorType === color &&
+                    item.status === false 
                 );
             } else if (brand === "all" && color === "all" && gender !== "all") {
                 return (
-                    item.genderType === gender
+                    item.genderType === gender &&
+                    item.status === false 
                 );
             } else if (brand !== "all" && color === "all" && gender === "all") {
                 return (
-                    item.brandType === brand
+                    item.brandType === brand &&
+                    item.status === false 
                 );
             } else if (brand === "all" && color !== "all" && gender === "all") {
                 return (
-                    item.colorType === color
+                    item.colorType === color &&
+                    item.status === false 
                 );
             } else{
                 return (
                     item.brandType === brand &&
                     item.colorType === color &&
-                    item.genderType === gender
+                    item.genderType === gender &&
+                    item.status === false 
                 );
             }
         });
