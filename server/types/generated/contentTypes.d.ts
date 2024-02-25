@@ -1018,6 +1018,7 @@ export interface ApiShoeShoe extends Schema.CollectionType {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
+    status: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

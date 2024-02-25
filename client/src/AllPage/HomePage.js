@@ -1,9 +1,9 @@
 import React from "react";
-import { useState, useEffect,useContext  } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Header from "../Component/Header";
 import { ShoeContext } from "../contexts/ShoeContext";
-import Shoe from '../Component/Shoe';
+import Shoe from "../Component/Shoe";
 import Searchbar from "../Component/Searchbar";
 
 axios.defaults.baseURL =
@@ -12,12 +12,12 @@ axios.defaults.baseURL =
 function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const { shoes } = useContext(ShoeContext);
-  console.log("🚀 ~ HomePage ~ shoes:", shoes)
+  console.log("🚀 ~ HomePage ~ shoes:", shoes);
   const [filteredShoes, setFilteredShoes] = useState([]);
-  
+
   //useEffect(() => {
   //  setIsLoading(true);
-    
+
   //  setTimeout(() => {
   //    setIsLoading(false);
   //  }, 1000);
@@ -27,22 +27,22 @@ function HomePage() {
   useEffect(() => {
     const shoesfiltered = shoes.filter((item) => {
       return (
-        item.brandType=== "nike" && item.colorType === "black" && item.genderType === "male"
-      );
+        item.status == false &&
+        item.brandType === "nike" &&
+        item.colorType === "black" &&
+        item.genderType === "male"
+      ); // &&คือ and , ||คือ or
     });
-    console.log("🚀 ~ shoesfiltered ~ shoesfiltered:", shoesfiltered)
-    
+    console.log("🚀 ~ shoesfiltered ~ shoesfiltered:", shoesfiltered);
+
     setFilteredShoes(shoesfiltered);
   }, [shoes]);
 
-  
-
-    
-  return  (
+  return (
     <div className="flex flex-col">
       <Header />
       <div className="mt-24">
-        <Searchbar/>
+        <Searchbar />
       </div>
       <section className="py-20">
         <div className="container mx-auto">
@@ -56,7 +56,6 @@ function HomePage() {
           </div>
         </div>
       </section>
-      
     </div>
   );
 }
