@@ -74,7 +74,8 @@ export default function Example() {
      };
 
      return (
-          <header className="bg-white fixed top-0 left-0 right-0 z-50">
+          <header className="fixed top-0 left-0 right-0 z-50" style={{ boxShadow: "0px 2px 1px rgba(0, 0, 0, 0.3)", backgroundColor: "#1D2F43" }}>
+
                <div className="px-4 lg:px-8">
                     <nav
 

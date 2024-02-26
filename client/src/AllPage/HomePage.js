@@ -5,7 +5,7 @@ import Header from "../Component/Header";
 import { ShoeContext } from "../contexts/ShoeContext";
 import Shoe from "../Component/Shoe";
 import Searchbar from "../Component/Searchbar";
-
+import CarouselBar from "../Component/CarouselBar";
 axios.defaults.baseURL =
   process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
@@ -22,14 +22,14 @@ function HomePage() {
   //}, []);
 
   // get only men's and women's clothing category
-  
-  const newfilter = (filtered)=>{
+
+  const newfilter = (filtered) => {
     setFilteredShoes(filtered)
   }
   useEffect(() => {
     const shoesfiltered = shoes.filter((item) => {
       return (
-        item.status === false 
+        item.status === false
       ); // &&คือ and , ||คือ or
     });
     setFilteredShoes(shoesfiltered);
@@ -38,10 +38,15 @@ function HomePage() {
   return (
     <div className="flex flex-col">
       <Header />
-      <div className="mt-24">
-        <Searchbar onnewfilter={newfilter}/>
+      <div className="mt-28">
+        <Searchbar onnewfilter={newfilter} />
       </div>
-      <section className="py-20">
+      <div className="flex justify-center mt-10 mb-1"> {/* ใช้ flex justify-center เพื่อจัดให้อยู่ตรงกลาง */}
+        <CarouselBar />
+      </div>
+
+
+      <section className="py-100">
         <div className="container mx-auto">
           <h1 className="text-3xl font-semibold mt-5 mb-10 text-center">
             Explore Our Shoes
