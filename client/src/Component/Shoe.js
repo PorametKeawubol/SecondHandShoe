@@ -9,9 +9,9 @@ const Shoe = ({ shoe }) => {
   // destructure Shoe
   const { id, image, category, products_name, price } = shoe;
   return (
-    <div>
-      <div className="border border-[#e4e4e4] h-[300px] mb-4 relative overflow-hidden group transition">
-        <div className="w-full h-full flex justify-center items-center">
+    <div className="">
+      <div className="border  border-[#e4e4e4] rounded-3xl h-[300px] ring-4 ring-[#fffafa] ring-offset-2 mb-4 relative overflow-hidden group transition">
+        <div className="w-full h-full   flex justify-center items-center ">
           {/* image */}
           <div className="w-[200px] mx-auto flex justify-center items-center">
             <img

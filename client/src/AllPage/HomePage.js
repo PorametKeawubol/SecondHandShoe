@@ -12,9 +12,7 @@ axios.defaults.baseURL =
 function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const { shoes } = useContext(ShoeContext);
-  console.log("🚀 ~ HomePage ~ shoes:", shoes);
   const [filteredShoes, setFilteredShoes] = useState([]);
-
   //useEffect(() => {
   //  setIsLoading(true);
 
@@ -24,6 +22,7 @@ function HomePage() {
   //}, []);
 
   // get only men's and women's clothing category
+  
   const newfilter = (filtered)=>{
     setFilteredShoes(filtered)
   }
@@ -47,7 +46,7 @@ function HomePage() {
           <h1 className="text-3xl font-semibold mt-5 mb-10 text-center">
             Explore Our Shoes
           </h1>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
+          <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
             {filteredShoes.map((shoe) => {
               return <Shoe shoe={shoe} key={shoe.id} />;
             })}

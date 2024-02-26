@@ -1,7 +1,9 @@
 import { useState,useContext } from "react";
 import { ShoeContext } from "../contexts/ShoeContext";
 
-function Searchbar({onnewfilter}) {
+function Searchbar({onnewfilter,}) {
+ 
+   
      const { shoes } = useContext(ShoeContext);
      const [isDropdownOpen, setIsDropdownOpen] = useState(false);
      const [isDropdownOpenBrand, setIsDropdownOpenBrand] = useState(false);
@@ -10,8 +12,9 @@ function Searchbar({onnewfilter}) {
      const [brand, setbrand] = useState("all");
      const [color, setcolor] = useState("all");
      const [gender, setgender] = useState("all");
+     const [searchTxt,setsearchTxt] = useState('');
+     const arraySearch = searchTxt.trim().toLowerCase().split(' ')
      //item.category === "male" || item.category === "woman" || item.category === "Nike"
-
      const toggleDropdown = () => {
           setIsDropdownOpen(!isDropdownOpen);
           setIsDropdownOpenBrand(false);
@@ -33,6 +36,19 @@ function Searchbar({onnewfilter}) {
           setIsDropdownOpenColor(false);
           setIsDropdownOpenBrand(false);
      };
+     const handleSearchTxt = (e) => {
+          e.preventDefault(); // Prevent default form submission behavior
+          const shoesFiltered = shoes.filter((item) => {
+              if (arraySearch[0] !== "") {
+                  return arraySearch.some(searchItem => 
+                      item.products_name.toLowerCase().includes(searchItem.toLowerCase())
+                  );
+              }
+          });
+          console.log("🚀 ~ handleSearch ~ shoesFiltered:", shoesFiltered)
+          onnewfilter(shoesFiltered);
+      }
+       
      const handleSearch = () => {
         setIsDropdownOpenBrand(false);
         setIsDropdownOpenColor(false);
@@ -84,7 +100,6 @@ function Searchbar({onnewfilter}) {
                 );
             }
         });
-        console.log("🚀 ~ handleSearch ~ shoesFiltered:", shoesFiltered)
         onnewfilter(shoesFiltered)
         
      };
@@ -378,13 +393,14 @@ function Searchbar({onnewfilter}) {
 
                     <div class="relative w-full">
                          <input
+                              value={searchTxt} onInput={(e) => setsearchTxt(e.target.value)}
                               type="search"
                               id="search-dropdown"
                               class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                               placeholder="Brand, color, gender, name....."
                          />
                          <button
-                              onClick={handleSearch}
+                              onClick={(e) => handleSearchTxt(e)}
                               type="submit"
                               class="absolute top-0 end-0 p-2.5 text-sm font-medium  text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                          >
