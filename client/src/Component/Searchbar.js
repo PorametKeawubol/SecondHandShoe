@@ -38,6 +38,11 @@ function Searchbar({onnewfilter,}) {
      };
      const handleSearchTxt = (e) => {
           e.preventDefault(); // Prevent default form submission behavior
+          if (searchTxt.trim() === "") {
+              onnewfilter(shoes);
+              return;
+          }
+      
           const shoesFiltered = shoes.filter((item) => {
               if (arraySearch[0] !== "") {
                   return arraySearch.some(searchItem => 
@@ -48,6 +53,7 @@ function Searchbar({onnewfilter,}) {
           console.log("🚀 ~ handleSearch ~ shoesFiltered:", shoesFiltered)
           onnewfilter(shoesFiltered);
       }
+      
        
      const handleSearch = () => {
         setIsDropdownOpenBrand(false);
