@@ -6,6 +6,7 @@ import { ShoeContext } from "../contexts/ShoeContext";
 import Shoe from "../Component/Shoe";
 import Searchbar from "../Component/Searchbar";
 import CarouselBar from "../Component/CarouselBar";
+import Footer from "../Component/Footer";
 axios.defaults.baseURL =
   process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
@@ -36,7 +37,7 @@ function HomePage() {
   }, [shoes]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <Header />
       <div className="mt-28">
         <Searchbar onnewfilter={newfilter} />
@@ -58,7 +59,9 @@ function HomePage() {
           </div>
         </div>
       </section>
+      <Footer/>
     </div>
+    
   );
 }
 export default HomePage;
