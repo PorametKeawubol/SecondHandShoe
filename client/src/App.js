@@ -20,7 +20,6 @@ function App() {
         <Route path="/Purchases" element={<MyPurchases />} />
         <Route path="/Payment" element={<Payment />} />
         <Route path="/shoe/:id" element={<ShoeDetails />} />
-        <Route path="/Sell" element={<Sellpage />} />
         <Route path="/YourItem" element={<YourItem />} />
       </Routes>
       <Sidebar />
