@@ -1019,6 +1019,7 @@ export interface ApiShoeShoe extends Schema.CollectionType {
       'plugin::users-permissions.user'
     >;
     status: Attribute.Boolean & Attribute.DefaultTo<false>;
+    size: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

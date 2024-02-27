@@ -74,6 +74,9 @@
     "status": {
       "type": "boolean",
       "default": false
+    },
+    "size": {
+      "type": "string"
     }
   }
 }

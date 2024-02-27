@@ -7,6 +7,7 @@ import Shoe from "../Component/Shoe";
 import Searchbar from "../Component/Searchbar";
 import CarouselBar from "../Component/CarouselBar";
 import Footer from "../Component/Footer";
+import backgroundImg from '../Component/Picture/bg1.png'
 axios.defaults.baseURL =
   process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
@@ -37,7 +38,7 @@ function HomePage() {
   }, [shoes]);
 
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col " style={{backgroundImage: `url(${backgroundImg})`,backgroundSize: "cover",backgroundPosition: "center"}}>
       <Header />
       <div className="mt-28">
         <Searchbar onnewfilter={newfilter} />
