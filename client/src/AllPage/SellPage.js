@@ -47,102 +47,123 @@ const ImageUploadPopup = ({ onClose }) => {
         }
     };
 
-    /*const handleTagChange = (type, tagId) => {
-        switch (type) {
-            case 'brand':
-                setSelectedBrandTags(prevState => {
-                    if (prevState.includes(tagId)) {
-                        return prevState.filter(id => id !== tagId);
-                    } else {
-                        return [...prevState, tagId];
-                    }
-                });
-                break;
-            case 'color':
-                setSelectedColorTags(prevState => {
-                    if (prevState.includes(tagId)) {
-                        return prevState.filter(id => id !== tagId);
-                    } else {
-                        return [...prevState, tagId];
-                    }
-                });
-                break;
-            case 'gender':
-                setSelectedGenderTags(prevState => {
-                    if (prevState.includes(tagId)) {
-                        return prevState.filter(id => id !== tagId);
-                    } else {
-                        return [...prevState, tagId];
-                    }
-                });
-                break;
-            default:
-                break;
-        }
-    };*/
-
     const handleImageChange = (e) => {
-        const files = Array.from(e.target.files);
-        const imageFiles = files.filter(file => file.type.startsWith('image/'));
-        if (imageFiles.length > 0) {
-            const imageUrls = imageFiles.map(file => URL.createObjectURL(file));
-            setImages(prevImages => [...prevImages, ...imageUrls]);
-            setDisplayText(false);
+        // Check if files are present in the event target
+        if (e.target.files && e.target.files.length > 0) {
+            const files = Array.from(e.target.files);
+            console.log('Selected files:', files);
+            
+            const validImageFiles = files.filter(file => {
+                const fileType = file.type.toLowerCase();
+                return fileType === 'image/png' || fileType === 'image/jpeg';
+            });
+        
+            if (validImageFiles.length > 0) {
+                Promise.all(validImageFiles.map(imageToBase64))
+                    .then(base64Images => {
+                        setImages(prevImages => [...prevImages, ...base64Images]);
+                        setDisplayText(false);
+                    })
+                    .catch(error => {
+                        console.error('Error converting images to base64:', error);
+                        // Handle error or show error notification
+                    });
+            } else {
+                console.error('No valid images selected (PNG or JPG)');
+            }
         }
     };
+    
+    
+    
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('authToken');
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const token = localStorage.getItem('authToken'); // Assuming you're storing the JWT token in localStorage
+    if (!token) {
+        console.error('JWT token not found');
+        return;
+    }
 
-        if (!token) {
-            console.error('JWT token not found');
+    if (!user) {
+        console.error('User data not found');
+        return;
+    }
+
+    if (images.length === 0) {
+        console.error('No images selected');
+        return;
+    }
+
+    console.log('Submitting form data...');
+
+    try {
+        const formData = new FormData(); // Create FormData object
+        formData.append('data', JSON.stringify({ // Append JSON stringified form data
+            products_name: e.target.products_name.value,
+            price: parseFloat(e.target.price.value).toFixed(2),
+            details: e.target.details.value,
+            location: e.target.location.value,
+            brand: selectedBrandTags[0],
+            color: selectedColorTags[0],
+            gender: selectedGenderTags[0],
+            seller: user.id,
+        }));
+
+        images.forEach((image, index) => { // Append each image file to FormData
+            formData.append(`files.images${index}`, image);
+        });
+
+        const response = await axios.post('http://localhost:1337/api/shoes', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
+                Authorization: `Bearer ${token}`, // Set authorization header with JWT token
+            },
+        });
+
+        console.log('Upload response:', response.data);
+        // Handle success or show notification
+    } catch (error) {
+        console.error('Error uploading images:', error);
+        // Handle error or show error notification
+    }
+};
+     
+
+// Function to convert image to base64 string
+const imageToBase64 = (image) => {
+    return new Promise((resolve, reject) => {
+        // Check if image is a valid File object
+        if (!image || !(image instanceof File)) {
+            console.error('Invalid image file:', image);
+            reject(new Error('Invalid image file'));
             return;
         }
 
-        if (!user) {
-            console.error('User data not found');
-            return;
-        }
+        const reader = new FileReader();
+        reader.onload = function() {
+            // Check if the result is not null
+            if (reader.result) {
+                console.log('Successfully loaded image:', reader.result);
+                resolve(reader.result);
+            } else {
+                console.error('Error reading image file:', reader.error);
+                reject(reader.error || new Error('Error reading image file'));
+            }
+        };
+        reader.onerror = function(error) {
+            console.error('Error reading image file:', error);
+            reject(error || new Error('Error reading image file'));
+        };
+        reader.readAsDataURL(image);
+    });
+};
 
-        if (images.length === 0) {
-            console.error('No images selected');
-            return;
-        }
 
-        try {
-            const formData = new FormData();
-            // Form data construction...
-            formData.append('products_name', e.target.products_name.value);
-            formData.append('price', e.target.price.value);
-            formData.append('details', e.target.details.value);
-            formData.append('location', e.target.location.value);
-            formData.append('seller', user.id);
-            selectedBrandTags.forEach(tagId => {
-                formData.append('brandTags[]', tagId);
-            });
-            selectedColorTags.forEach(tagId => {
-                formData.append('colorTags[]', tagId);
-            });
-            selectedGenderTags.forEach(tagId => {
-                formData.append('genderTags[]', tagId);
-            });
-            images.forEach((image, index) => {
-                formData.append(`files.image${index}`, image);
-            });
 
-            const response = await axios.post('http://localhost:1337/api/shoes', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            });
-            console.log('Upload response:', response.data);
-            // Handle success or show notification
-        } catch (error) {
-            console.error('Error uploading images:', error);
-            // Handle error or show error notification
-        }
-    };
+    
+
+
 
     const removeImage = (index) => {
         const updatedImages = [...images];
@@ -174,7 +195,14 @@ const ImageUploadPopup = ({ onClose }) => {
                         </label>
                         <label className="block mb-4">
                             <span className="text-gray-700">Price:</span>
-                            <input type="text" name="price" className="mt-1 block w-full rounded-md border-black border shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                            <input
+                                type="number"
+                                name="price"
+                                className="mt-1 block w-full rounded-md border-black border shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                min="0" // Set the minimum value to 0
+                                step="0.01" // Set the step to allow decimal values
+                                required // Make the field required
+                            />
                         </label>
                         <label className="block mb-4">
                             <span className="text-gray-700">Description:</span>
