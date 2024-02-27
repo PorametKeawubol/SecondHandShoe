@@ -7,8 +7,8 @@ const CarouselBar = () => {
         <Carousel
             interval={2000}
             autoPlay={true}
-            width={"70vw"}
-            height={"10vh"} // ปรับความสูงให้เล็กลง
+            className="w-[90%]"
+        
             showThumbs={false}
         >
             <div>

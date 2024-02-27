@@ -82,20 +82,22 @@ function YourItem() {
 
 
                <section className="py-100 mt-10">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
+                    <div className="flex flex-col   lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
                          {MyShoes.map((shoe) => (
-                              <div key={shoe.id} className="border rounded p-4 relative">
-                                   <img src={shoe.image[0]} alt={shoe.name} className="mx-auto mb-4" style={{ maxWidth: "150px" }} />
-                                   <h3 className="text-xl font-semibold">{shoe.products_name}</h3>
-                                   <p className="text-gray-600">Seller: {shoe.Seller}</p>
-                                   <button onClick={() => handleDeleteItem(shoe.id)} className="absolute top-6 right-6 bg-red-500 rounded-full w-10 h-10 flex items-center justify-center">
-                                        <FaTrash className="h-6 w-6 text-white" />
-                                   </button>
-                                   <Link to={`/EditYourItem`} className="absolute top-20 right-6 bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center">
-                                        <FaEdit className="h-6 w-6 text-white" />
-                                   </Link>
-
+                              <div className="flex bg-slate-100">
+                                   <div key={shoe.id} className="border rounded p-4 relative w-[30%]">
+                                        <img src={shoe.image[0]} alt={shoe.name} className="mx-auto mb-4" style={{ maxWidth: "150px" }} />
+                                        <h3 className="text-xl font-semibold">{shoe.products_name}</h3>
+                                        <p className="text-gray-600">Seller: {shoe.Seller}</p>
+                                        <button onClick={() => handleDeleteItem(shoe.id)} className="absolute top-6 right-6 bg-red-500 rounded-full w-10 h-10 flex items-center justify-center">
+                                             <FaTrash className="h-6 w-6 text-white" />
+                                        </button>
+                                        <Link to={`/EditYourItem`} className="absolute top-20 right-6 bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center">
+                                             <FaEdit className="h-6 w-6 text-white" />
+                                        </Link>
+                                   </div>
                               </div>
+                              
                          ))}
                     </div>
                </section>

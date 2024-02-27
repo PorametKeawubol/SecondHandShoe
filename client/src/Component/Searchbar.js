@@ -7,9 +7,11 @@ function Searchbar({ onnewfilter }) {
   const [isDropdownOpenBrand, setIsDropdownOpenBrand] = useState(false);
   const [isDropdownOpenColor, setIsDropdownOpenColor] = useState(false);
   const [isDropdownOpenGender, setIsDropdownOpenGender] = useState(false);
+  const [isDropdownOpenSize,setIsDropdownOpenSize] = useState(false)
   const [brand, setbrand] = useState("all");
   const [color, setcolor] = useState("all");
   const [gender, setgender] = useState("all");
+  const [size, setsize] = useState("");
   const [searchTxt, setsearchTxt] = useState("");
   const arraySearch = searchTxt.trim().toLowerCase().split(" ");
   //item.category === "male" || item.category === "woman" || item.category === "Nike"
@@ -31,6 +33,12 @@ function Searchbar({ onnewfilter }) {
   };
   const toggleDropdownGender = () => {
     setIsDropdownOpenGender(!isDropdownOpenGender);
+    setIsDropdownOpenColor(false);
+    setIsDropdownOpenBrand(false);
+  };
+  const toggleDropdownSize = () => {
+    setIsDropdownOpenSize(!isDropdownOpenSize)
+    setIsDropdownOpenGender(false);
     setIsDropdownOpenColor(false);
     setIsDropdownOpenBrand(false);
   };
@@ -103,6 +111,9 @@ function Searchbar({ onnewfilter }) {
   };
   const genderClick = (g) => {
     setgender(g);
+  };
+  const sizeClick = (s) => {
+    setsize(s);
   };
   return (
     <form class="max-w-lg mx-auto">
@@ -426,6 +437,43 @@ function Searchbar({ onnewfilter }) {
                   </div>
                 </div>
               </li>
+              <li>
+                <div className="flex flex-row">
+                  <button
+                    onClick={toggleDropdownSize}
+                    type="button"
+                    class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >
+                    <div className="mr-10 w-11">size</div>
+                    <h className="text-slate-400">{size}</h>
+                  </button>
+                  <div
+                    id="dropdownsize"
+                    className={`z-30 ${
+                      isDropdownOpenSize ? "" : "hidden"
+                    } absolute bg-white divide-y divide-gray-100 rounded-lg drop-shadow-lg ml-44 w-44 border-none dark:bg-gray-700`}
+                  >
+                    <ul
+                      class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                      aria-labelledby="dropdown-button"
+                    >
+                      <li className="px-4 flex">
+                        <input
+                          value={size}
+                          onInput={(e) => setsize(e.target.value)}
+                          type="number"
+                          id="search-dropdown"
+                          class="block p-2.5 w-full z-50 text-sm text-gray-900 bg-gray-50 rounded-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                          placeholder="Enter size"
+                        />
+                        
+                      </li>
+                      
+                    </ul>
+                  </div>
+                </div>
+              </li>
+              
               <li>
                 <button
                   onClick={handleSearch}
