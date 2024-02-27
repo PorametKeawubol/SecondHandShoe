@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa'; // Import FaTimes for X icon
 import axios from 'axios';
 
+// Notification component
+const Notification = ({ message, isError }) => {
+    const bgColor = isError ? 'bg-red-500' : 'bg-green-500';
+    return (
+        <div className={`absolute bottom-4 right-4 text-white py-2 px-4 rounded ${bgColor}`}>
+            {message}
+        </div>
+    );
+}
+
 const ImageUploadPopup = ({ onClose }) => {
     const [images, setImages] = useState([]);
     const [brandTags, setBrandTags] = useState([]);
@@ -12,6 +22,8 @@ const ImageUploadPopup = ({ onClose }) => {
     const [selectedGenderTags, setSelectedGenderTags] = useState([]);
     const [displayText, setDisplayText] = useState(true);
     const [user, setUser] = useState(null);
+    const [uploadMessage, setUploadMessage] = useState('');
+    const [uploadError, setUploadError] = useState('');
 
     useEffect(() => {
         fetchTagsFromServer();
@@ -67,32 +79,31 @@ const ImageUploadPopup = ({ onClose }) => {
         }
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('authToken');
-    
+
         if (!token) {
             console.error('JWT token not found');
             return;
         }
-    
+
         if (!user) {
             console.error('User data not found');
             return;
         }
-    
+
         if (images.length === 0) {
             console.error('No images selected');
             return;
         }
-    
+
         console.log('Submitting form data...');
-    
+
         try {
             // Upload images to Strapi server
             const uploadedImages = await Promise.all(images.map(uploadImage));
-    
+
             // Create shoe entry with associated images
             const shoeData = {
                 products_name: e.target.products_name.value,
@@ -103,29 +114,32 @@ const ImageUploadPopup = ({ onClose }) => {
                 color: selectedColorTags[0],
                 gender: selectedGenderTags[0],
                 seller: user.id,
+                size: e.target.usSize.options[e.target.usSize.selectedIndex].text,
                 picture: uploadedImages.map(image => ({ id: image.id })) // Assuming Strapi returns image objects with an id field
+
             };
-    
+
             // Post shoe data to Strapi server
             const formData = new FormData();
             formData.append('data', JSON.stringify(shoeData));
-    
+
             const response = await axios.post('http://localhost:1337/api/shoes', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-    
+
             console.log('Upload response:', response.data);
-            // Handle success or show notification
+            setUploadMessage('Items uploaded successfully.'); // Set the upload message
+            setTimeout(() => {
+                onClose(); // Close popup after a delay
+            }, 2000); // Adjust the delay as needed
         } catch (error) {
             console.error('Error uploading data:', error);
-            // Handle error or show error notification
+            setUploadError('Error uploading data. Please try again.'); // Set the upload error message
         }
     };
-    
-    
-    
+
     const uploadImage = async (image) => {
         try {
             const formData = new FormData();
@@ -135,16 +149,13 @@ const ImageUploadPopup = ({ onClose }) => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-    
+
             return response.data[0]; // Assuming Strapi returns an array of uploaded files with metadata
         } catch (error) {
             console.error('Error uploading image:', error);
             throw error;
         }
     };
-    
-    
-    
 
     const removeImage = (index) => {
         const updatedImages = [...images];
@@ -172,7 +183,7 @@ const ImageUploadPopup = ({ onClose }) => {
                     <form onSubmit={handleSubmit} className="w-full">
                         <label className="block mb-4">
                             <span className="text-gray-700">Name:</span>
-                            <input type="text" name="products_name" className="mt-1 block w-full rounded-md border-black border shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                            <input required type="text" name="products_name" className="mt-1 block w-full rounded-md border-black border shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
                         </label>
                         <label className="block mb-4">
                             <span className="text-gray-700">Price:</span>
@@ -273,8 +284,36 @@ const ImageUploadPopup = ({ onClose }) => {
                                     </div>
                                 </label>
                             </div>
+                            <div className="w-full lg:w-1/3 px-3 mb-6">
+                                <label className="block mb-4">
+                                    <span className="text-gray-700">US Size:</span>
+                                    <select
+                                        name="usSize"
+                                        className="mt-1 block w-full rounded-md border-black border shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                        required // Make the field required
+                                    >
+                                        <option value="">Select US Size</option>
+                                        <option value="5">5.5</option>
+                                        <option value="6">6</option>
+                                        <option value="5">6.5</option>
+                                        <option value="6">7.5</option>
+                                        <option value="5">8</option>
+                                        <option value="6">8.5</option>
+                                        <option value="5">9</option>
+                                        <option value="6">9.5</option>
+                                        <option value="5">10</option>
+                                        <option value="6">10.5</option>
+                                        <option value="5">11</option>
+                                        <option value="6">11.5</option>
+                                        <option value="5">12</option>
+                                        <option value="6">12.5</option>
+                                    </select>
+                                </label>
+                            </div>
                         </div>
                         <button type="submit" disabled={images.length === 0} className="w-full bg-black text-white rounded-md py-2 hover:bg-gray-900">Upload</button>
+                        {uploadMessage && <Notification message={uploadMessage} />} {/* Render upload message if present */}
+                        {uploadError && <Notification message={uploadError} isError />} {/* Render error message if present */}
                     </form>
                 </div>
             </div>
