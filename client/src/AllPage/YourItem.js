@@ -73,34 +73,40 @@ function YourItem() {
      return (
           <div className="flex flex-col">
                <Header />
-               <div className="bg-gray-800 text-white py-4 mt-3">
-     <div className="container mx-auto text-center mt-20">
-          <h1 className="text-3xl font-semibold mt-10 text-xl">Your Item</h1>
-     </div>
-</div>
+               <div className="bg-gray-800 text-white py-3 mt-0">
+                    <div className="container mx-auto text-center mt-10">
+                         <h1 className="text-3xl font-semibold mt-10 text-xl">Your Item</h1>
+                    </div>
+               </div>
 
 
 
                <section className="py-100 mt-10">
-                    <div className="flex flex-col   lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
-                         {MyShoes.map((shoe) => (
-                              <div className="flex bg-slate-100">
-                                   <div key={shoe.id} className="border rounded p-4 relative w-[30%]">
-                                        <img src={shoe.image[0]} alt={shoe.name} className="mx-auto mb-4" style={{ maxWidth: "150px" }} />
-                                        <h3 className="text-xl font-semibold">{shoe.products_name}</h3>
-                                        <p className="text-gray-600">Seller: {shoe.Seller}</p>
-                                        <button onClick={() => handleDeleteItem(shoe.id)} className="absolute top-6 right-6 bg-red-500 rounded-full w-10 h-10 flex items-center justify-center">
-                                             <FaTrash className="h-6 w-6 text-white" />
-                                        </button>
-                                        <Link to={`/EditYourItem`} className="absolute top-20 right-6 bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center">
-                                             <FaEdit className="h-6 w-6 text-white" />
-                                        </Link>
-                                   </div>
-                              </div>
-                              
-                         ))}
-                    </div>
-               </section>
+  <div className="flex flex-col lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
+    {MyShoes.map((shoe) => (
+      <div className="flex bg-slate-100 ">
+        <div key={shoe.id} className="border rounded p-4 relative w-[100%] flex">
+          <img src={shoe.image[0]} alt={shoe.name} className="mx-auto mb-4 float-left" style={{ maxWidth: "150px" }} />
+          <div className="ml-2 flex-grow">
+            <h3 className="text-xl font-semibold">{shoe.products_name}</h3>
+            <p className="text-gray-600 mt-1">Seller: {shoe.Seller}</p>
+          </div>
+          <div className="flex flex-col justify-between">
+            <button onClick={() => handleDeleteItem(shoe.id)} className="bg-red-500 rounded-full w-10 h-10 flex items-center justify-center">
+              <FaTrash className="h-6 w-6 text-white" />
+            </button>
+            <Link to={`/EditYourItem`} className="bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center">
+              <FaEdit className="h-6 w-6 text-white" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+
+
           </div>
      );
 }
