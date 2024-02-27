@@ -49,13 +49,13 @@ function Payment() {
               </button>
             </div>
           </div>
-          <div className="lg:py-6 lg:pr-16">
+          <div className="lg:py-6 lg:pr-16 drop-shadow-2xl bg-gradient-to-r from-[#355C7D] via-[#6C5B7B] to-[#C06C84] pl-10 rounded-3xl text-slate-100">
             <div className="flex">
               <div className="flex flex-col items-center mr-4">
                 <div>
                   <div className="flex items-center justify-center w-10 h-10 border rounded-full">
                     <svg
-                      className="w-4 text-gray-600"
+                      className="w-4"
                       stroke="currentColor"
                       strokeWidth="2"
                       strokeLinecap="round"
@@ -82,7 +82,7 @@ function Payment() {
               </div>
               <div className="pt-1 pb-8">
                 <p className="mb-2 text-lg font-bold">Step 1</p>
-                <p className="text-gray-700">
+                <p className="">
                   เปิดแอปพลิเคชันธนาคารบนอุปกรณ์ของท่าน
                 </p>
               </div>
@@ -92,7 +92,7 @@ function Payment() {
                 <div>
                   <div className="flex items-center justify-center w-10 h-10 border rounded-full">
                     <svg
-                      className="w-4 text-gray-600"
+                      className="w-4"
                       stroke="currentColor"
                       strokeWidth="2"
                       strokeLinecap="round"
@@ -119,7 +119,7 @@ function Payment() {
               </div>
               <div className="pt-1 pb-8">
                 <p className="mb-2 text-lg font-bold">Step 2</p>
-                <p className="text-gray-700">
+                <p className="">
                   คลิกไปที่ปุ่ม "สแกน" หรือ "QR Code" และกดที่ "รูปภาพ"
                 </p>
               </div>
@@ -129,7 +129,7 @@ function Payment() {
                 <div>
                   <div className="flex items-center justify-center w-10 h-10 border rounded-full">
                     <svg
-                      className="w-4 text-gray-600"
+                      className="w-4 "
                       stroke="currentColor"
                       strokeWidth="2"
                       strokeLinecap="round"
@@ -156,7 +156,7 @@ function Payment() {
               </div>
               <div className="pt-1 pb-8">
                 <p className="mb-2 text-lg font-bold">Step 3</p>
-                <p className="text-gray-700">
+                <p className="">
                   สแกน QR Code ที่ปรากฏบนหน้าจอหรือที่ท่านแคปไว้และทำการชำระเงิน
                   โดยกรุณาเช็คชื่อบัญชีผู้รับคือ "บริษัท SECONDHANDSHOE CO.,LTD"
                 </p>
@@ -167,7 +167,7 @@ function Payment() {
                 <div>
                   <div className="flex items-center justify-center w-10 h-10 border rounded-full">
                     <svg
-                      className="w-4 text-gray-600"
+                      className="w-4 "
                       stroke="currentColor"
                       strokeWidth="2"
                       strokeLinecap="round"
@@ -194,7 +194,7 @@ function Payment() {
               </div>
               <div className="pt-1 pb-8">
                 <p className="mb-2 text-lg font-bold">Step 4</p>
-                <p className="text-gray-700">
+                <p className="">
                   บันทึกสลิปและเพิ่มสลิปในช่อง upload slip ของเรา
                 </p>
               </div>
@@ -204,7 +204,7 @@ function Payment() {
                 <div>
                   <div className="flex items-center justify-center w-10 h-10 border rounded-full">
                     <svg
-                      className="w-6 text-gray-600"
+                      className="w-6 "
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
@@ -222,7 +222,7 @@ function Payment() {
               </div>
               <div className="pt-1">
                 <p className="mb-2 text-lg font-bold">Success</p>
-                <p className="text-gray-700" />
+                <p className="" />
               </div>
             </div>
           </div>
