@@ -5,13 +5,11 @@ import { FaShoppingCart, FaTruck, FaGift, FaStar, FaShip, FaSuitcase, FaReply, F
 import { MdAccountCircle } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import ToRate from '../Component/ToRateContent';
-import ImageUploadPopup from '../AllPage/SellPage'; // Import the ImageUploadPopup component
 
 function Profile() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [showToRateModal, setShowToRateModal] = useState(false);
-    const [showImageUploadPopup, setShowImageUploadPopup] = useState(false); // State to control the visibility of the ImageUploadPopup
 
     const handleToRateOpen = () => {
         setShowToRateModal(true);
@@ -19,7 +17,7 @@ function Profile() {
 
     const handleToRateClose = () => {
         setShowToRateModal(false);
-    };
+    }
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -41,17 +39,13 @@ function Profile() {
         fetchUserData();
     }, []);
 
-    const handlePostSellClick = () => {
-        setShowImageUploadPopup(true); // Open the ImageUploadPopup when the "Post sell" button is clicked
-    };
-
     return (
         <div>
             <Header />
             <header className="bg-black py-1" style={{ backgroundColor: '#676666', display: 'flex' }}></header>
             <header className="bg-black py-10" style={{ backgroundColor: 'black', display: 'flex', top: 'center' }}>
                 <div className="px-4 lg:px-8" style={{ display: 'flex', alignItems: 'center' }}>
-                    <MdAccountCircle className="mr-4 mt-20" size={100} color="white"/>
+                    <MdAccountCircle className="mr-4 mt-20" size={100} color="white" />
                     <div>
                         <h1 style={{ fontSize: '40px', color: 'white', marginTop: '80px' }}>{username}</h1>
                         <p style={{ fontSize: '20px', color: 'white' }}>{email}</p>
@@ -64,36 +58,38 @@ function Profile() {
             </Link>
 
             <div className="flex justify-center mt-8">
+
                 <Link to="/Purchases" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }} >
                     <FaShoppingCart className="mr-2" size={40} />
                     <span>To pay</span>
                 </Link>
 
                 <Link to="/Purchases?tab=toShip" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }} >
-                    < FaGift  size={40} />
-                    <span>To ship</span>     
+                    < FaGift size={40} />
+                    <span>To ship</span>
                 </Link>
 
                 <Link to="/Purchases?tab=toReceive" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
                     <FaTruck size={40} />
-                    <span>To receive</span>     
+                    <span>To receive</span>
                 </Link>
             </div>
-            
+
             <div className="flex justify-center mt-4">
                 <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }} onClick={handleToRateOpen}>
                     <FaStar size={40} />
                     <span>To rate</span>
                 </button>
-                <div className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }} onClick={handlePostSellClick}>
+                <Link to="/Sell" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
                     <FaStoreAlt size={40} />
                     <span>Post sell</span>
-                </div>
+                </Link>
 
-                <button className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
+                <Link to="/YourItem" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
                     <FaSuitcase size={40} />
                     <span>Your item</span>
-                </button>
+                </Link>
+
             </div>
 
             <div className="flex justify-start mt-20 mb-8 ml-4">
@@ -102,7 +98,6 @@ function Profile() {
                 </Link>
             </div>
             {showToRateModal && <ToRate onClose={handleToRateClose} />}
-            {showImageUploadPopup && <ImageUploadPopup onClose={() => setShowImageUploadPopup(false)} />} {/* Render the ImageUploadPopup component */}
         </div>
     )
 }
