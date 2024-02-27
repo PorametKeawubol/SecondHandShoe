@@ -65,6 +65,7 @@ const ShoeDetails = () => {
     brandType,
     colorType,
     genderType,
+    size,
   } = shoe;
 
   const accordions = [
@@ -78,7 +79,11 @@ const ShoeDetails = () => {
         />
       ),
     },
-    { title: "Delivery", content: "Content 3" },
+    {
+      title: "Delivery",
+      content:
+        "การจัดส่งแบบธรรมดาจะใช้เวลา 3-5 วันทำการ (ยกเว้นวันหยุดนักขัตฤกษ์)   ฟรีค่าจัดส่งทั่วประเทศ",
+    },
   ];
 
   return (
@@ -198,7 +203,7 @@ const ShoeDetails = () => {
               ลงขายโดย : {Seller}
             </div>
             <h1 className="text-[20px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">
-              Size : {price} US
+              Size : {size} US
             </h1>
             <h1 className="text-[20px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">
               Gender Size : {genderType}
