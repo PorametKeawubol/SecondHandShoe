@@ -222,7 +222,7 @@ const ShoeDetails = () => {
             >
               Add to cart
             </button>
-            <Link to="/Payment">
+            <Link to={`/Payment/${id}`}>
               <button className="bg-red-600 py-4 px-8 ml-6 text-white">
                 Buy now
               </button>

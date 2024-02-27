@@ -8,10 +8,6 @@ const CartItem = ({ item }) => {
     useContext(CartContext);
   const navigate = useNavigate();
 
-  const handleCheckout = () => {
-    navigate("/Payment");
-  };
-
   const { id, products_name, image, price, amount } = item;
 
   if (item.amount > 1) {
@@ -22,7 +18,7 @@ const CartItem = ({ item }) => {
     <div className="flex gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500">
       <div className="w-full min-h-[150px] flex items-center gap-x-4">
         <Link to={`/shoe/${id}`}>
-          <img className="max-w-[80px]" src={image} alt="" />
+          <img className="max-w-[80px]" src={image[0]} alt="" />
         </Link>
         <div className="w-full flex flex-col">
           <div className="flex justify-between mb-2">
@@ -68,12 +64,11 @@ const CartItem = ({ item }) => {
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             </div>
-            <div
-              onClick={handleCheckout}
-              className="flex justify-center items-center bg-primary text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2"
-            >
-              Checkout
-            </div>
+            <Link to={`/Payment/${id}`}>
+              <div className="flex justify-center items-center bg-primary text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
+                Checkout
+              </div>
+            </Link>
           </div>
         </div>
       </div>
