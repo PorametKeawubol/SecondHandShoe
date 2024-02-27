@@ -72,6 +72,12 @@
       "target": "api::payment.payment",
       "mappedBy": "Buyer"
     },
+    "shoes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::shoe.shoe",
+      "mappedBy": "seller"
+    },
     "shoe": {
       "type": "relation",
       "relation": "oneToOne",

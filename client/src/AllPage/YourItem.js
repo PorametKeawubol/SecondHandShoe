@@ -2,12 +2,12 @@ import React, { useContext, useState, useEffect } from "react";
 import { ShoeContext } from "../contexts/ShoeContext";
 import axios from "axios";
 import Header from "../Component/Header";
-import { Link } from "react-router-dom"; // import Link from react-router-dom
+import { Link } from "react-router-dom";
+import { FaTrash, FaEdit } from "react-icons/fa"; // import FaTrash and FaEdit icons from react-icons/fa
 
 function YourItem() {
      const { shoes } = useContext(ShoeContext);
      const [MyShoes, setMyShoes] = useState([]);
-     console.log("🚀 ~ YourItem ~ MyShoes:", MyShoes);
 
      useEffect(() => {
           const fetchUserData = async () => {
@@ -36,37 +36,69 @@ function YourItem() {
           });
      };
 
+     const handleDeleteItem = async (id) => {
+          try {
+               console.log("Deleting item with ID:", id); // เพิ่มบรรทัดนี้เพื่อแสดง ID ที่ถูกลบในคอนโซล
+               // Call the Strapi API to delete the specific shoe item
+               await axios.delete(`http://localhost:1337/api/shoes/${id}`, {
+                    headers: {
+                         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                    },
+               });
+
+               // Update the state after successful deletion
+               const updatedShoes = MyShoes.filter(shoe => shoe.id !== id);
+               setMyShoes(updatedShoes);
+          } catch (error) {
+               console.error("Error deleting item:", error);
+          }
+     };
+
+     const handleDeleteAll = async () => {
+          try {
+               // Call the Strapi API to delete all shoe items
+               await axios.delete("http://localhost:1337/api/shoes", {
+                    headers: {
+                         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                    },
+               });
+
+               // Clear the state after successful deletion
+               setMyShoes([]);
+          } catch (error) {
+               console.error("Error deleting all items:", error);
+          }
+     };
+
      return (
           <div className="flex flex-col">
                <Header />
-               <section className="py-100 mt-10"> {/* Added mt-10 to add margin top */}
-                    <div className="container mx-auto">
-                         <h1 className="text-3xl font-semibold mt-20 mb-10 text-center">
-                              Explore Our Shoes
-                         </h1>
-                         <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
-                              {MyShoes.map((shoe) => (
-                                   <div key={shoe.id} className="border rounded p-4 relative"> {/* Added relative class */}
-                                        <img src={shoe.image[0]} alt={shoe.name} className="mx-auto mb-4" style={{ maxWidth: "150px" }} />
-                                        <h3 className="text-xl font-semibold">{shoe.products_name}</h3>
-                                        <p className="text-gray-600">Seller: {shoe.Seller}</p>
-                                        <Link to={`/shoe/${shoe.id}`} className="absolute top-6 right-6 bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center">
-                                             {/* Button Icon */}
-                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                             </svg>
-                                        </Link>
-                                   </div>
-                              ))}
-                         </div>
+               <div className="bg-gray-800 text-white py-4 mt-3">
+     <div className="container mx-auto text-center mt-20">
+          <h1 className="text-3xl font-semibold mt-10 text-xl">Your Item</h1>
+     </div>
+</div>
+
+
+
+               <section className="py-100 mt-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
+                         {MyShoes.map((shoe) => (
+                              <div key={shoe.id} className="border rounded p-4 relative">
+                                   <img src={shoe.image[0]} alt={shoe.name} className="mx-auto mb-4" style={{ maxWidth: "150px" }} />
+                                   <h3 className="text-xl font-semibold">{shoe.products_name}</h3>
+                                   <p className="text-gray-600">Seller: {shoe.Seller}</p>
+                                   <button onClick={() => handleDeleteItem(shoe.id)} className="absolute top-6 right-6 bg-red-500 rounded-full w-10 h-10 flex items-center justify-center">
+                                        <FaTrash className="h-6 w-6 text-white" />
+                                   </button>
+                                   <Link to={`/EditYourItem`} className="absolute top-20 right-6 bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center">
+                                        <FaEdit className="h-6 w-6 text-white" />
+                                   </Link>
+
+                              </div>
+                         ))}
                     </div>
                </section>
-               {/* Your Item Bar */}
-               <div className="fixed top-0 left-0 w-full bg-gray-900 text-white p-4" style={{ marginTop: "6rem" }}> {/* Adjust marginTop here */}
-                    <div className="container mx-auto flex justify-around">
-                         <Link to="/youritem" className="text-white">Your Item</Link>
-                    </div>
-               </div>
           </div>
      );
 }
