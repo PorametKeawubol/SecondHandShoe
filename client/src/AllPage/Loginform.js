@@ -52,7 +52,7 @@ function LoginForm({ toggleModal, toggleRegisterModal, onLogin, checkAuthStatus}
           if (error.response && error.response.data && error.response.data.message) {
             setError(error.response.data.message[0].messages[0].message);
           } else {
-            setError('An error occurred while logging in.');
+            setError('Wrong username or password.');
           }
       }
   };
@@ -71,7 +71,7 @@ function LoginForm({ toggleModal, toggleRegisterModal, onLogin, checkAuthStatus}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email address"
-                            className="mt-1 block w-full rounded border border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1 block w-full rounded border border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 w-1/2 pl-2"
                         />
                     </div>
                     <div className="mb-4">
@@ -83,7 +83,7 @@ function LoginForm({ toggleModal, toggleRegisterModal, onLogin, checkAuthStatus}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter your password"
-                            className="mt-1 block w-full rounded border border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                            className="mt-1 block w-full rounded border border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 w-1/2 pl-2"
                         />
                     </div>
                     {error && <p className="text-red-500 mb-4">{error}</p>}

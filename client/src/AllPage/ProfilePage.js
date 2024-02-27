@@ -55,9 +55,9 @@ function Profile() {
             <header className="bg-black py-1" style={{ backgroundColor: '#676666', display: 'flex' }}></header>
             <header className="bg-black py-10" style={{ backgroundColor: 'black', display: 'flex', top: 'center' }}>
                 <div className="px-4 lg:px-8" style={{ display: 'flex', alignItems: 'center' }}>
-                    <MdAccountCircle className="mr-4 mt-20" size={100} color="white"/>
+                    <MdAccountCircle className="mr-4" size={100} color="white"/>
                     <div>
-                        <h1 style={{ fontSize: '40px', color: 'white', marginTop: '80px' }}>{username}</h1>
+                        <h1 style={{ fontSize: '40px', color: 'white'}}>{username}</h1>
                         <p style={{ fontSize: '20px', color: 'white' }}>{email}</p>
                     </div>
                 </div>
