@@ -26,12 +26,12 @@ function Payment() {
               <p className="mb-8 ">
                 ยอดชำระเงินทั้งหมด
                 <div className="text-2xl text-red-500 font-medium mb-4">
-                  ฿{parseFloat(total).toFixed(2)}
+                  {parseFloat(total).toFixed(2)} THB
                 </div>
               </p>
               <img className="max-w-[200px] py-6 lg:max-w-xs" src={Qrcode} />
               <h className="mb-8  text-red-500 font-medium mb-4">
-                ฿{parseFloat(total).toFixed(2)}
+                {parseFloat(total).toFixed(2)} THB
               </h>
 
               <p className="mb-8"> บริษัท SECONDHANDSHOE CO.,LTD</p>

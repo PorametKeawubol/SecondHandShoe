@@ -4,7 +4,8 @@ import { IoMdAdd, IoMdClose, IoMdRemove } from "react-icons/io";
 import { CartContext } from "../contexts/CartContext";
 
 const CartItem = ({ item }) => {
-  const { removeFromCart, increaseAmount, decreaseAmount } = useContext(CartContext);
+  const { removeFromCart, increaseAmount, decreaseAmount } =
+    useContext(CartContext);
   const navigate = useNavigate();
 
   const handleCheckout = () => {
@@ -57,10 +58,11 @@ const CartItem = ({ item }) => {
               </div>
             </div>
             <div className="flex flex-1 justify-around items-center">
-              $ {price}
+              {price} THB
             </div>
             <div className="flex flex-1 justify-end items-center text-primary font-medium">
-              ${" "}
+              {" "}
+              THB
               {parseFloat(price * amount)
                 .toFixed(2)
                 .toString()
