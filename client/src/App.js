@@ -7,7 +7,6 @@ import ShoeDetails from './AllPage/ShoeDetails';
 import Profile from './AllPage/ProfilePage';
 import MyPurchases from './AllPage/MyPurchases';
 import Payment from './AllPage/Payment';
-import Sellpage from './AllPage/SellPage';
 import YourItem from './AllPage/YourItem';
 axios.defaults.headers.common['Authorization'] = null;
 
@@ -17,7 +16,6 @@ function App() {
       <Routes>
         <Route path="/Profile" element={<Profile />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/Sellpage" element={<Sellpage />} />
         <Route path="/Purchases" element={<MyPurchases />} />
         <Route path="/Payment" element={<Payment />} />
         <Route path="/shoe/:id" element={<ShoeDetails />} />
