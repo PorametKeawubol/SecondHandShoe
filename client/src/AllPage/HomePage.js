@@ -8,6 +8,7 @@ import Searchbar from "../Component/Searchbar";
 import CarouselBar from "../Component/CarouselBar";
 import Footer from "../Component/Footer";
 import backgroundImg from '../Component/Picture/bg1.png'
+import TitleHome from "../Component/TitleHome";
 axios.defaults.baseURL =
   process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
@@ -40,7 +41,9 @@ function HomePage() {
   return (
     <div className="flex flex-col " style={{backgroundImage: `url(${backgroundImg})`,backgroundSize: "cover",backgroundPosition: "center"}}>
       <Header />
-      <div className="mt-28">
+      
+      <div className="flex flex-col items-center">
+        <TitleHome/>
         <Searchbar onnewfilter={newfilter} />
       </div>
       <div className="flex justify-center mt-10 mb-1"> {/* ใช้ flex justify-center เพื่อจัดให้อยู่ตรงกลาง */}
