@@ -25,20 +25,29 @@ function Profile() {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await fetch('your_api_endpoint');
-                const data = await response.json();
-                setUsername(data.username);
-                setEmail(data.email);
+                const response = await axios.get('http://localhost:1337/api/users/me', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('authToken')}`
+                    }
+                });
+
+                const userData = response.data;
+                setUsername(userData.username);
+                setEmail(userData.email);
             } catch (error) {
-                console.error('Error fetching user data: ', error);
+                console.error('Error fetching user data:', error);
             }
         };
+
         fetchUserData();
     }, []);
+
+
 
     const handlePostSellClick = () => {
         setShowImageUploadPopup(true); // Open the ImageUploadPopup when the "Post sell" button is clicked
     };
+
 
     return (
         <div>
@@ -46,7 +55,7 @@ function Profile() {
             <header className="bg-black py-1" style={{ backgroundColor: '#676666', display: 'flex' }}></header>
             <header className="bg-black py-10" style={{ backgroundColor: 'black', display: 'flex', top: 'center' }}>
                 <div className="px-4 lg:px-8" style={{ display: 'flex', alignItems: 'center' }}>
-                    <MdAccountCircle className="mr-4 mt-20" size={100} color="white" />
+                    <MdAccountCircle className="mr-4 mt-20" size={100} color="white"/>
                     <div>
                         <h1 style={{ fontSize: '40px', color: 'white', marginTop: '80px' }}>{username}</h1>
                         <p style={{ fontSize: '20px', color: 'white' }}>{email}</p>
@@ -59,20 +68,19 @@ function Profile() {
             </Link>
 
             <div className="flex justify-center mt-8">
-
                 <Link to="/Purchases" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }} >
                     <FaShoppingCart className="mr-2" size={40} />
                     <span>To pay</span>
                 </Link>
 
                 <Link to="/Purchases?tab=toShip" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }} >
-                    < FaGift size={40} />
-                    <span>To ship</span>
+                    < FaGift  size={40} />
+                    <span>To ship</span>     
                 </Link>
 
                 <Link to="/Purchases?tab=toReceive" className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '150px' }}>
                     <FaTruck size={40} />
-                    <span>To receive</span>
+                    <span>To receive</span>     
                 </Link>
             </div>
 

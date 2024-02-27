@@ -52,118 +52,99 @@ const ImageUploadPopup = ({ onClose }) => {
         if (e.target.files && e.target.files.length > 0) {
             const files = Array.from(e.target.files);
             console.log('Selected files:', files);
-            
+
             const validImageFiles = files.filter(file => {
                 const fileType = file.type.toLowerCase();
                 return fileType === 'image/png' || fileType === 'image/jpeg';
             });
-        
+
             if (validImageFiles.length > 0) {
-                Promise.all(validImageFiles.map(imageToBase64))
-                    .then(base64Images => {
-                        setImages(prevImages => [...prevImages, ...base64Images]);
-                        setDisplayText(false);
-                    })
-                    .catch(error => {
-                        console.error('Error converting images to base64:', error);
-                        // Handle error or show error notification
-                    });
+                setImages(prevImages => [...prevImages, ...validImageFiles]);
+                setDisplayText(false);
             } else {
                 console.error('No valid images selected (PNG or JPG)');
             }
         }
     };
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('authToken');
     
-    
-    
-const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem('authToken');
-
-    if (!token) {
-        console.error('JWT token not found');
-        return;
-    }
-
-    if (!user) {
-        console.error('User data not found');
-        return;
-    }
-
-    if (images.length === 0) {
-        console.error('No images selected');
-        return;
-    }
-
-    console.log('Submitting form data...');
-
-    try {
-        const formData = new FormData(); // Create FormData object
-        formData.append('data', JSON.stringify({ // Append JSON stringified form data
-            products_name: e.target.products_name.value,
-            price: parseFloat(e.target.price.value).toFixed(2),
-            details: e.target.details.value,
-            location: e.target.location.value,
-            brand: selectedBrandTags[0],
-            color: selectedColorTags[0],
-            gender: selectedGenderTags[0],
-            seller: user.id,
-        }));
-
-        images.forEach((image, index) => { // Append each image file to FormData
-            formData.append(`files.images${index}`, image);
-        });
-
-        const response = await axios.post('http://localhost:1337/api/shoes', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data', // Set content type to multipart/form-data
-                Authorization: `Bearer ${token}`, // Set authorization header with JWT token
-            },
-        });
-
-        console.log('Upload response:', response.data);
-        // Handle success or show notification
-    } catch (error) {
-        console.error('Error uploading images:', error);
-        // Handle error or show error notification
-    }
-};
-     
-
-// Function to convert image to base64 string
-const imageToBase64 = (image) => {
-    return new Promise((resolve, reject) => {
-        // Check if image is a valid File object
-        if (!image || !(image instanceof File)) {
-            console.error('Invalid image file:', image);
-            reject(new Error('Invalid image file'));
+        if (!token) {
+            console.error('JWT token not found');
             return;
         }
-
-        const reader = new FileReader();
-        reader.onload = function() {
-            // Check if the result is not null
-            if (reader.result) {
-                console.log('Successfully loaded image:', reader.result);
-                resolve(reader.result);
-            } else {
-                console.error('Error reading image file:', reader.error);
-                reject(reader.error || new Error('Error reading image file'));
-            }
-        };
-        reader.onerror = function(error) {
-            console.error('Error reading image file:', error);
-            reject(error || new Error('Error reading image file'));
-        };
-        reader.readAsDataURL(image);
-    });
-};
-
-
-
     
-
-
+        if (!user) {
+            console.error('User data not found');
+            return;
+        }
+    
+        if (images.length === 0) {
+            console.error('No images selected');
+            return;
+        }
+    
+        console.log('Submitting form data...');
+    
+        try {
+            // Upload images to Strapi server
+            const uploadedImages = await Promise.all(images.map(uploadImage));
+    
+            // Create shoe entry with associated images
+            const shoeData = {
+                products_name: e.target.products_name.value,
+                price: parseFloat(e.target.price.value).toFixed(2),
+                details: e.target.details.value,
+                location: e.target.location.value,
+                brand: selectedBrandTags[0],
+                color: selectedColorTags[0],
+                gender: selectedGenderTags[0],
+                seller: user.id,
+                picture: uploadedImages.map(image => ({ id: image.id })) // Assuming Strapi returns image objects with an id field
+            };
+    
+            // Post shoe data to Strapi server
+            const formData = new FormData();
+            formData.append('data', JSON.stringify(shoeData));
+    
+            const response = await axios.post('http://localhost:1337/api/shoes', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
+            console.log('Upload response:', response.data);
+            // Handle success or show notification
+        } catch (error) {
+            console.error('Error uploading data:', error);
+            // Handle error or show error notification
+        }
+    };
+    
+    
+    
+    const uploadImage = async (image) => {
+        try {
+            const formData = new FormData();
+            formData.append('files', image);
+            const response = await axios.post('http://localhost:1337/api/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
+            return response.data[0]; // Assuming Strapi returns an array of uploaded files with metadata
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            throw error;
+        }
+    };
+    
+    
+    
 
     const removeImage = (index) => {
         const updatedImages = [...images];
@@ -220,9 +201,9 @@ const imageToBase64 = (image) => {
                             <div>
                                 <h3 className="text-2xl font-semibold text-gray-800 mb-4">Preview:</h3>
                                 <div className="flex flex-wrap">
-                                    {images.map((imageUrl, index) => (
+                                    {images.map((image, index) => (
                                         <div key={index} className="mr-4 mb-4 relative rounded overflow-hidden">
-                                            <img src={imageUrl} alt="Uploaded" className="w-32 h-32 object-cover" />
+                                            <img src={URL.createObjectURL(image)} alt="Uploaded" className="w-32 h-32 object-cover" />
                                             <button type="button" onClick={() => removeImage(index)} className="absolute top-2 right-2 bg-gray-800 text-white px-2 py-1 rounded-full">Remove</button>
                                         </div>
                                     ))}
