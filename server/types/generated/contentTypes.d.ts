@@ -769,6 +769,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::payment.payment'
     >;
+    shoes: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::shoe.shoe'
+    >;
     shoe: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToOne',
@@ -1010,7 +1015,7 @@ export interface ApiShoeShoe extends Schema.CollectionType {
     >;
     seller: Attribute.Relation<
       'api::shoe.shoe',
-      'oneToOne',
+      'manyToOne',
       'plugin::users-permissions.user'
     >;
     buyer: Attribute.Relation<

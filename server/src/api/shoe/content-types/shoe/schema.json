@@ -61,9 +61,9 @@
     },
     "seller": {
       "type": "relation",
-      "relation": "oneToOne",
+      "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
-      "inversedBy": "shoe"
+      "inversedBy": "shoes"
     },
     "buyer": {
       "type": "relation",

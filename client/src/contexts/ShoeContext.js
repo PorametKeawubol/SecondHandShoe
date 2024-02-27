@@ -32,6 +32,7 @@ const ShoeProvider = ({ children }) => {
             gender,
             status,
             seller,
+            size,
           } = attributes;
           const image =
             picture && picture.data && picture.data.length > 0
@@ -58,6 +59,7 @@ const ShoeProvider = ({ children }) => {
             genderType,
             status,
             Seller,
+            size,
           };
         });
         setShoes(shoeData);
