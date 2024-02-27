@@ -8,10 +8,10 @@ function Searchbar({ onnewfilter }) {
   const [isDropdownOpenColor, setIsDropdownOpenColor] = useState(false);
   const [isDropdownOpenGender, setIsDropdownOpenGender] = useState(false);
   const [isDropdownOpenSize,setIsDropdownOpenSize] = useState(false)
-  const [brand, setbrand] = useState("all");
-  const [color, setcolor] = useState("all");
-  const [gender, setgender] = useState("all");
-  const [size, setsize] = useState("");
+  const [brand, setbrand] = useState("-");
+  const [color, setcolor] = useState("-");
+  const [gender, setgender] = useState("-");
+  const [size, setsize] = useState("-");
   const [searchTxt, setsearchTxt] = useState("");
   const arraySearch = searchTxt.trim().toLowerCase().split(" ");
   //item.category === "male" || item.category === "woman" || item.category === "Nike"
@@ -116,8 +116,8 @@ function Searchbar({ onnewfilter }) {
     setsize(s);
   };
   return (
-    <form class="max-w-lg mx-auto">
-      <div class="flex">
+    <form class="md:w-[60%] w-[90%]">
+      <div class="flex ">
         <label
           for="search-dropdown"
           class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"

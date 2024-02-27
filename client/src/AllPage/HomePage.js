@@ -53,10 +53,10 @@ function HomePage() {
 
       <section className="py-100">
         <div className="container mx-auto">
-          <h1 className="text-3xl font-semibold mt-5 mb-10 text-center">
+          <h1 className="text-[20px]   font-bold sm:text-[30px]  mt-5 mb-10  bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 inline-block text-transparent bg-clip-text">
             Explore Our Shoes
           </h1>
-          <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
+          <div className="grid grid-cols grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:gap-[30px] md:gap-[20px] gap-[20px]">
             {filteredShoes.map((shoe) => {
               return <Shoe shoe={shoe} key={shoe.id} />;
             })}

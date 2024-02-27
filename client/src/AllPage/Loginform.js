@@ -34,6 +34,7 @@ function LoginForm({ toggleModal, toggleRegisterModal, onLogin, checkAuthStatus}
   
           // Save the token to localStorage
           localStorage.setItem('authToken', token);
+          sessionStorage.setItem('authToken', token);
   
           // Set token to Axios headers
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

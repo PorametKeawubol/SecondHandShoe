@@ -29,7 +29,7 @@ export default function Example() {
      });
 
      const checkAuthStatus = () => {
-          const token = localStorage.getItem("authToken");
+          const token = sessionStorage.getItem("authToken");
           const authTokenInHeaders =
                axios.defaults.headers.common["Authorization"];
           if (token && authTokenInHeaders !== null) {
@@ -39,7 +39,7 @@ export default function Example() {
           }
           // Assign the value to the export variable
           isLoggedInExport = isLoggedIn;
-          console.log(isLoggedInExport)
+         
      };
 
      useEffect(() => {
@@ -74,9 +74,9 @@ export default function Example() {
      };
 
      return (
-          <header className="top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#355C7D] via-[#6C5B7B] to-[#C06C84]" style={{ boxShadow: "0px 2px 1px rgba(0, 0, 0, 0.3)" }}>
+          <header className="top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#355C7D] via-[#6C5B7B] to-[#C06C84] bg-opacity-50" >
 
-               <div className="px-4 lg:px-8">
+               <div className="">
                     <nav
 
                          className="flex items-center justify-between mx-auto py-4"

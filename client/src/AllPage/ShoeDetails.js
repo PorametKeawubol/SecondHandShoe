@@ -8,6 +8,7 @@ import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { FaPlus, FaMinus } from "react-icons/fa";
+import Footer from "../Component/Footer";
 
 const ShoeDetails = () => {
   const { id } = useParams();
@@ -87,8 +88,11 @@ const ShoeDetails = () => {
   ];
 
   return (
-    <section className="pt-[450px] md:pt-32 pb-[400px] md:pb-12 lg:py-32 h-screen ">
+    <div>
       <Header />
+    
+    <section className="">
+      
       <nav class="flex items-center justify-center " aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
           <li class="inline-flex items-center">
@@ -157,9 +161,9 @@ const ShoeDetails = () => {
           </li>
         </ol>
       </nav>
-      <div className="container mx-auto">
-        <div className="flex flex-col lg:flex-row items-center">
-          <div className="max-w-[840px] h-[840px] w-full m-auto py-16 px-4 relative group">
+      <div className="md:mx-6">
+        <div className="flex md:flex-row flex-col items-center">
+          <div className="max-w-[640px] md:h-[540px] h-[400px] w-full m-auto py-16 px-4 relative group drop-shadow-xl">
             {slides.length > 0 && (
               <div
                 style={{ backgroundImage: `url(${slides[currentIndex].url})` }}
@@ -184,8 +188,8 @@ const ShoeDetails = () => {
               ))}
             </div>
           </div>
-
-          <div className="flex-1 text-center lg:text-left">
+          
+          <div className="flex-1 text-left p-16 md:mt-10 rounded-2xl hover:drop-shadow-2xl bg-white">
             <h1 className="text-[26px] text-gray-500 font-medium max-w-[450px] mx-auto lg:mx-0">
               {brandType}
             </h1>
@@ -196,7 +200,7 @@ const ShoeDetails = () => {
               สถานะของสินค้า : สินค้าพร้อมส่ง
             </h1>
             <div class="border-t border-1 border-black flex-grow"></div>
-            <div className="text-[30px] text-red-500 font-medium mb-2">
+            <div className="text-[25px] text-red-500 font-medium mb-2">
               {price} THB
             </div>
             <div className="text-2xl text-black-500 font-medium mb-2">
@@ -206,7 +210,7 @@ const ShoeDetails = () => {
               Size : {size} US
             </h1>
             <h1 className="text-[20px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">
-              Gender Size : {genderType}
+              Gender : {genderType}
             </h1>
             <h1 className="text-[20px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">
               Color : {colorType}
@@ -260,6 +264,8 @@ const ShoeDetails = () => {
         </div>
       </div>
     </section>
+    <Footer/>
+    </div>
   );
 };
 

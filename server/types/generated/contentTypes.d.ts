@@ -362,245 +362,6 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
-export interface ApiBrandBrand extends Schema.CollectionType {
-  collectionName: 'brands';
-  info: {
-    singularName: 'brand';
-    pluralName: 'brands';
-    displayName: 'brand';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    shoes: Attribute.Relation<
-      'api::brand.brand',
-      'oneToMany',
-      'api::shoe.shoe'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::brand.brand',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::brand.brand',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiCategoryCategory extends Schema.CollectionType {
-  collectionName: 'categories';
-  info: {
-    singularName: 'category';
-    pluralName: 'categories';
-    displayName: 'Category';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::category.category',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::category.category',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiColorColor extends Schema.CollectionType {
-  collectionName: 'colors';
-  info: {
-    singularName: 'color';
-    pluralName: 'colors';
-    displayName: 'color';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    shoes: Attribute.Relation<
-      'api::color.color',
-      'oneToMany',
-      'api::shoe.shoe'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::color.color',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::color.color',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiGenderGender extends Schema.CollectionType {
-  collectionName: 'genders';
-  info: {
-    singularName: 'gender';
-    pluralName: 'genders';
-    displayName: 'gender';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    name: Attribute.String;
-    shoes: Attribute.Relation<
-      'api::gender.gender',
-      'oneToMany',
-      'api::shoe.shoe'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::gender.gender',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::gender.gender',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiPaymentPayment extends Schema.CollectionType {
-  collectionName: 'payments';
-  info: {
-    singularName: 'payment';
-    pluralName: 'payments';
-    displayName: 'Payment';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    Bill: Attribute.Media;
-    Buyer: Attribute.Relation<
-      'api::payment.payment',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
-    shoe: Attribute.Relation<
-      'api::payment.payment',
-      'oneToOne',
-      'api::shoe.shoe'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::payment.payment',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::payment.payment',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiShoeShoe extends Schema.CollectionType {
-  collectionName: 'shoes';
-  info: {
-    singularName: 'shoe';
-    pluralName: 'shoes';
-    displayName: 'shoe';
-    description: '';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    products_name: Attribute.String;
-    details: Attribute.Text;
-    price: Attribute.Decimal;
-    picture: Attribute.Media;
-    location: Attribute.Text;
-    payment: Attribute.Relation<
-      'api::shoe.shoe',
-      'oneToOne',
-      'api::payment.payment'
-    >;
-    brand: Attribute.Relation<
-      'api::shoe.shoe',
-      'manyToOne',
-      'api::brand.brand'
-    >;
-    gender: Attribute.Relation<
-      'api::shoe.shoe',
-      'manyToOne',
-      'api::gender.gender'
-    >;
-    color: Attribute.Relation<
-      'api::shoe.shoe',
-      'manyToOne',
-      'api::color.color'
-    >;
-    seller: Attribute.Relation<
-      'api::shoe.shoe',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
-    buyer: Attribute.Relation<
-      'api::shoe.shoe',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    status: Attribute.Boolean & Attribute.DefaultTo<false>;
-    size: Attribute.String;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<'api::shoe.shoe', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<'api::shoe.shoe', 'oneToOne', 'admin::user'> &
-      Attribute.Private;
-  };
-}
-
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -1035,6 +796,245 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface ApiBrandBrand extends Schema.CollectionType {
+  collectionName: 'brands';
+  info: {
+    singularName: 'brand';
+    pluralName: 'brands';
+    displayName: 'brand';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    shoes: Attribute.Relation<
+      'api::brand.brand',
+      'oneToMany',
+      'api::shoe.shoe'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::brand.brand',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::brand.brand',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCategoryCategory extends Schema.CollectionType {
+  collectionName: 'categories';
+  info: {
+    singularName: 'category';
+    pluralName: 'categories';
+    displayName: 'Category';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::category.category',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiColorColor extends Schema.CollectionType {
+  collectionName: 'colors';
+  info: {
+    singularName: 'color';
+    pluralName: 'colors';
+    displayName: 'color';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    shoes: Attribute.Relation<
+      'api::color.color',
+      'oneToMany',
+      'api::shoe.shoe'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::color.color',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::color.color',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiGenderGender extends Schema.CollectionType {
+  collectionName: 'genders';
+  info: {
+    singularName: 'gender';
+    pluralName: 'genders';
+    displayName: 'gender';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    shoes: Attribute.Relation<
+      'api::gender.gender',
+      'oneToMany',
+      'api::shoe.shoe'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::gender.gender',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::gender.gender',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPaymentPayment extends Schema.CollectionType {
+  collectionName: 'payments';
+  info: {
+    singularName: 'payment';
+    pluralName: 'payments';
+    displayName: 'Payment';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Bill: Attribute.Media;
+    Buyer: Attribute.Relation<
+      'api::payment.payment',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    shoe: Attribute.Relation<
+      'api::payment.payment',
+      'oneToOne',
+      'api::shoe.shoe'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::payment.payment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::payment.payment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiShoeShoe extends Schema.CollectionType {
+  collectionName: 'shoes';
+  info: {
+    singularName: 'shoe';
+    pluralName: 'shoes';
+    displayName: 'shoe';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    products_name: Attribute.String;
+    details: Attribute.Text;
+    price: Attribute.Decimal;
+    picture: Attribute.Media;
+    location: Attribute.Text;
+    payment: Attribute.Relation<
+      'api::shoe.shoe',
+      'oneToOne',
+      'api::payment.payment'
+    >;
+    brand: Attribute.Relation<
+      'api::shoe.shoe',
+      'manyToOne',
+      'api::brand.brand'
+    >;
+    gender: Attribute.Relation<
+      'api::shoe.shoe',
+      'manyToOne',
+      'api::gender.gender'
+    >;
+    color: Attribute.Relation<
+      'api::shoe.shoe',
+      'manyToOne',
+      'api::color.color'
+    >;
+    seller: Attribute.Relation<
+      'api::shoe.shoe',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    buyer: Attribute.Relation<
+      'api::shoe.shoe',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    status: Attribute.Boolean & Attribute.DefaultTo<false>;
+    size: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::shoe.shoe', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::shoe.shoe', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -1045,12 +1045,6 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
-      'api::brand.brand': ApiBrandBrand;
-      'api::category.category': ApiCategoryCategory;
-      'api::color.color': ApiColorColor;
-      'api::gender.gender': ApiGenderGender;
-      'api::payment.payment': ApiPaymentPayment;
-      'api::shoe.shoe': ApiShoeShoe;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
@@ -1059,6 +1053,12 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::brand.brand': ApiBrandBrand;
+      'api::category.category': ApiCategoryCategory;
+      'api::color.color': ApiColorColor;
+      'api::gender.gender': ApiGenderGender;
+      'api::payment.payment': ApiPaymentPayment;
+      'api::shoe.shoe': ApiShoeShoe;
     }
   }
 }

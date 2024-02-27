@@ -5,10 +5,10 @@ function Footer() {
      return (
           <footer className="footer p-8 mt-16 text-slate-100 bg-gradient-to-r from-[#355C7D] via-[#6C5B7B] to-[#C06C84]">
                <aside className="mb-4  flex items-center items-start">
-                    <div className="flex">
+                    <div className="flex w-16">
                          <Link to="/">
                               <img
-                                   className="h-16 w-auto"
+                                   className="h-full w-full"
                                    src={logo}
                                    alt="Logo"
                               />
@@ -116,7 +116,9 @@ function Footer() {
                     <a
                          class="text-whitehite"
                          href="https://tw-elements.com/"
-                    ></a>
+                    >
+
+                    </a>
                </div>
           </footer>
      );
