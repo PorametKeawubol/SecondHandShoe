@@ -95,7 +95,7 @@ function Payment() {
                const shoeData = {
                     Buyer: user.id,
                     Bill: uploadedImages.map((image) => ({ id: image.id })),
-                    shoe: id,
+                    shoe: parseInt(id),
 
                     // Assuming Strapi returns image objects with an id field
                };

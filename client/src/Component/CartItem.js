@@ -41,7 +41,7 @@ const CartItem = ({ item }) => {
           </div>
           <div className="flex gap-x-2 h-[36px] text-sm">
             {/* quantity */}
-            <div className="flex flex-1 max-w-[100px] items-center h-full border text-primary font-medium">
+            <div className="hidden flex flex-1 max-w-[100px] items-center h-full border text-primary font-medium">
               <div
                 onClick={() => decreaseAmount(id)}
                 className="h-full flex-1 flex justify-center items-center cursor-pointer"

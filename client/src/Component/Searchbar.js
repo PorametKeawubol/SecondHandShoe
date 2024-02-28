@@ -8,10 +8,10 @@ function Searchbar({ onnewfilter }) {
   const [isDropdownOpenColor, setIsDropdownOpenColor] = useState(false);
   const [isDropdownOpenGender, setIsDropdownOpenGender] = useState(false);
   const [isDropdownOpenSize,setIsDropdownOpenSize] = useState(false)
-  const [brand, setbrand] = useState("-");
-  const [color, setcolor] = useState("-");
-  const [gender, setgender] = useState("-");
-  const [size, setsize] = useState("-");
+  const [brand, setbrand] = useState("all");
+  const [color, setcolor] = useState("all");
+  const [gender, setgender] = useState("all");
+  const [size, setsize] = useState("all");
   const [searchTxt, setsearchTxt] = useState("");
   const arraySearch = searchTxt.trim().toLowerCase().split(" ");
   //item.category === "male" || item.category === "woman" || item.category === "Nike"
