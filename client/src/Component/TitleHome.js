@@ -35,7 +35,7 @@ export default function TitleHome() {
                 </h1> */}
             </div>
 
-            <div className="flex justify-center opacity-85 mt-10  text-white">
+            {/* <div className="flex justify-center opacity-85 mt-10  text-white">
                 <Carousel
                     interval={2000}
                     autoPlay={true}
@@ -46,7 +46,7 @@ export default function TitleHome() {
                         return <Shoe shoe={shoe} key={shoe.id} />;
                     })}
                 </Carousel>
-            </div>
+            </div> */}
         </div>
     );
 }

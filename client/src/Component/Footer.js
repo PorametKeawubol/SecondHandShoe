@@ -23,8 +23,8 @@ function Footer() {
                     <div className="footer-title text-xl">
                          <h>Social Media</h>
                     </div>
-                    <div className="grid grid-flow-col gap-4 mt-4">
-                         <a className="flex flex-row ">
+                    <div className="grid sm:gridcols-1 md:grid-cols-3 gap-4 mt-4">
+                         <a className="flex flex-row ml-10">
                               <svg
                                    className="fill-current h-[24px]"
                                    xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ function Footer() {
                               </svg>
                               <p>Instagram : SecondhandShoe</p>
                          </a>
-                         <a className="flex flex-row ">
+                         <a className="flex flex-row ml-10 ">
                               <svg
                                    xmlns="http://www.w3.org/2000/svg"
                                    width="24"
