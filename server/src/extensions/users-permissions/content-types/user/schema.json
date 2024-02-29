@@ -9,8 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "draftAndPublish": false,
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -83,6 +82,22 @@
       "relation": "oneToOne",
       "target": "api::shoe.shoe",
       "mappedBy": "buyer"
+    },
+    "Profile_Picture": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
+    },
+    "message": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::message.message",
+      "mappedBy": "receiver"
     }
   }
 }

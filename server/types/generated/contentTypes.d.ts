@@ -735,7 +735,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -778,6 +777,12 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'plugin::users-permissions.user',
       'oneToOne',
       'api::shoe.shoe'
+    >;
+    Profile_Picture: Attribute.Media;
+    message: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToOne',
+      'api::message.message'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -935,6 +940,48 @@ export interface ApiGenderGender extends Schema.CollectionType {
   };
 }
 
+export interface ApiMessageMessage extends Schema.CollectionType {
+  collectionName: 'messages';
+  info: {
+    singularName: 'message';
+    pluralName: 'messages';
+    displayName: 'Message';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    sender: Attribute.Relation<
+      'api::message.message',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    receiver: Attribute.Relation<
+      'api::message.message',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    text: Attribute.Text;
+    picture: Attribute.Media;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::message.message',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::message.message',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiPaymentPayment extends Schema.CollectionType {
   collectionName: 'payments';
   info: {
@@ -1057,6 +1104,7 @@ declare module '@strapi/types' {
       'api::category.category': ApiCategoryCategory;
       'api::color.color': ApiColorColor;
       'api::gender.gender': ApiGenderGender;
+      'api::message.message': ApiMessageMessage;
       'api::payment.payment': ApiPaymentPayment;
       'api::shoe.shoe': ApiShoeShoe;
     }
