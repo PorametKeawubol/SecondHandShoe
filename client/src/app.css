@@ -1,0 +1,5 @@
+.backgroundAll {
+    background-image: url('/src/assets/bg1.png');
+    background-size: cover;
+    background-position: center;
+}

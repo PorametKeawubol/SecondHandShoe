@@ -39,7 +39,7 @@ function HomePage() {
   }, [shoes]);
 
   return (
-    <div className="flex flex-col " style={{backgroundImage: `url(${backgroundImg})`,backgroundSize: "cover",backgroundPosition: "center"}}>
+    <div className="flex flex-col  backgroundAll" >
       <Header />
       
       <div className="flex flex-col items-center">

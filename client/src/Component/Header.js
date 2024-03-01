@@ -10,10 +10,11 @@ import { BsBag } from "react-icons/bs";
 import { SidebarContext } from "../contexts/SidebarContext";
 import { CartContext } from "../contexts/CartContext";
 import { useNavigate } from 'react-router-dom';
-
+import { ShoeContext } from "../contexts/ShoeContext";
 export let isLoggedInExport; // Declare a variable to hold the export
 
 export default function Example() {
+     const { setShoes } = useContext(ShoeContext);
      const [showLoginModal, setShowLoginModal] = useState(false);
      const [showRegisterModal, setShowRegisterModal] = useState(false);
      const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,13 +23,69 @@ export default function Example() {
      const { itemAmount } = useContext(CartContext);
      const navigate = useNavigate()
      const hasSessionStorage = sessionStorage.getItem('authToken') !== null;
-     
+     const handleFetchShoes = async() =>{
+
+          try {
+               const response = await axios.get("/api/shoes?populate=*");
+               if (Array.isArray(response.data.data)) {
+                 // Check if response.data is an array
+                 const shoeData = response.data.data.map((shoe) => {
+                   const { id, attributes } = shoe;
+                   const {
+                     products_name,
+                     price,
+                     details,
+                     location,
+                     picture,
+                     brand,
+                     color,
+                     gender,
+                     status,
+                     seller,
+                     size,
+                   } = attributes;
+                   const image =
+                     picture && picture.data && picture.data.length > 0
+                       ? picture.data.map(
+                           (img) => "http://localhost:1337" + img.attributes.url
+                         )
+                       : [];
+         
+                   const brandType = brand?.data?.attributes.name;
+                   const colorType = color?.data?.attributes.name;
+                   const genderType = gender?.data?.attributes.name;
+                   const Seller = seller?.data?.attributes.username;
+                   //const product_color = color.data.products_name
+                   //const category = attributes.categories?.data.map(cat => cat.attributes.name) || ['uncategorized'];;
+                   return {
+                     id,
+                     products_name,
+                     price,
+                     details,
+                     location,
+                     image,
+                     brandType,
+                     colorType,
+                     genderType,
+                     status,
+                     Seller,
+                     size,
+                   };
+                 });
+                 setShoes(shoeData);
+               } else {
+                 console.error("Response data is not an array:", response.data.data);
+               }
+             } catch (error) {
+               console.error("Error fetching shoes:", error);
+             }
+     }
      useEffect(() => {
           window.addEventListener("scroll", () => {
                window.scrollY > 60 ? setIsActive(true) : setIsActive(false);
           });
      });
-
+     
      const checkAuthStatus = () => {
           const token = sessionStorage.getItem("authToken");
           const authTokenInHeaders =
@@ -66,6 +123,8 @@ export default function Example() {
 
           // Clear the token from localStorage
           sessionStorage.removeItem("authToken");
+          sessionStorage.removeItem("Profile_Picture");
+          sessionStorage.removeItem("role");
 
           // Remove token from Axios headers
           delete axios.defaults.headers.common["Authorization"];
@@ -83,7 +142,10 @@ export default function Example() {
                          className="flex items-center justify-between mx-auto py-4"
                          aria-label="Global"
                     >
-                         <div className="flex lg:flex-1">
+                         <div className="flex lg:flex-1"
+                              onClick={()=>{handleFetchShoes()}}
+                         >
+                              
                               <Link to="/">
                                    <img
                                         className="h-16 w-auto"

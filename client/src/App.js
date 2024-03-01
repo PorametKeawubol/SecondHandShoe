@@ -10,6 +10,7 @@ import Payment from "./AllPage/Payment";
 import YourItem from "./AllPage/YourItem";
 import Contact from "./AllPage/Contact";
 import Message from "./Component/Message";
+import Admin from "./AllPage/Adminpage";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/YourItem" element={<YourItem />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/message" element={<Message/>}/>
+        <Route path="/admin" element={<Admin/>}/>
       </Routes>
       <Sidebar />
     </BrowserRouter>

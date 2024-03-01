@@ -70,9 +70,13 @@ const ShoeProvider = ({ children }) => {
       console.error("Error fetching shoes:", error);
     }
   };
+  const updateShoes = () => {
+    fetchShoes(); // เรียกใช้ fetchShoes เพื่อดึงข้อมูลรองเมื่อ handleSubmit ถูกเรียกใช้งาน
+  };
+  
 
   return (
-    <ShoeContext.Provider value={{ shoes, setShoes }}>
+    <ShoeContext.Provider value={{ shoes, setShoes,updateShoes }}>
       {children}
     </ShoeContext.Provider>
   );
