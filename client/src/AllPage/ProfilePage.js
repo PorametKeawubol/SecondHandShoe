@@ -103,6 +103,10 @@ function Profile() {
                         <p style={{ fontSize: "20px", color: "white" }}>
                             {email}
                         </p>
+                        <p style={{ fontSize: "20px", color: "white" }}>
+                            <Link to="/Editprofile" style={{ color: "white" }}>EditProfile</Link>
+                        </p>
+
                     </div>
                 </div>
             </header>

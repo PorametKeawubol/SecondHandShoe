@@ -12,6 +12,7 @@ import Contact from "./AllPage/Contact";
 import Message from "./Component/Message";
 import Admin from "./AllPage/Adminpage";
 import NotFound from "./AllPage/Notfound";
+import Editprofile from "./AllPage/Editprofile";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <Routes>
         <Route path="/Profile" element={<Profile />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/Editprofile" element={<Editprofile />} />
         <Route path="/Purchases" element={<MyPurchases />} />
         <Route path="/Payment/:id" element={<Payment />} />
         <Route path="/shoe/:id" element={<ShoeDetails />} />
