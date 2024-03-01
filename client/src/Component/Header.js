@@ -21,6 +21,7 @@ export default function Example() {
      const { isOpen, setIsOpen } = useContext(SidebarContext);
      const { itemAmount } = useContext(CartContext);
      const navigate = useNavigate()
+     const hasSessionStorage = sessionStorage.getItem('authToken') !== null;
      
      useEffect(() => {
           window.addEventListener("scroll", () => {
@@ -64,7 +65,7 @@ export default function Example() {
           setIsLoggedIn(false);
 
           // Clear the token from localStorage
-          localStorage.removeItem("authToken");
+          sessionStorage.removeItem("authToken");
 
           // Remove token from Axios headers
           delete axios.defaults.headers.common["Authorization"];
@@ -105,7 +106,7 @@ export default function Example() {
                                    </div>
                               </div>
 
-                              {isLoggedIn ? (
+                              {hasSessionStorage ? (
                                    <Nav handleLogout={handleLogout} /> // Pass handleLogout to Nav component
                               ) : (
                                    <div>
