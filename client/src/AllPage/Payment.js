@@ -66,7 +66,7 @@ function Payment() {
      };
      const handleSubmit = async (e) => {
           e.preventDefault();
-          const token = localStorage.getItem("authToken");
+          const token = sessionStorage.getItem("authToken");
 
           if (!token) {
                console.error("JWT token not found");

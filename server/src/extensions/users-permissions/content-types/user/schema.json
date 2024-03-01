@@ -84,20 +84,24 @@
       "mappedBy": "buyer"
     },
     "Profile_Picture": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "message": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::message.message",
       "mappedBy": "receiver"
+    },
+    "Address": {
+      "type": "text"
     }
   }
 }

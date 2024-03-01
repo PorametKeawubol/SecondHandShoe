@@ -8,35 +8,29 @@ const EditProfile = ({ setProfile }) => {
   const [userProfile, setUserProfile] = useState(""); 
   const inputRef = useRef(null); 
   const [userId, setUserId] = useState(""); // Add userId state
+ 
   const [token, setToken] = useState(""); // Add token state
   const [setisUserUpdated, setSetisUserUpdated] = useState(""); // Add setisUserUpdated state
-
+  axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("authToken")}`
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:1337/api/users/me",
-          {
-            headers: {
-              Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
-            },
-          }
-        );
-
-        const userData = response.data;
-        setUsername(userData.username);
-        setEmail(userData.email);
-        setUserProfile(sessionStorage.getItem("Profile_Picture"));
-        setUserId(userData.userId); // Set userId state
-        setToken(sessionStorage.getItem("authToken")); // Set token state
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
     fetchUserData();
   }, []);
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get("http://localhost:1337/api/users/me?populate=Profile_Picture",);
 
+      const userData = response.data;
+      console.log("🚀 ~ fetchUserData ~ userData:", userData)
+      
+      setUsername(userData.username);
+      setEmail(userData.email);
+      setUserProfile("http://localhost:1337"+userData.Profile_Picture.url);
+      setUserId(userData.id); // Set userId state
+      setToken(sessionStorage.getItem("authToken")); // Set token state
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
   const handleImageDelete = () => {
 
   };
@@ -44,23 +38,36 @@ const EditProfile = ({ setProfile }) => {
   const handleImageChange = async () => {
     // Logic to handle changing profile picture
     const image = inputRef.current.files[0];
-    const formData = new FormData();
-    formData.append("files", image);
+
+
 
     try {
-      const response = await axios.post(
-        "http://localhost:1337/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
-          },
-        }
-      );
+      const response = await axios.put(`api/users/${userId}`, {
+        username : username,
+        email: email,
+      });
 
-      const imageUrl = response.data[0].url;
-      setUserProfile(imageUrl); // Update user profile picture state
+      if (image) {
+        const formData = new FormData();
+        formData.append("field", "Profile_Picture");
+        formData.append("ref", "plugin::users-permissions.user");
+        formData.append("refId", userId);
+        formData.append("files", image);
+        axios.post( `api/upload`, formData)
+          .then((response) => {
+            console.log(response);
+            sessionStorage.setItem("Profile_Picture",`http://localhost:1337${response.data[0].url}`)
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      
+      }
+
+      const imageUrl ="http://localhost:1337" + response.data[0].url;
+      fetchUserData()
+      setUserProfile(imageUrl); // Update user profile picture state'
+      
     } catch (error) {
       console.error("Error uploading image:", error);
     }
