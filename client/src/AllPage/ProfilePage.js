@@ -38,7 +38,7 @@ function Profile() {
                     "http://localhost:1337/api/users/me",
                     {
                         headers: {
-                            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                            Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
                         },
                     }
                 );

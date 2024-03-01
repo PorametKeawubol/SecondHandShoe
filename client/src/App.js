@@ -11,6 +11,7 @@ import YourItem from "./AllPage/YourItem";
 import Contact from "./AllPage/Contact";
 import Message from "./Component/Message";
 import Admin from "./AllPage/Adminpage";
+import NotFound from "./AllPage/Notfound";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/message" element={<Message/>}/>
         <Route path="/admin" element={<Admin/>}/>
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
       <Sidebar />
     </BrowserRouter>

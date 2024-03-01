@@ -1005,6 +1005,7 @@ export interface ApiPaymentPayment extends Schema.CollectionType {
       'oneToOne',
       'api::shoe.shoe'
     >;
+    Confirm: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1072,7 +1073,6 @@ export interface ApiShoeShoe extends Schema.CollectionType {
     >;
     status: Attribute.Boolean & Attribute.DefaultTo<false>;
     size: Attribute.String;
-    PaymentConfirm: Attribute.Boolean & Attribute.DefaultTo<false>;
     SellConfirm: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

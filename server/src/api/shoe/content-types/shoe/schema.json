@@ -78,10 +78,6 @@
     "size": {
       "type": "string"
     },
-    "PaymentConfirm": {
-      "type": "boolean",
-      "default": false
-    },
     "SellConfirm": {
       "type": "boolean",
       "default": false
