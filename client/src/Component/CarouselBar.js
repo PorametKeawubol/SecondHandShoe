@@ -7,7 +7,7 @@ const CarouselBar = () => {
         <Carousel
             interval={2000}
             autoPlay={true}
-            className="w-[90%] drop-shadow-md"
+            className="w-[90%] drop-shadow-md hover:scale-105 transition duration-500"
         
             showThumbs={false}
         >

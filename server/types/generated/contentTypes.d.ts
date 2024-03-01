@@ -1072,6 +1072,8 @@ export interface ApiShoeShoe extends Schema.CollectionType {
     >;
     status: Attribute.Boolean & Attribute.DefaultTo<false>;
     size: Attribute.String;
+    PaymentConfirm: Attribute.Boolean & Attribute.DefaultTo<false>;
+    SellConfirm: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

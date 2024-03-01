@@ -15,6 +15,7 @@ export default function Message() {
     const fetchMessages = async () => {
         try {
             const response = await axios.get("/api/messages?populate=*");
+            console.log("🚀 ~ fetchMessages ~ response:", response)
             if (Array.isArray(response.data.data)) {
                 // Check if response.data is an array
                 const MessagesData = response.data.data.map((chat) => {
@@ -34,11 +35,9 @@ export default function Message() {
                                       img.attributes.url
                               )
                             : [];
-                    const Sender =  axios.get(`/users/me?populate=image`,{
-                       
-                    })
-                    const Receiver = receiver.data.attributes.username
-                    console.log("🚀 ~ MessagesData ~ Sender:", Sender)
+                    
+                    const Receiver = receiver.data
+                    const Sender = sender.data
                     return {
                         text,
                         image,
@@ -48,11 +47,14 @@ export default function Message() {
                     };
                 
                 });
+              
+                
                 const Message = MessagesData.filter((chat) => {
                     return (
-                      chat.Sender===myname && chat.Receiver===receiver
+                      chat.Sender.attributes.username === myname && chat.Receiver.attributes.username === receiver,
+                      chat.Sender.attributes.username === receiver && chat.Receiver.attributes.username === myname 
                       
-                    ); // &&คือ and , ||คือ or
+                    );
                   });
                 setMessage(Message);
             } else {

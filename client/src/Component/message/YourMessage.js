@@ -10,9 +10,12 @@ export default function YourMessage(data){
                         alt=""
                     />
                     <div className="flex flex-col">
-                        <h className="text-slate-300">{data.data.sender}</h>
+                        <h className="text-slate-300">{data.data.Sender.attributes.username}</h>
                         <div class="ml-2 py-3 px-4 bg-gray-400 rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white">
                         {data.data.text}
+                        <img src={data.data.image}
+                             class="object-cover h-auto w-[40%]"    
+                        />
                     </div>
                     </div>
                     

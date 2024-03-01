@@ -7,7 +7,7 @@ const Shoe = ({ shoe }) => {
     // destructure Shoe
     const { id, image, category, products_name, price } = shoe;
     return (
-        <div className="bg-white rounded-3xl drop-shadow-xl p-4 lg:h-[300px] lg:w-[300px]">
+        <div className="bg-white rounded-3xl drop-shadow-xl p-4 lg:h-[300px] lg:w-[300px] hover:scale-105 transition duration-500">
             <Link to={`/shoe/${id}`}>
                 <div className="border  border-[#e4e4e4]  rounded-3xl h-auto   mb-4 relative overflow-hidden group transition">
                     <div className="w-full h-full  flex justify-center items-center ">
