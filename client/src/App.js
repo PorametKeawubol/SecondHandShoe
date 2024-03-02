@@ -13,6 +13,7 @@ import Message from "./Component/Message";
 import Admin from "./AllPage/Adminpage";
 import NotFound from "./AllPage/Notfound";
 import Editprofile from "./AllPage/Editprofile";
+import ToReceive from "./Component/ToReceiveContent";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/message" element={<Message/>}/>
         <Route path="/admin" element={<Admin/>}/>
+        <Route path="/ToReceive" element={<ToReceive/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
       <Sidebar />

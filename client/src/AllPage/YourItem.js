@@ -28,7 +28,7 @@ function YourItem() {
                }
           };
           fetchUserData();
-     }, [shoes]);
+     }, []);
 
      const fetchMyShoes = (shoes, username) => {
           return shoes.filter((item) => {
@@ -42,12 +42,12 @@ function YourItem() {
                // Call the Strapi API to delete the specific shoe item
                await axios.delete(`http://localhost:1337/api/shoes/${id}`, {
                     headers: {
-                         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                         Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
                     },
                });
 
                // Update the state after successful deletion
-               const updatedShoes = MyShoes.filter(shoe => shoe.id !== id);
+               const updatedShoes = MyShoes.filter((shoe) => shoe.id !== id);
                setMyShoes(updatedShoes);
           } catch (error) {
                console.error("Error deleting item:", error);
