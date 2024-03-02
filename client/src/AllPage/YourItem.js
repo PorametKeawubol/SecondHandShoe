@@ -2,12 +2,24 @@ import React, { useContext, useState, useEffect } from "react";
 import { ShoeContext } from "../contexts/ShoeContext";
 import axios from "axios";
 import Header from "../Component/Header";
-import { Link } from "react-router-dom";
-import { FaTrash, FaEdit } from "react-icons/fa"; // import FaTrash and FaEdit icons from react-icons/fa
+import { FaTrash, FaEdit } from "react-icons/fa";
+import EditItem from "../AllPage/Edititem";
 
 function YourItem() {
      const { shoes } = useContext(ShoeContext);
      const [MyShoes, setMyShoes] = useState([]);
+     const [showEditemModal, setEditemModal] = useState(false);
+     const [selectedItemId, setSelectedItemId] = useState(null); // State to store the selected item ID
+
+     const handleEditem = (handleEditemClose, id) => {
+          setSelectedItemId(id); // Set the selected item ID
+          setEditemModal(true);
+
+      };
+
+     const handleEditemClose = () => {
+          setEditemModal(false);
+     };
 
      useEffect(() => {
           const fetchUserData = async () => {
@@ -38,8 +50,7 @@ function YourItem() {
 
      const handleDeleteItem = async (id) => {
           try {
-               console.log("Deleting item with ID:", id); // เพิ่มบรรทัดนี้เพื่อแสดง ID ที่ถูกลบในคอนโซล
-               // Call the Strapi API to delete the specific shoe item
+               console.log("Deleting item with ID:", id);
                await axios.delete(`http://localhost:1337/api/shoes/${id}`, {
                     headers: {
                          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
@@ -47,13 +58,11 @@ function YourItem() {
                });
 
                // Update the state after successful deletion
-               const updatedShoes = MyShoes.filter((shoe) => shoe.id !== id);
-               setMyShoes(updatedShoes);
+               setMyShoes(prevShoes => prevShoes.filter(shoe => shoe.id !== id));
           } catch (error) {
                console.error("Error deleting item:", error);
           }
      };
-
      const handleDeleteAll = async () => {
           try {
                // Call the Strapi API to delete all shoe items
@@ -79,34 +88,37 @@ function YourItem() {
                     </div>
                </div>
 
-
-
                <section className="py-100 mt-10">
-  <div className="flex flex-col lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
-    {MyShoes.map((shoe) => (
-      <div className="flex bg-slate-100 ">
-        <div key={shoe.id} className="border rounded p-4 relative w-[100%]  flex">
-          <img src={shoe.image[0]} alt={shoe.name} className="mx-auto mb-4 float-left" style={{ maxWidth: "150px" }} />
-          <div className="ml-2 flex-grow ml-6">
-            <h3 className="text-xl font-semibold">{shoe.products_name}</h3>
-            <p className="text-gray-600 mt-1">Seller: {shoe.Seller}</p>
-          </div>
-          <div className="flex flex-col justify-between">
-            <button onClick={() => handleDeleteItem(shoe.id)} className="bg-red-500 rounded-full w-10 h-10 flex items-center justify-center">
-              <FaTrash className="h-6 w-6 text-white" />
-            </button>
-            <Link to={`/EditYourItem`} className="bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center">
-              <FaEdit className="h-6 w-6 text-white" />
-            </Link>
-          </div>
-        </div>
-      </div>
-    ))}
-  </div>
-</section>
+                    <div className="flex flex-col lg:grid-cols-3 xl:grid-cols-5 lg:mx-8 gap-[30px] max-w-sm mx-auto md:max-w-none md:mx-0">
+                         {MyShoes.map((shoe) => (
+                              <div className="flex bg-slate-100 " key={shoe.id}>
+                                   <div key={shoe.id} className="border rounded p-4 relative w-[100%]  flex">
+                                        <img src={shoe.image[0]} alt={shoe.name} className="mx-auto mb-4 float-left" style={{ maxWidth: "150px" }} />
+                                        <div className="ml-2 flex-grow ml-6">
+                                             <h3 className="text-xl font-semibold">{shoe.products_name}</h3>
+                                             <p className="text-gray-600 mt-1">Seller: {shoe.Seller}</p>
+                                        </div>
+                                        <div className="flex flex-col justify-between">
+                                             <button onClick={() => handleDeleteItem(shoe.id)} className="bg-red-500 rounded-full w-10 h-10 flex items-center justify-center">
+                                                  <FaTrash className="h-6 w-6 text-white" />
+                                             </button>
+                                             <button onClick={() => handleEditem(handleEditemClose, shoe.id)} className="bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center">
+                                                  <FaEdit className="h-6 w-6 text-white" />
+                                             </button>
+                                        </div>
+                                   </div>
+                              </div>
+                         ))}
+                    </div>
+               </section>
 
-
-
+               {/* Popup for editing item */}
+               {showEditemModal && (
+                    <EditItem
+                         itemId={selectedItemId} // Pass the selected item ID to the EditItem component
+                         onClose={handleEditemClose} // Pass the close function to the EditItem component
+                    />
+               )}
           </div>
      );
 }
