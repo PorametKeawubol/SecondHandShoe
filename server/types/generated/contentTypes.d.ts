@@ -785,6 +785,16 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::message.message'
     >;
     Address: Attribute.Text;
+    ratings: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::rating.rating'
+    >;
+    MyRatings: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::rating.rating'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1025,6 +1035,55 @@ export interface ApiPaymentPayment extends Schema.CollectionType {
   };
 }
 
+export interface ApiRatingRating extends Schema.CollectionType {
+  collectionName: 'ratings';
+  info: {
+    singularName: 'rating';
+    pluralName: 'ratings';
+    displayName: 'Rating';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    score: Attribute.Float &
+      Attribute.SetMinMax<
+        {
+          min: 0;
+          max: 5;
+        },
+        number
+      >;
+    seller_rating: Attribute.Relation<
+      'api::rating.rating',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    comment: Attribute.Text;
+    rating_by: Attribute.Relation<
+      'api::rating.rating',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::rating.rating',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::rating.rating',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiShoeShoe extends Schema.CollectionType {
   collectionName: 'shoes';
   info: {
@@ -1109,6 +1168,7 @@ declare module '@strapi/types' {
       'api::gender.gender': ApiGenderGender;
       'api::message.message': ApiMessageMessage;
       'api::payment.payment': ApiPaymentPayment;
+      'api::rating.rating': ApiRatingRating;
       'api::shoe.shoe': ApiShoeShoe;
     }
   }

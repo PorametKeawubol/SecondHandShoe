@@ -102,6 +102,18 @@
     },
     "Address": {
       "type": "text"
+    },
+    "ratings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::rating.rating",
+      "mappedBy": "seller_rating"
+    },
+    "MyRatings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::rating.rating",
+      "mappedBy": "rating_by"
     }
   }
 }

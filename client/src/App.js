@@ -13,6 +13,7 @@ import Message from "./Component/Message";
 import Admin from "./AllPage/Adminpage";
 import NotFound from "./AllPage/Notfound";
 import Editprofile from "./AllPage/Editprofile";
+import ShopReviewPage from "./AllPage/ShopReview";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -27,9 +28,10 @@ function App() {
         <Route path="/shoe/:id" element={<ShoeDetails />} />
         <Route path="/YourItem" element={<YourItem />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/message" element={<Message/>}/>
-        <Route path="/admin" element={<Admin/>}/>
-        <Route path="*" element={<NotFound/>}/>
+        <Route path="/message" element={<Message />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/ShopReview" element={<ShopReviewPage />} />
       </Routes>
       <Sidebar />
     </BrowserRouter>
