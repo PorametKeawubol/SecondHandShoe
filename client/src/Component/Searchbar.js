@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ShoeContext } from "../contexts/ShoeContext";
 
 function Searchbar({ onnewfilter }) {
@@ -15,6 +15,27 @@ function Searchbar({ onnewfilter }) {
   const [searchTxt, setsearchTxt] = useState("");
   const arraySearch = searchTxt.trim().toLowerCase().split(" ");
   //item.category === "male" || item.category === "woman" || item.category === "Nike"
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const dropdown = document.getElementById("dropdown");
+      const dropdownButton = document.getElementById("dropdown-button");
+      if (
+        dropdown &&
+        dropdownButton &&
+        !dropdown.contains(event.target) &&
+        !dropdownButton.contains(event.target)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
     setIsDropdownOpenBrand(false);
@@ -43,7 +64,7 @@ function Searchbar({ onnewfilter }) {
     setIsDropdownOpenBrand(false);
   };
   const handleSearchTxt = (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault(); 
     if (searchTxt.trim() === "") {
       onnewfilter(shoes);
       return;
@@ -103,6 +124,18 @@ function Searchbar({ onnewfilter }) {
     onnewfilter(shoesFiltered);
   };
 
+  const handleFindNow = () => {
+    handleSearch();
+    toggleDropdown();
+  }
+
+  const handleClear = () => {
+    brandClick("all");
+    colorClick("all");
+    genderClick("all");
+    sizeClick("all")
+  }
+
   const brandClick = (b) => {
     setbrand(b);
   };
@@ -126,7 +159,7 @@ function Searchbar({ onnewfilter }) {
           <button
             id="dropdown-button"
             onClick={toggleDropdown}
-            class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+            class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
             type="button"
           >
             categories{""}
@@ -150,7 +183,7 @@ function Searchbar({ onnewfilter }) {
             id="dropdown"
             className={`z-10 ${
               isDropdownOpen ? "" : "hidden"
-            } bg-white divide-y divide-gray-100 rounded-lg drop-shadow-lg w-44 dark:bg-gray-700`}
+            } bg-white divide-y divide-gray-100 rounded-lg drop-shadow-lg w-44 dark:bg-gray-700 position: absolute mt-11`}
           >
             <ul
               class="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -476,9 +509,9 @@ function Searchbar({ onnewfilter }) {
               
               <li>
                 <button
-                  onClick={handleSearch}
+                  onClick={handleFindNow}
                   type="button"
-                  class="inline-flex text-blue-700 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  class="inline-flex text-blue-400 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   Find now
                   <svg
@@ -497,6 +530,15 @@ function Searchbar({ onnewfilter }) {
                   </svg>
                 </button>
               </li>
+              <li>
+                <button
+                  onClick={handleClear}
+                  type="button"
+                  class="inline-flex justify-center items-center text-red-400 w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  Clear selection
+                </button>
+              </li>
             </ul>
           </div>
         </div>
@@ -508,7 +550,7 @@ function Searchbar({ onnewfilter }) {
             type="search"
             id="search-dropdown"
             class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-            placeholder="Brand, color, gender, name....."
+            placeholder="Enter brand, color, gender, name....."
           />
           <button
             onClick={(e) => handleSearchTxt(e)}
