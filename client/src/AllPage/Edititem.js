@@ -4,12 +4,14 @@ import axios from "axios";
 const baseURL = "http://localhost:1337/api/";
 
 function EditItem({ itemId, onClose, user }) {
-    const [shoeData, setShoeData] = useState(null);
+    const [shoeData, setShoeData] = useState({ picture: [] }); // Initialize shoeData.picture as an empty array
     const [editedData, setEditedData] = useState({});
     const [newImages, setNewImages] = useState([]);
     const [brandTags, setBrandTags] = useState([]);
     const [colorTags, setColorTags] = useState([]);
     const [genderTags, setGenderTags] = useState([]);
+    axios.defaults.headers.common["Authorization"] =
+        `Bearer ${sessionStorage.getItem("authToken")}`;
 
     useEffect(() => {
         const fetchShoeData = async () => {
@@ -54,51 +56,152 @@ function EditItem({ itemId, onClose, user }) {
 
     const handleImageChange = (e) => {
         const files = Array.from(e.target.files);
-        const imageUrls = files.map(file => URL.createObjectURL(file)); 
-        setNewImages(prevImages => [...prevImages, ...imageUrls]); 
-        setEditedData({ ...editedData, picture: [...(editedData.picture || []), ...files] }); 
+        const imageUrls = files.map(file => URL.createObjectURL(file));
+        setNewImages(prevImages => [...prevImages, ...imageUrls]);
+        setEditedData(prevData => {
+            return {
+                ...prevData,
+                picture: prevData.picture ? [...prevData.picture, ...files] : files
+            };
+        });
     };
-
-    const handleRemoveImage = (index) => {
-        const newImageData = shoeData.picture.data.filter((_, i) => i !== index);
-        const newShoeData = { ...shoeData, picture: { data: newImageData } };
-        setShoeData(newShoeData);
-        setEditedData({ ...editedData, picture: newImageData });
+    const handleRemoveImage = async (index) => {
+        try {
+            console.log('shoeData:', shoeData);
+            console.log('index:', index);
+            console.log('shoeData.picture:', shoeData.picture);
+    
+            // Get the ID of the image to be removed
+            const imageIdToRemove = shoeData.picture.data[index]?.id;
+            
+            console.log('imageIdToRemove:', imageIdToRemove);
+    
+            if (!imageIdToRemove) {
+                console.error('Image ID not found.');
+                return;
+            }
+    
+            // Send a DELETE request to your backend API to remove the image
+            await axios.delete(`${baseURL}upload/files/${imageIdToRemove}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+                }
+            });
+    
+            // Update the shoeData state to remove the image
+            const newImageData = [...shoeData.picture.data];
+            newImageData.splice(index, 1);
+            setShoeData({ ...shoeData, picture: { data: newImageData } });
+    
+            // If the image is also in editedData, update editedData to remove it
+            if (editedData.picture && Array.isArray(editedData.picture)) {
+                const newEditedPictures = [...editedData.picture];
+                newEditedPictures.splice(index, 1);
+                setEditedData({ ...editedData, picture: newEditedPictures });
+            }
+        } catch (error) {
+            console.error('Error removing image:', error);
+        }
     };
+    
+    
 
-    const handleSubmit = async (e) => { 
-        e.preventDefault(); 
+    const uploadImagesToStrapi = async (images) => {
+        try {
+            const formData = new FormData();
+            images.forEach(image => formData.append('files', image)); // Append each image to FormData
+    
+            const response = await axios.post(`${baseURL}upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
+            return response.data; // Assuming Strapi returns data about the uploaded files
+        } catch (error) {
+            console.error('Error uploading images:', error);
+            throw error;
+        }
+    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
         try {
-            const formData = new FormData(); 
-            formData.append('products_name', editedData.productName || shoeData.products_name);
-            formData.append('price', parseFloat(editedData.price || shoeData.price).toFixed(2));
-            formData.append('details', editedData.details || shoeData.details);
-            formData.append('location', editedData.location || shoeData.location);
-            formData.append('brand', editedData.brand || (shoeData?.brand?.id || ''));
-            formData.append('color', editedData.color || (shoeData?.color?.data?.attributes?.name || ''));
-            formData.append('gender', editedData.gender || (shoeData?.gender?.data?.attributes?.name || ''));
-            formData.append('seller', user.id); // Using `user` prop
-            formData.append('size', editedData.usSize || shoeData.size);
+            const requestData = {};
 
-            if (editedData.picture) {
-                editedData.picture.forEach(file => {
-                    formData.append('picture', file);
-                });
+            // Append product name if available
+            if (editedData.productName || shoeData?.products_name) {
+                requestData.products_name = editedData.productName || shoeData.products_name;
             }
 
-            console.log("Form Data:", formData);
+            // Append price if available and convert it to a fixed number with 2 decimal places
+            if (editedData.price || shoeData?.price) {
+                requestData.price = parseFloat(editedData.price || shoeData.price).toFixed(2);
+            }
 
-            await axios.put(`${baseURL}shoes/${itemId}`, formData, {
+            // Append details if available
+            if (editedData.details || shoeData?.details) {
+                requestData.details = editedData.details || shoeData.details;
+            }
+
+            // Append location if available
+            if (editedData.location || shoeData?.location) {
+                requestData.location = editedData.location || shoeData.location;
+            }
+
+            // Append brand ID if available
+            if (editedData.brand || shoeData?.brand?.id) {
+                requestData.brand = editedData.brand || shoeData.brand.id;
+            }
+
+            // Append color ID if available
+            if (editedData.color || shoeData?.color?.id) {
+                requestData.color = editedData.color || shoeData.color.id;
+            }
+
+            // Append gender ID if available
+            if (editedData.gender || shoeData?.gender?.id) {
+                requestData.gender = editedData.gender || shoeData.gender.id;
+            }
+
+            // Append size if available
+            if (editedData.usSize || shoeData?.size) {
+                requestData.size = editedData.usSize || shoeData.size;
+            }
+
+        // Append existing image IDs if available
+        if (shoeData?.picture?.data) {
+            requestData.picture = shoeData.picture.data.map(image => image.id);
+        }
+
+        // Upload new images and get their IDs
+        if (Array.isArray(editedData.picture) && editedData.picture.length > 0) {
+            const uploadedImageIds = await uploadImagesToStrapi(editedData.picture);
+            requestData.picture = [...requestData.picture, ...uploadedImageIds];
+        }
+
+            // Log requestData object for debugging
+            console.log(requestData);
+
+            // Construct the final request body with a "data" field
+            const requestBody = { data: requestData };
+
+            // Send requestBody object via axios PUT request
+            await axios.put(`${baseURL}shoes/${itemId}`, requestBody, {
                 headers: {
-                    "Content-Type": "multipart/form-data",
+                    "Content-Type": "application/json", // Specify content type as JSON
                 },
             });
+
+            // Close the modal after successful submission
             onClose();
         } catch (error) {
             console.error("Error updating shoe data:", error);
         }
     };
+    
+    
     
 
     return (
