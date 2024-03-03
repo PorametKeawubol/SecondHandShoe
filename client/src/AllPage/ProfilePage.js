@@ -1,4 +1,3 @@
-//Profile.js
 import React, { useState, useEffect } from "react";
 import Header from "../Component/Header";
 import axios from "axios";
@@ -64,7 +63,7 @@ function Profile() {
             <Header />
             <header
                 className="bg-black py-1"
-                style={{ backgroundColor: "#676666", display: "flex" }}
+                style={{ backgroundColor: "#4d4336", display: "flex" }}
             ></header>
             <header
                 style={{
@@ -135,7 +134,7 @@ function Profile() {
             <div className="flex justify-center mt-8">
                 <Link
                     to="/Purchases"
-                    className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black"
+                    className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-12 border border-black"
                     style={{
                         display: "flex",
                         flexDirection: "column",
@@ -145,13 +144,13 @@ function Profile() {
                         boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
-                    <FaShoppingCart className="mr-2 mt-6" size={40} />
-                    <span>To pay</span>
+                    <FaShoppingCart className="mr-2 mt-4" size={50} />
+                    <p style={{fontSize:"20px"}}>To pay</p>
                 </Link>
 
                 <Link
                     to="/Purchases?tab=toShip"
-                    className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black"
+                    className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-12 border border-black"
                     style={{
                         display: "flex",
                         flexDirection: "column",
@@ -161,8 +160,8 @@ function Profile() {
                         boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
-                    <FaGift size={40} className="mt-5 mb-1" />
-                    <span>To ship</span>
+                    <FaGift size={50} className="mt-3 mb-1" />
+                    <p style={{fontSize:"20px"}}>To ship</p>
                 </Link>
 
                 <Link
@@ -177,13 +176,13 @@ function Profile() {
                         boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
-                    <FaTruck size={40} className="mt-5 mb-1"/>
-                    <span>To receive</span>
+                    <FaTruck size={50} className="mt-3 mb-1"/>
+                    <p style={{fontSize:"20px"}}>To receive</p>
                 </Link>
             </div>
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-center mt-10">
                 <button
-                    className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black"
+                    className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-12 border border-black"
                     style={{
                         display: "flex",
                         flexDirection: "column",
@@ -194,11 +193,11 @@ function Profile() {
                     }}
                     onClick={handleToRateOpen}
                 >
-                    <FaStar size={40} className="mt-5 mb-1" />
-                    <span>To rate</span>
+                    <FaStar size={50} className="mt-3 mb-1" />
+                    <p style={{fontSize:"20px"}}>To rate</p>
                 </button>
                 <div
-                    className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black"
+                    className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-12 border border-black"
                     style={{
                         display: "flex",
                         flexDirection: "column",
@@ -209,8 +208,8 @@ function Profile() {
                     }}
                     onClick={handlePostSellClick}
                 >
-                    <FaStoreAlt size={40} className="mt-5 mb-1" />
-                    <span>Post sell</span>
+                    <FaStoreAlt size={50} className="mt-3 mb-1" />
+                    <p style={{fontSize:"20px"}}>Post sell</p>
                 </div>
 
                 <Link
@@ -225,11 +224,11 @@ function Profile() {
                         boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
-                    <FaSuitcase size={40} className="mt-5 mb-1" />
-                    <span>Your item</span>
+                    <FaSuitcase size={50} className="mt-3 mb-1" />
+                    <p style={{fontSize:"20px"}}>Your item</p>
                 </Link>
             </div>
-            <div className="flex justify-start mt-20 mb-8 ml-4" style={{ marginTop: "95px" }}>
+            <div className="flex justify-start mb-3 ml-4 mt-8" >
                 <Link
                     to="/"
                     className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded border border-black flex items-center "

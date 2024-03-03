@@ -12,10 +12,10 @@ const CarouselBar = () => {
             showThumbs={false}
         >
             <div>
-                <img src="PictureforShow/2.jpg" />
+                <img src="PictureforShow/1.jpg" />
             </div>
             <div>
-                <img src="PictureforShow/1.jpg" />
+                <img src="PictureforShow/2.jpg" />
             </div>
             <div>
                 <img src="PictureforShow/3.jpg" />

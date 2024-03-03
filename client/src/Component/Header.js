@@ -1,4 +1,3 @@
-// Example.js
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import LoginForm from "../AllPage/Loginform";
@@ -128,10 +127,10 @@ export default function Example() {
   };
 
   return (
-    <header className="top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#355C7D] via-[#6C5B7B] to-[#C06C84] bg-opacity-50 px-10">
+    <header className="top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#355C7D] via-[#6C5B7B] to-[#C06C84] bg-opacity-50">
       <div className="">
         <nav
-          className="flex items-center justify-between mx-auto py-4"
+          className="flex items-center justify-between mx-auto py-4 mr-5"
           aria-label="Global"
         >
           <div
@@ -152,7 +151,7 @@ export default function Example() {
               >
                 {isLoggedIn && (
                   <>
-                    <BsBag className="h-8 text-2xl" />
+                    <BsBag className="h-9 text-xl text-yellow-100" />
                     <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
                       {itemAmount}
                     </div>

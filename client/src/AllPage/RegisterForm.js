@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 function RegisterForm({ toggleModal, toggleLoginModal, onLogin }) {
-  const [name, setName] = useState('');
+  const [firstname, setFirstName] = useState('');
   const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,7 +27,9 @@ function RegisterForm({ toggleModal, toggleLoginModal, onLogin }) {
 
     try {
       const response = await axios.post('http://localhost:1337/api/auth/local/register', {
-        username: name, 
+        username: firstname,
+        First_Name: firstname,
+        Last_Name: lastname, 
         email: email,
         password: password,
       });
@@ -64,8 +66,8 @@ function RegisterForm({ toggleModal, toggleLoginModal, onLogin }) {
           <form className="w-full" onSubmit={handleSubmit}>
             <div className="mb-5 flex">
               <div className="w-1/2 pr-2">
-                <label htmlFor="name" className="block text-gray-600">Name</label>
-                <input type="text" id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name" className="mt-1 block w-full px-4 rounded border border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" />
+                <label htmlFor="name" className="block text-gray-600">First Name</label>
+                <input type="text" id="name" name="name" value={firstname} onChange={(e) => setFirstName(e.target.value)} placeholder="Enter your name" className="mt-1 block w-full px-4 rounded border border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500" />
               </div>
               <div className="w-1/2 pl-2">
                 <label htmlFor="lastname" className="block text-gray-600">Last Name</label>
