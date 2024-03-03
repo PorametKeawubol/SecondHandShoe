@@ -37,37 +37,28 @@ function LoginForm({
                 }
             );
 
-            // Assuming your server returns a token upon successful login
             const token = response.data.jwt;
-
-            // Save the token to localStorage
 
             sessionStorage.setItem("authToken", token);
 
-            // Set token to Axios headers
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
             let response2 = await axios.get(
                 `/api/users/me?populate=Profile_Picture`
             );
             let profile_picture;
-            if (response2.data.Profile_Picture===null){
-                profile_picture = " ";
-                
-            } else  {
-                profile_picture = "http://localhost:1337" + response2.data.Profile_Picture.url;
-                
+            if (response2.data.Profile_Picture === null) {
+                profile_picture = "";
+            } else {
+                profile_picture =
+                    "http://localhost:1337" + response2.data.Profile_Picture.url;
             }
             const response3 = await axios.get(`/api/users/me?populate=role`);
-            
-            console.log("🚀 ~ handleSubmit ~ profile:", profile_picture)
-            console.log("🚀 ~ handleSubmit ~ role:", response3.data.role.name)
-           
+
             sessionStorage.setItem("Profile_Picture", profile_picture);
             sessionStorage.setItem("role", response3.data.role.name);
 
             checkAuthStatus();
 
-            // Close the login pop-up
             toggleModal();
             onLogin();
             checkAuthStatus();
@@ -83,7 +74,6 @@ function LoginForm({
                 setError("Wrong username or password.");
             }
         }
-            
     };
 
     return (
@@ -107,7 +97,7 @@ function LoginForm({
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email address"
-                            className="mt-1 block w-full rounded border border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 w-1/2 pl-2"
+                            className="mt-1 block w-full rounded border border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 pl-2"
                         />
                     </div>
                     <div className="mb-4">
@@ -124,7 +114,7 @@ function LoginForm({
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter your password"
-                            className="mt-1 block w-full rounded border border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 w-1/2 pl-2"
+                            className="mt-1 block w-full rounded border border-gray-300 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 pl-2"
                         />
                     </div>
                     {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -136,7 +126,7 @@ function LoginForm({
                     </button>
                 </form>
                 <p className="mt-4 text-gray-600">
-                    Don't Have Account ?
+                    Don't Have an Account?
                     <button
                         onClick={toggleRegisterModal}
                         className="text-blue-500 hover:underline ml-1"
@@ -146,7 +136,7 @@ function LoginForm({
                 </p>
                 <button
                     onClick={toggleModal}
-                    className="text-blue-500 hover:underline ml-1"
+                    className="text-blue-500 hover:underline mt-2"
                 >
                     Maybe not now
                 </button>

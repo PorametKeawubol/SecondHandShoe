@@ -66,11 +66,12 @@ function Profile() {
                 style={{ backgroundColor: "#676666", display: "flex" }}
             ></header>
             <header
-                className="bg-black py-10"
                 style={{
-                    backgroundColor: "black",
+                    backgroundImage: "url('PictureforShow/ิback.png')",
+                    height: "150px",
                     display: "flex",
                     top: "center",
+                    boxShadow: "0 8px 8px rgba(0, 0, 0, 0.4)",
                 }}
             >
                 <div
@@ -139,6 +140,7 @@ function Profile() {
                         flexDirection: "column",
                         alignItems: "center",
                         width: "150px",
+                        boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
                     <FaShoppingCart className="mr-2" size={40} />
@@ -153,6 +155,7 @@ function Profile() {
                         flexDirection: "column",
                         alignItems: "center",
                         width: "150px",
+                        boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
                     <FaGift size={40} />
@@ -167,6 +170,7 @@ function Profile() {
                         flexDirection: "column",
                         alignItems: "center",
                         width: "150px",
+                        boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
                     <FaTruck size={40} />
@@ -181,6 +185,7 @@ function Profile() {
                         flexDirection: "column",
                         alignItems: "center",
                         width: "150px",
+                        boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                     onClick={handleToRateOpen}
                 >
@@ -194,6 +199,7 @@ function Profile() {
                         flexDirection: "column",
                         alignItems: "center",
                         width: "150px",
+                        boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                     onClick={handlePostSellClick}
                 >
@@ -209,20 +215,22 @@ function Profile() {
                         flexDirection: "column",
                         alignItems: "center",
                         width: "150px",
+                        boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
                     <FaSuitcase size={40} />
                     <span>Your item</span>
                 </Link>
             </div>
-            <div className="flex justify-start mt-20 mb-8 ml-4">
+            <div className="flex justify-start mt-20 mb-8 ml-4" style={{ marginTop: "95px" }}>
                 <Link
                     to="/"
-                    className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded border border-black flex items-center"
+                    className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded border border-black flex items-center "
                 >
                     <FaReply size={20} /> <span className="ml-2">Return</span>
                 </Link>
             </div>
+
             {showToRateModal && <ToRate onClose={handleToRateClose} />}
             {showImageUploadPopup && (
                 <ImageUploadPopup
