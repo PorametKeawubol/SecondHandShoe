@@ -15,6 +15,7 @@ import NotFound from "./AllPage/Notfound";
 import EditProfile from "./AllPage/Editprofile"; // Changed component name to EditProfile
 import ToReceive from "./Component/ToReceiveContent";
 import Status from "./Component/status"; // Changed component name to Status
+import ShopReviewPage from "./AllPage/ShopReview";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/ToReceive" element={<ToReceive />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/Shopreview" element={<ShopReviewPage />} />
       </Routes>
       <Sidebar />
     </BrowserRouter>
