@@ -93,8 +93,6 @@ export default function Example() {
       setIsLoggedIn(false);
     }
     // Assign the value to the export variable
-    isLoggedInExport = isLoggedIn;
-    console.log(token, authTokenInHeaders);
   };
 
   useEffect(() => {
