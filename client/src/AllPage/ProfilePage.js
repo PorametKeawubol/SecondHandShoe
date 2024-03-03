@@ -1,3 +1,4 @@
+//Profile.js
 import React, { useState, useEffect } from "react";
 import Header from "../Component/Header";
 import axios from "axios";
@@ -98,15 +99,15 @@ function Profile() {
                     )}
 
                     <div>
-                        <h1 style={{ fontSize: "40px", color: "white" }}>
+                        <p style={{ fontSize: "32px", color: "white" }}>
                             {username}
-                        </h1>
-                        <p style={{ fontSize: "20px", color: "white" }}>
+                        </p>
+                        <p style={{ fontSize: "18px", color: "white" }}>
                             {email}
                         </p>
-                        <p style={{ fontSize: "20px", color: "white" }}>
-                            <Link to="/Editprofile" style={{ color: "white" }}>EditProfile</Link>
-                        </p>
+                        <button className="mt-1" style={{ fontSize: "12px", color: "white", border: "1px solid white", borderRadius: "8px", padding: "8px 16px"}}>
+                            <Link to="/Editprofile" style={{ color: "white" }}>Edit Profile 🔧</Link>
+                        </button>
 
                     </div>
                 </div>
@@ -139,11 +140,12 @@ function Profile() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        width: "150px",
+                        width: "200px",
+                        height: "125px",
                         boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
-                    <FaShoppingCart className="mr-2" size={40} />
+                    <FaShoppingCart className="mr-2 mt-6" size={40} />
                     <span>To pay</span>
                 </Link>
 
@@ -154,11 +156,12 @@ function Profile() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        width: "150px",
+                        width: "200px",
+                        height: "125px",
                         boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
-                    <FaGift size={40} />
+                    <FaGift size={40} className="mt-5 mb-1" />
                     <span>To ship</span>
                 </Link>
 
@@ -169,11 +172,12 @@ function Profile() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        width: "150px",
+                        width: "200px",
+                        height: "125px",
                         boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
-                    <FaTruck size={40} />
+                    <FaTruck size={40} className="mt-5 mb-1"/>
                     <span>To receive</span>
                 </Link>
             </div>
@@ -184,12 +188,13 @@ function Profile() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        width: "150px",
+                        width: "200px",
+                        height: "125px",
                         boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                     onClick={handleToRateOpen}
                 >
-                    <FaStar size={40} />
+                    <FaStar size={40} className="mt-5 mb-1" />
                     <span>To rate</span>
                 </button>
                 <div
@@ -198,12 +203,13 @@ function Profile() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        width: "150px",
+                        width: "200px",
+                        height: "125px",
                         boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                     onClick={handlePostSellClick}
                 >
-                    <FaStoreAlt size={40} />
+                    <FaStoreAlt size={40} className="mt-5 mb-1" />
                     <span>Post sell</span>
                 </div>
 
@@ -214,11 +220,12 @@ function Profile() {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
-                        width: "150px",
+                        width: "200px",
+                        height: "125px",
                         boxShadow: "0 5px 12px rgba(0, 0, 0, 0.7)",
                     }}
                 >
-                    <FaSuitcase size={40} />
+                    <FaSuitcase size={40} className="mt-5 mb-1" />
                     <span>Your item</span>
                 </Link>
             </div>
