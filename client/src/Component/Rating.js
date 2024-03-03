@@ -61,8 +61,8 @@ const Rating = () => {
         data: {
           score: currentValue,
           comment: comment,
-          seller_rating: 6,
-          rating_by: 1,
+          seller_rating: 5,
+          rating_by: 10,
         },
       });
       console.log(response.data);
