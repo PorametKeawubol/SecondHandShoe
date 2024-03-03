@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Header from "../Component/Header";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const EditProfile = ({ setProfile }) => {
   const [username, setUsername] = useState("");
@@ -8,6 +9,10 @@ const EditProfile = ({ setProfile }) => {
   const [userProfile, setUserProfile] = useState(""); 
   const inputRef = useRef(null); 
   const [userId, setUserId] = useState(""); // Add userId state
+  const navigate = useNavigate();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address, setAddress] = useState("");
  
   const [token, setToken] = useState(""); // Add token state
   const [setisUserUpdated, setSetisUserUpdated] = useState(""); // Add setisUserUpdated state
@@ -17,34 +22,48 @@ const EditProfile = ({ setProfile }) => {
   }, []);
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("http://localhost:1337/api/users/me?populate=Profile_Picture",);
-
+      const response = await axios.get("http://localhost:1337/api/users/me?populate=Profile_Picture");
+  
       const userData = response.data;
       console.log("🚀 ~ fetchUserData ~ userData:", userData)
-      
+  
       setUsername(userData.username);
       setEmail(userData.email);
-      setUserProfile("http://localhost:1337"+userData.Profile_Picture.url);
-      setUserId(userData.id); // Set userId state
-      setToken(sessionStorage.getItem("authToken")); // Set token state
+      
+      if (userData.Profile_Picture && userData.Profile_Picture.url) {
+        setUserProfile("http://localhost:1337" + userData.Profile_Picture.url);
+      } else {
+        setUserProfile(""); // Set userProfile to an empty string or a default image URL
+      }
+      
+      setUserId(userData.id);
+      setToken(sessionStorage.getItem("authToken")); 
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
-
+  
   const handleImageDelete = async () => {
     try {
-      await axios.delete(`http://localhost:1337/api/upload/${userId}`, {
-        username: username,
-        email: email,
-        
-      });
-      fetchUserData(); // Refresh user data after deletion
-      console.log("Image deleted successfully");
+      //Asset ID
+      const response = await axios.get("http://localhost:1337/api/users/me?populate=Profile_Picture");
+      const userData = response.data;
+      const profilePicture = userData.Profile_Picture;
+      const assetId = profilePicture && profilePicture.id;
+  
+      if (assetId) {
+        await axios.delete(`http://localhost:1337/api/upload/files/${assetId}`);
+        fetchUserData(); // Refresh user data after deletion
+        console.log("Image deleted successfully");
+      } else {
+        console.log("No profile picture found to delete");
+      }
     } catch (error) {
       console.error("Error deleting image:", error);
     }
   };
+  
+  
 
   const handleImageChange = async () => {
     const image = inputRef.current.files[0];
@@ -53,35 +72,47 @@ const EditProfile = ({ setProfile }) => {
         username: username,
         email: email,
       });
-
+  
       if (image) {
         const formData = new FormData();
         formData.append("field", "Profile_Picture");
         formData.append("ref", "plugin::users-permissions.user");
         formData.append("refId", userId);
         formData.append("files", image);
-
+  
         axios.post(`http://localhost:1337/api/upload`, formData)
           .then((response) => {
             console.log(response);
-            sessionStorage.setItem("Profile_Picture", `http://localhost:1337${response.data[0].url}`);
+            const imageUrl = `http://localhost:1337${response.data[0].url}`;
+            setUserProfile(imageUrl); // Update userProfile directly with the new image URL
+            sessionStorage.setItem("Profile_Picture", imageUrl); // Update sessionStorage with the new image URL
           })
           .catch((error) => {
             console.error(error);
           });
       }
-
-      const imageUrl = "http://localhost:1337" + response.data[0].url;
-      fetchUserData(); // Refresh user data after image change
-      setUserProfile(imageUrl);
     } catch (error) {
       console.error("Error uploading image:", error);
     }
   };
-
+  
   const handleSubmit = async () => {
-    // Your submit logic here
+    try {
+      const response = await axios.put(`http://localhost:1337/api/users/${userId}`, {
+        username: username,
+        email: email,
+        First_Name: firstName,
+        Last_Name: lastName,
+        Address: address,
+      });
+      console.log("Edit successful:", response.data);
+      //pop up success
+      navigate('/Profile');
+    } catch (error) {
+      console.error("Error editing profile:", error);
+    }
   };
+  
 
   return (
     <>
@@ -119,11 +150,19 @@ const EditProfile = ({ setProfile }) => {
                   <div className="flex flex-col items-center w-full mb-2 space-x-0 space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0 sm:mb-6">
                     <div className="w-full">
                       <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Your first name</label>
-                      <input type="text" id="first_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Your first name" defaultValue="" required />
+                      <input type="text"
+                      id="first_name"
+                      className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 "
+                      placeholder="Your first name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      required />
                     </div>
                     <div className="w-full">
                       <label htmlFor="last_name" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Your last name</label>
-                      <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Your last name" defaultValue="" required />
+                      <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Your last name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)} defaultValue="" required />
                     </div>
                   </div>
                   <div className="mb-2 sm:mb-6">
@@ -132,7 +171,10 @@ const EditProfile = ({ setProfile }) => {
                   </div>
                   <div className="mb-6">
                     <label htmlFor="message" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white">Address</label>
-                    <textarea id="message" rows="4" className="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 " placeholder="Write your bio here..."></textarea>
+                    <textarea id="message" rows="4" className="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 " 
+                    onChange={(e) => setAddress(e.target.value)}
+                    value={address}
+                    placeholder="Your address"></textarea>
                   </div>
                   <div className="flex justify-end">
                     <button type="button" onClick={handleSubmit} className="text-white bg-indigo-700  hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Save</button>

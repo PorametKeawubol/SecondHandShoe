@@ -114,6 +114,12 @@
       "relation": "oneToMany",
       "target": "api::rating.rating",
       "mappedBy": "rating_by"
+    },
+    "First_Name": {
+      "type": "string"
+    },
+    "Last_Name": {
+      "type": "string"
     }
   }
 }

@@ -141,7 +141,7 @@ export default function Example() {
             }}
           >
             <Link to="/">
-              <img className="h-16 w-auto" src={logo} alt="Logo" />
+              <img className="h-16 w-auto ml-5" src={logo} alt="Logo" />
             </Link>
           </div>
           <div className="flex ">
@@ -167,7 +167,7 @@ export default function Example() {
               <div>
                 <button
                   onClick={toggleLoginModal}
-                  className="font-semibold leading-6 text-black focus:outline-none"
+                  className="font-semibold leading-6 text-black focus:outline-none mr-5"
                 >
                   Log in <span aria-hidden="true">&rarr;</span>
                 </button>
