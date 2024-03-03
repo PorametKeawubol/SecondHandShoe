@@ -94,12 +94,6 @@
         "audios"
       ]
     },
-    "message": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::message.message",
-      "mappedBy": "receiver"
-    },
     "Address": {
       "type": "text"
     },
@@ -114,6 +108,12 @@
       "relation": "oneToMany",
       "target": "api::rating.rating",
       "mappedBy": "rating_by"
+    },
+    "messages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::message.message",
+      "mappedBy": "receiver"
     }
   }
 }

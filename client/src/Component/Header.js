@@ -128,7 +128,7 @@ export default function Example() {
   };
 
   return (
-    <header className="top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#355C7D] via-[#6C5B7B] to-[#C06C84] bg-opacity-50">
+    <header className="top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#355C7D] via-[#6C5B7B] to-[#C06C84] bg-opacity-50 px-10">
       <div className="">
         <nav
           className="flex items-center justify-between mx-auto py-4"

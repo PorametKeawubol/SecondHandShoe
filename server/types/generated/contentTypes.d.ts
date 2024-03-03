@@ -779,11 +779,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::shoe.shoe'
     >;
     Profile_Picture: Attribute.Media;
-    message: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToOne',
-      'api::message.message'
-    >;
     Address: Attribute.Text;
     ratings: Attribute.Relation<
       'plugin::users-permissions.user',
@@ -794,6 +789,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'plugin::users-permissions.user',
       'oneToMany',
       'api::rating.rating'
+    >;
+    messages: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::message.message'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -965,12 +965,12 @@ export interface ApiMessageMessage extends Schema.CollectionType {
   attributes: {
     sender: Attribute.Relation<
       'api::message.message',
-      'oneToOne',
+      'manyToOne',
       'plugin::users-permissions.user'
     >;
     receiver: Attribute.Relation<
       'api::message.message',
-      'oneToOne',
+      'manyToOne',
       'plugin::users-permissions.user'
     >;
     text: Attribute.Text;

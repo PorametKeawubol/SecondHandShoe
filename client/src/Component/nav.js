@@ -41,7 +41,7 @@ const HamburgerMenu = ({ handleLogout }) => {
                       to="/about"
                       className={`${
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                      } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                      } hidden group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                     >
                       About
                     </Link>

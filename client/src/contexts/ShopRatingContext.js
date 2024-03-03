@@ -35,7 +35,6 @@ const ReviewProvider = ({ children }) => {
           };
         });
         setReview(reviewData);
-        console.log("dsfsfd", reviews);
       } else {
         console.error("Response data is not an array:", response.data.data);
       }
