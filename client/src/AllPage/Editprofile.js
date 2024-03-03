@@ -31,19 +31,26 @@ const EditProfile = ({ setProfile }) => {
       console.error("Error fetching user data:", error);
     }
   };
-  const handleImageDelete = () => {
 
+  const handleImageDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:1337/api/upload/${userId}`, {
+        username: username,
+        email: email,
+        
+      });
+      fetchUserData(); // Refresh user data after deletion
+      console.log("Image deleted successfully");
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
   };
 
   const handleImageChange = async () => {
-    // Logic to handle changing profile picture
     const image = inputRef.current.files[0];
-
-
-
     try {
-      const response = await axios.put(`api/users/${userId}`, {
-        username : username,
+      const response = await axios.put(`http://localhost:1337/api/users/${userId}`, {
+        username: username,
         email: email,
       });
 
@@ -53,21 +60,20 @@ const EditProfile = ({ setProfile }) => {
         formData.append("ref", "plugin::users-permissions.user");
         formData.append("refId", userId);
         formData.append("files", image);
-        axios.post( `api/upload`, formData)
+
+        axios.post(`http://localhost:1337/api/upload`, formData)
           .then((response) => {
             console.log(response);
-            sessionStorage.setItem("Profile_Picture",`http://localhost:1337${response.data[0].url}`)
+            sessionStorage.setItem("Profile_Picture", `http://localhost:1337${response.data[0].url}`);
           })
           .catch((error) => {
             console.error(error);
           });
-      
       }
 
-      const imageUrl ="http://localhost:1337" + response.data[0].url;
-      fetchUserData()
-      setUserProfile(imageUrl); // Update user profile picture state'
-      
+      const imageUrl = "http://localhost:1337" + response.data[0].url;
+      fetchUserData(); // Refresh user data after image change
+      setUserProfile(imageUrl);
     } catch (error) {
       console.error("Error uploading image:", error);
     }

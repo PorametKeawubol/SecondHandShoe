@@ -4,7 +4,8 @@ import Header from "../Component/Header";
 import { Link } from 'react-router-dom';
 import CartContent from '../Component/CartContent'; // Import CartContent component
 import { useLocation } from 'react-router-dom';
-
+import ToReceiveContent from '../Component/ToReceiveContent';
+import styled from "styled-components"; // import styled-components
 
 const MyPurchases = () => {
   const [activeTab, setActiveTab] = useState('cart');
@@ -12,7 +13,8 @@ const MyPurchases = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const tab = params.get('tab');if (tab) {
+    const tab = params.get('tab');
+    if (tab) {
       handleTabChange(tab);
     }
   }, [location.search]);
@@ -33,9 +35,9 @@ const MyPurchases = () => {
       <div className="flex-1 p-4 overflow-y-auto">
         {/* Display content based on activeTab */}
         {activeTab === 'cart' && <Cart />}
-        {activeTab === 'toReceive' && <ToReceive />}
+        {activeTab === 'toReceive' && <ToReceiveContent />}
         {activeTab === 'toShip' && <ToShip />}
-        {activeTab === 'completed' && <completed />}
+        {activeTab === 'completed' && <Completed />}
       </div>
     </div>
   );
@@ -43,34 +45,75 @@ const MyPurchases = () => {
 
 const BarPurchases = ({ activeTab, handleTabChange }) => {
   return (
-    <nav className="flex justify-evenly bg-gray-200 py-2" style={{  position: 'sticky', top: '110px' }}>
-      <button
-        className={`px-4 py-2 ${activeTab === 'cart' ? 'bg-gray-400 rounded-lg' : ''}`}
+    <StyledNav className="flex justify-evenly bg-gray-200 py-4 mt-0" style={{  position: 'sticky',  }}>
+      <StyledButton
+        className={`${activeTab === 'cart' ? 'active' : ''}`}
         onClick={() => handleTabChange('cart')}
       >
         To pay
-      </button>
-      <button
-        className={`px-4 py-2 ${activeTab === 'toShip' ? 'bg-gray-400 rounded-lg' : ''}`}
+      </StyledButton>
+      <StyledButton
+        className={`${activeTab === 'toShip' ? 'active' : ''}`}
         onClick={() => handleTabChange('toShip')}
       >
         To Ship
-      </button>
-      <button
-        className={`px-4 py-2 ${activeTab === 'toReceive' ? 'bg-gray-400 rounded-lg' : ''}`}
+      </StyledButton>
+      <StyledButton
+        className={`${activeTab === 'toReceive' ? 'active' : ''}`}
         onClick={() => handleTabChange('toReceive')}
       >
         To Receive
-      </button>
-      <button
-        className={`px-4 py-2 ${activeTab === 'completed' ? 'bg-gray-400 rounded-lg' : ''}`}
+      </StyledButton>
+      <StyledButton
+        className={`${activeTab === 'completed' ? 'active' : ''}`}
         onClick={() => handleTabChange('completed')}
       >
-        completed
-      </button>
-    </nav>
+        Completed
+      </StyledButton>
+    </StyledNav>
   );
 };
+
+const StyledNav = styled.nav`
+  .active {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 12px;
+  }
+
+  .active:hover {
+    background-color: #45a049;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  }
+`;
+
+const StyledButton = styled.button`
+  background-color: #e7e7e7; /* Green */
+  border: none;
+  color: black;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  border-radius: 12px;
+
+  &:hover {
+    background-color: #ddd;
+  }
+`;
 
 const Cart = () => {
  return <CartContent />;
@@ -83,8 +126,9 @@ const ToReceive = () => {
 const ToShip = () => {
   return <div>To Ship Content</div>;
 };
-const completed = () => {
-  return <div>To Ship Content</div>;
+
+const Completed = () => {
+  return <div>Completed Content</div>;
 };
 
 export default MyPurchases;

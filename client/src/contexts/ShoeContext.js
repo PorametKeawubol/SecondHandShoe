@@ -61,6 +61,7 @@ const ShoeProvider = ({ children }) => {
                         status,
                         Seller,
                         size,
+                        
                     };
                 });
                 setShoes(shoeData);

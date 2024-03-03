@@ -12,8 +12,9 @@ import Contact from "./AllPage/Contact";
 import Message from "./Component/Message";
 import Admin from "./AllPage/Adminpage";
 import NotFound from "./AllPage/Notfound";
-import Editprofile from "./AllPage/Editprofile";
-import ShopReviewPage from "./AllPage/ShopReview";
+import EditProfile from "./AllPage/Editprofile"; // Changed component name to EditProfile
+import ToReceive from "./Component/ToReceiveContent";
+import Status from "./Component/status"; // Changed component name to Status
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -22,16 +23,19 @@ function App() {
       <Routes>
         <Route path="/Profile" element={<Profile />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/Editprofile" element={<Editprofile />} />
+        <Route path="/Editprofile" element={<EditProfile />} />{" "}
+        {/* Changed component name to EditProfile */}
         <Route path="/Purchases" element={<MyPurchases />} />
+        <Route path="/status" element={<Status />} />{" "}
+        {/* Changed component name to Status */}
         <Route path="/Payment/:id" element={<Payment />} />
         <Route path="/shoe/:id" element={<ShoeDetails />} />
         <Route path="/YourItem" element={<YourItem />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/message" element={<Message />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/ToReceive" element={<ToReceive />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/ShopReview" element={<ShopReviewPage />} />
       </Routes>
       <Sidebar />
     </BrowserRouter>

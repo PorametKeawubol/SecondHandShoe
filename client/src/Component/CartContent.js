@@ -12,9 +12,9 @@ const CartContent = () => {
   if (cart.length === 0) {
     return (
       <div
-        className="cart-container bg-white shadow-2xl rounded-lg overflow-hidden"
+        className="cart-container bg-white shadow-2xl rounded-lg overflow-hidden "
         style={{
-          marginTop: "30px",
+          marginTop: "60px",
           position: "fixed",
           top: "130px",
           left: "50%",

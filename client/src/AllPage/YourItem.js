@@ -40,7 +40,7 @@ function YourItem() {
                }
           };
           fetchUserData();
-     }, [shoes]);
+     }, []);
 
      const fetchMyShoes = (shoes, username) => {
           return shoes.filter((item) => {
@@ -53,7 +53,7 @@ function YourItem() {
                console.log("Deleting item with ID:", id);
                await axios.delete(`http://localhost:1337/api/shoes/${id}`, {
                     headers: {
-                         Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+                         Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
                     },
                });
 
