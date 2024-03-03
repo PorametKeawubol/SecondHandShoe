@@ -78,7 +78,7 @@
     "size": {
       "type": "string"
     },
-    "SellConfirm": {
+    "complete": {
       "type": "boolean",
       "default": false
     }
