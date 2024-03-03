@@ -20,6 +20,7 @@ import ImageUploadPopup from "../AllPage/SellPage"; // Import the ImageUploadPop
 function Profile() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
+    const [bio, setBio] = useState("");
     const [showToRateModal, setShowToRateModal] = useState(false);
     const [showImageUploadPopup, setShowImageUploadPopup] = useState(false); // State to control the visibility of the ImageUploadPopup
     const userProfile = sessionStorage.getItem("Profile_Picture");
@@ -46,6 +47,7 @@ function Profile() {
                 const userData = response.data;
                 setUsername(userData.username);
                 setEmail(userData.email);
+                setBio(userData.Bio);
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
@@ -68,7 +70,7 @@ function Profile() {
             <header
                 style={{
                     backgroundImage: "url('PictureforShow/ิback.png')",
-                    height: "150px",
+                    height: "200px",
                     display: "flex",
                     top: "center",
                     boxShadow: "0 8px 8px rgba(0, 0, 0, 0.4)",
@@ -84,8 +86,8 @@ function Profile() {
                             src={userProfile}
                             alt="User Profile"
                             style={{
-                                width: 100,
-                                height: 100,
+                                width: 140,
+                                height: 140,
                                 backgroundColor: "white",
                             }}
                         />
@@ -98,11 +100,14 @@ function Profile() {
                     )}
 
                     <div>
-                        <p style={{ fontSize: "32px", color: "white" }}>
+                        <p style={{ fontSize: "30px", color: "white" }}>
                             {username}
                         </p>
                         <p style={{ fontSize: "18px", color: "white" }}>
                             {email}
+                        </p>
+                        <p className="mt-1 mb-1" style={{ fontSize: "12px", color: "white" }}>
+                            bio : {bio}
                         </p>
                         <button className="mt-1" style={{ fontSize: "12px", color: "white", border: "1px solid white", borderRadius: "8px", padding: "8px 16px"}}>
                             <Link to="/Editprofile" style={{ color: "white" }}>Edit Profile 🔧</Link>
@@ -211,7 +216,6 @@ function Profile() {
                     <FaStoreAlt size={50} className="mt-3 mb-1" />
                     <p style={{fontSize:"20px"}}>Post sell</p>
                 </div>
-
                 <Link
                     to="/YourItem"
                     className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black"
@@ -228,7 +232,7 @@ function Profile() {
                     <p style={{fontSize:"20px"}}>Your item</p>
                 </Link>
             </div>
-            <div className="flex justify-start mb-3 ml-4 mt-8" >
+            <div className="flex justify-start mb-3 mt-3 ml-4" >
                 <Link
                     to="/"
                     className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded border border-black flex items-center "

@@ -120,6 +120,9 @@
     },
     "Last_Name": {
       "type": "string"
+    },
+    "Bio": {
+      "type": "string"
     }
   }
 }

@@ -797,6 +797,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     >;
     First_Name: Attribute.String;
     Last_Name: Attribute.String;
+    Bio: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

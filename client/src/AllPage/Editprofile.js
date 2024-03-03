@@ -13,7 +13,7 @@ const EditProfile = ({ setProfile }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
- 
+  const [bio, setBio] = useState("");
   const [token, setToken] = useState(""); // Add token state
   const [setisUserUpdated, setSetisUserUpdated] = useState(""); // Add setisUserUpdated state
   axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("authToken")}`
@@ -32,6 +32,7 @@ const EditProfile = ({ setProfile }) => {
       setFirstName(userData.First_Name);
       setLastName(userData.Last_Name);
       setAddress(userData.Address);
+      setBio(userData.Bio);
   
       
       if (userData.Profile_Picture && userData.Profile_Picture.url) {
@@ -70,12 +71,23 @@ const EditProfile = ({ setProfile }) => {
   
 
   const handleImageChange = async () => {
+    // Check if there is any file selected
+    if (inputRef.current.files.length === 0) {
+        return; // No file selected, exit function
+    }
+    
     const image = inputRef.current.files[0];
     try {
       const response = await axios.put(`http://localhost:1337/api/users/${userId}`, {
         username: username,
         email: email,
       });
+  
+      // Check if there is a previous image
+      if (userProfile) {
+        // Call handleDelete to delete the previous image
+        await handleImageDelete();
+      }
   
       if (image) {
         const formData = new FormData();
@@ -99,6 +111,8 @@ const EditProfile = ({ setProfile }) => {
       console.error("Error uploading image:", error);
     }
   };
+
+  
   
   const handleSubmit = async () => {
     try {
@@ -107,6 +121,7 @@ const EditProfile = ({ setProfile }) => {
         email: email,
         First_Name: firstName,
         Last_Name: lastName,
+        Bio: bio,
         Address: address,
       });
       console.log("Edit successful:", response.data);
@@ -184,13 +199,15 @@ const EditProfile = ({ setProfile }) => {
                     placeholder="your.email@mail.com" required />
                   </div>
                   <div className="mb-6">
-                    <label htmlFor="message" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"></label>
-                    <p className='mb-3'>Profile bio</p>
-                    <textarea id="message" rows="4" className="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 " 
-                    onChange={(e) => setAddress(e.target.value)}
-                    value={address}
-                    placeholder="Add your bio"></textarea>
+                  <label htmlFor="message" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"></label>
+                  <p className='mb-3'>Profile bio</p>
+                  <textarea id="message" rows="2" className="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 " 
+                  onChange={(e) => setBio(e.target.value)}
+                  value={bio}
+                  placeholder="Add your bio"
+                  style={{ resize: "none" }}></textarea>
                   </div>
+
                   <div className="mb-6">
                     <label htmlFor="message" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"></label>
                     <p className='mb-3'>Your Address</p>
