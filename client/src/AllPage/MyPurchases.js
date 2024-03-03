@@ -6,7 +6,7 @@ import CartContent from '../Component/CartContent'; // Import CartContent compon
 import { useLocation } from 'react-router-dom';
 import ToReceiveContent from '../Component/ToReceiveContent';
 import styled from "styled-components"; // import styled-components
-
+import ToShipContent from '../Component/ToShipContent';
 const MyPurchases = () => {
   const [activeTab, setActiveTab] = useState('cart');
   const location = useLocation();
@@ -36,7 +36,7 @@ const MyPurchases = () => {
         {/* Display content based on activeTab */}
         {activeTab === 'cart' && <Cart />}
         {activeTab === 'toReceive' && <ToReceiveContent />}
-        {activeTab === 'toShip' && <ToShip />}
+        {activeTab === 'toShip' && <ToShipContent />}
         {activeTab === 'completed' && <Completed />}
       </div>
     </div>

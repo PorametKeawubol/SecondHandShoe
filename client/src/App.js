@@ -16,6 +16,7 @@ import EditProfile from "./AllPage/Editprofile"; // Changed component name to Ed
 import ToReceive from "./Component/ToReceiveContent";
 import Status from "./Component/status"; // Changed component name to Status
 import ShopReviewPage from "./AllPage/ShopReview";
+import ToShipContent from "./Component/ToShipContent";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/Purchases" element={<MyPurchases />} />
         <Route path="/status" element={<Status />} />{" "}
         {/* Changed component name to Status */}
+        <Route path="/ToShipContent" element={<ToShipContent />} />
         <Route path="/Payment/:id" element={<Payment />} />
         <Route path="/shoe/:id" element={<ShoeDetails />} />
         <Route path="/YourItem" element={<YourItem />} />

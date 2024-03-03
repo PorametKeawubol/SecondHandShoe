@@ -441,9 +441,6 @@ function EditItem({ itemId, onClose, user }) {
                         <p>Loading...</p>
                     )}
                 </div>
-                {/* Notification component */}
-                {uploadMessage && <Notification message={uploadMessage} />}
-                {uploadError && <Notification message={uploadError} isError={true} />}
             </div>
         </div>
     );
