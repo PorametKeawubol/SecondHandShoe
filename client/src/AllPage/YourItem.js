@@ -11,7 +11,7 @@ function YourItem() {
      const [showEditemModal, setEditemModal] = useState(false);
      const [selectedItemId, setSelectedItemId] = useState(null); // State to store the selected item ID
 
-     const handleEditem = (handleEditemClose, id) => {
+     const handleEditem = (handleEditemClose, id, useEffect) => {
           setSelectedItemId(id); // Set the selected item ID
           setEditemModal(true);
 
@@ -40,7 +40,7 @@ function YourItem() {
                }
           };
           fetchUserData();
-     }, []);
+     }, [shoes]);
 
      const fetchMyShoes = (shoes, username) => {
           return shoes.filter((item) => {

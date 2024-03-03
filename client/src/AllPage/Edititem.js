@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import axios from "axios";
+import { ShoeContext } from "../contexts/ShoeContext";
 
 const baseURL = "http://localhost:1337/api/";
+
+
 
 function EditItem({ itemId, onClose, user }) {
     const [shoeData, setShoeData] = useState({ picture: [] }); // Initialize shoeData.picture as an empty array
@@ -10,8 +13,70 @@ function EditItem({ itemId, onClose, user }) {
     const [brandTags, setBrandTags] = useState([]);
     const [colorTags, setColorTags] = useState([]);
     const [genderTags, setGenderTags] = useState([]);
+    const [uploadMessage, setUploadMessage] = useState(""); // State for upload message
+    const [uploadError, setUploadError] = useState(""); // State for upload error
+
     axios.defaults.headers.common["Authorization"] =
         `Bearer ${sessionStorage.getItem("authToken")}`;
+
+
+    const { setShoes } = useContext(ShoeContext);
+    const handleFetchShoes = async () => {
+        try {
+          const response = await axios.get("/api/shoes?populate=*");
+          if (Array.isArray(response.data.data)) {
+            // Check if response.data is an array
+            const shoeData = response.data.data.map((shoe) => {
+              const { id, attributes } = shoe;
+              const {
+                products_name,
+                price,
+                details,
+                location,
+                picture,
+                brand,
+                color,
+                gender,
+                status,
+                seller,
+                size,
+              } = attributes;
+              const image =
+                picture && picture.data && picture.data.length > 0
+                  ? picture.data.map(
+                      (img) => "http://localhost:1337" + img.attributes.url
+                    )
+                  : [];
+    
+              const brandType = brand?.data?.attributes.name;
+              const colorType = color?.data?.attributes.name;
+              const genderType = gender?.data?.attributes.name;
+              const Seller = seller?.data?.attributes.username;
+              //const product_color = color.data.products_name
+              //const category = attributes.categories?.data.map(cat => cat.attributes.name) || ['uncategorized'];;
+              return {
+                id,
+                products_name,
+                price,
+                details,
+                location,
+                image,
+                brandType,
+                colorType,
+                genderType,
+                status,
+                Seller,
+                size,
+              };
+            });
+            setShoes(shoeData);
+          } else {
+            console.error("Response data is not an array:", response.data.data);
+          }
+        } catch (error) {
+          console.error("Error fetching shoes:", error);
+        }
+      };
 
     useEffect(() => {
         const fetchShoeData = async () => {
@@ -65,22 +130,23 @@ function EditItem({ itemId, onClose, user }) {
             };
         });
     };
+
     const handleRemoveImage = async (index) => {
         try {
-            console.log('shoeData:', shoeData);
-            console.log('index:', index);
-            console.log('shoeData.picture:', shoeData.picture);
-    
+            // Check if shoeData.picture.data exists before proceeding
+            if (!shoeData?.picture?.data) {
+                console.error('No image data found.');
+                return;
+            }
+
             // Get the ID of the image to be removed
             const imageIdToRemove = shoeData.picture.data[index]?.id;
-            
-            console.log('imageIdToRemove:', imageIdToRemove);
-    
+
             if (!imageIdToRemove) {
                 console.error('Image ID not found.');
                 return;
             }
-    
+
             // Send a DELETE request to your backend API to remove the image
             await axios.delete(`${baseURL}upload/files/${imageIdToRemove}`, {
                 headers: {
@@ -88,47 +154,45 @@ function EditItem({ itemId, onClose, user }) {
                     'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
                 }
             });
-    
+
             // Update the shoeData state to remove the image
-            const newImageData = [...shoeData.picture.data];
-            newImageData.splice(index, 1);
-            setShoeData({ ...shoeData, picture: { data: newImageData } });
-    
+            const newImageData = shoeData.picture.data.filter((image, i) => i !== index); // Filter out the removed image
+            const updatedShoeData = { ...shoeData, picture: { data: newImageData } };
+            setShoeData(updatedShoeData);
+
             // If the image is also in editedData, update editedData to remove it
             if (editedData.picture && Array.isArray(editedData.picture)) {
-                const newEditedPictures = [...editedData.picture];
-                newEditedPictures.splice(index, 1);
+                const newEditedPictures = editedData.picture.filter((image, i) => i !== index); // Filter out the removed image
                 setEditedData({ ...editedData, picture: newEditedPictures });
             }
         } catch (error) {
             console.error('Error removing image:', error);
         }
     };
-    
-    
 
     const uploadImagesToStrapi = async (images) => {
         try {
             const formData = new FormData();
             images.forEach(image => formData.append('files', image)); // Append each image to FormData
-    
+
             const response = await axios.post(`${baseURL}upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-    
+
             return response.data; // Assuming Strapi returns data about the uploaded files
         } catch (error) {
             console.error('Error uploading images:', error);
             throw error;
         }
     };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const requestData = {};
+            const requestData = { ...shoeData, ...editedData };
 
             // Append product name if available
             if (editedData.productName || shoeData?.products_name) {
@@ -170,16 +234,30 @@ function EditItem({ itemId, onClose, user }) {
                 requestData.size = editedData.usSize || shoeData.size;
             }
 
-        // Append existing image IDs if available
-        if (shoeData?.picture?.data) {
-            requestData.picture = shoeData.picture.data.map(image => image.id);
-        }
+            // Remove unnecessary properties
+            delete requestData.picture; // We handle pictures separately
+            delete requestData.picture?.data; // Ensure that we don't send picture data to the server
 
-        // Upload new images and get their IDs
-        if (Array.isArray(editedData.picture) && editedData.picture.length > 0) {
-            const uploadedImageIds = await uploadImagesToStrapi(editedData.picture);
-            requestData.picture = [...requestData.picture, ...uploadedImageIds];
-        }
+            // Append size if available
+            requestData.size = editedData.usSize || shoeData?.size;
+
+            // Initialize an array to store the IDs of all images
+            let allImageIds = [];
+
+            // Check if editedData.picture is an array and contains elements
+            if (Array.isArray(editedData.picture) && editedData.picture.length > 0) {
+                // Upload new images and get their IDs
+                const uploadedImageIds = await uploadImagesToStrapi(editedData.picture);
+
+                // Combine existing and uploaded image IDs
+                allImageIds = [...shoeData.picture?.data?.map(image => image.id) || [], ...uploadedImageIds];
+            } else {
+                // If no new pictures are uploaded, use the existing image IDs
+                allImageIds = shoeData.picture?.data?.map(image => image.id) || [];
+            }
+
+            // Set the requestData.picture to the array of all image IDs
+            requestData.picture = allImageIds;
 
             // Log requestData object for debugging
             console.log(requestData);
@@ -196,13 +274,19 @@ function EditItem({ itemId, onClose, user }) {
 
             // Close the modal after successful submission
             onClose();
+            handleFetchShoes();
+
         } catch (error) {
             console.error("Error updating shoe data:", error);
+            // Set error message
+            setUploadError("Error updating shoe data. Please try again.");
+
+            // Clear success message if any
+            setUploadMessage("");
         }
     };
-    
-    
-    
+
+
 
     return (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-100 bg-opacity-50 flex justify-center items-center">
@@ -210,7 +294,7 @@ function EditItem({ itemId, onClose, user }) {
                 <div className="justify-end">
                     <h2 className="text-2xl font-semibold mb-4">Edit Item</h2>
                     {shoeData ? (
-                        <form onSubmit={handleSubmit}> 
+                        <form onSubmit={handleSubmit}>
                             <div className="mb-4">
                                 <label htmlFor="productName" className="text-sm text-gray-600">Product Name:</label>
                                 <input
@@ -352,11 +436,14 @@ function EditItem({ itemId, onClose, user }) {
                                 <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600 mr-2">Save</button>
                                 <button type="button" onClick={onClose} className="bg-gray-500 text-white rounded px-4 py-2 hover:bg-gray-600">Cancel</button>
                             </div>
-                        </form>
+                            </form>
                     ) : (
                         <p>Loading...</p>
                     )}
                 </div>
+                {/* Notification component */}
+                {uploadMessage && <Notification message={uploadMessage} />}
+                {uploadError && <Notification message={uploadError} isError={true} />}
             </div>
         </div>
     );
