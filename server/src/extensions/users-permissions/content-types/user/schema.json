@@ -123,6 +123,18 @@
     },
     "Bio": {
       "type": "string"
+    },
+    "Verify": {
+      "type": "boolean"
+    },
+    "Real_Name": {
+      "type": "string"
+    },
+    "PhoneNum": {
+      "type": "string"
+    },
+    "VerificationWaiting": {
+      "type": "boolean"
     }
   }
 }
