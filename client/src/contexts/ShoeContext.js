@@ -15,7 +15,6 @@ const ShoeProvider = ({ children }) => {
     const fetchShoes = async () => {
         try {
             const response = await axios.get("/api/shoes?populate=*");
-            console.log("🚀 ~ fetchShoes ~ response:", response)
             if (Array.isArray(response.data.data)) {
                 // Check if response.data is an array
                 const shoeData = response.data.data.map((shoe) => {

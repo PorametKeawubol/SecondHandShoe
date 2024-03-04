@@ -15,6 +15,7 @@ axios.defaults.baseURL =
 function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const { shoes } = useContext(ShoeContext);
+  console.log("🚀 ~ HomePage ~ shoes:", shoes)
   const [filteredShoes, setFilteredShoes] = useState([]);
   //useEffect(() => {
   //  setIsLoading(true);
@@ -31,6 +32,7 @@ function HomePage() {
   }
   useEffect(() => {
     const shoesfiltered = shoes.filter((item) => {
+      
       return (
         item.payment.data === null
       ); // &&คือ and , ||คือ or

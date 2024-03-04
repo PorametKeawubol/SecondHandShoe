@@ -40,6 +40,7 @@ export default function Example() {
             status,
             seller,
             size,
+            payment
           } = attributes;
           const image =
             picture && picture.data && picture.data.length > 0
@@ -67,6 +68,7 @@ export default function Example() {
             status,
             Seller,
             size,
+            payment
           };
         });
         setShoes(shoeData);
