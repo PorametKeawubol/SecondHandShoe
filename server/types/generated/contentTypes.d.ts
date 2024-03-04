@@ -798,6 +798,10 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     First_Name: Attribute.String;
     Last_Name: Attribute.String;
     Bio: Attribute.String;
+    Verify: Attribute.Boolean;
+    Real_Name: Attribute.String;
+    PhoneNum: Attribute.String;
+    VerificationWaiting: Attribute.Boolean;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
