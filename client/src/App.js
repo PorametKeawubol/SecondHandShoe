@@ -18,6 +18,7 @@ import Status from "./Component/status"; // Changed component name to Status
 import ShopReviewPage from "./AllPage/ShopReview";
 import ToShipContent from "./Component/ToShipContent";
 import Confrimpayment from "./Component/Confrimpayment";
+import MessageDashbord from "./Component/MessageDashbord";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
         <Route path="/ToReceive" element={<ToReceive />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/ShopReview/:sellerName" element={<ShopReviewPage />} />
+        <Route path="/message" element={<MessageDashbord />} />
       </Routes>
       <Sidebar />
     </BrowserRouter>
