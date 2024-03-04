@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import user1 from "../Component/Picture/logoSecondHandShoe.png";
-import user2 from "../Component/Picture/bg1.png";
 import MyMessage from "./message/MyMessage";
 import YourMessage from "./message/YourMessage";
 import axios from "axios";
@@ -10,9 +8,10 @@ export default function Message() {
     const [Message, setMessage] = useState();
     const [inputText, setInputText] = useState("");
     const [userData,setUserdata] = useState('')
+    console.log("🚀 ~ Message ~ userData:", userData)
     const id = useParams()
     const receiverID = parseInt(id.id);
-    console.log("🚀 ~ Message ~ receiverID:", receiverID)
+    
     
     axios.defaults.headers.common["Authorization"] =
         `Bearer ${sessionStorage.getItem("authToken")}`;
@@ -41,6 +40,7 @@ export default function Message() {
                     },
                 }
             );
+            console.log("🚀 ~ fetchUserData ~ response2:", response2.data)
 
             const id1 = response.data.id
             let profile_picture1;
@@ -52,11 +52,11 @@ export default function Message() {
             }
             const id2 = response2.data.id
             let profile_picture2;
-            if (response.data.Profile_Picture === null) {
+            if (response2.data.Profile_Picture === null) {
                 profile_picture2 = "";
             } else {
                 profile_picture2 =
-                    conf.urlPrefix + response.data.Profile_Picture.url;
+                    conf.urlPrefix + response2.data.Profile_Picture.url;
             }
             setUserdata({id1,profile_picture1,id2,profile_picture2})
         } catch (error) {
