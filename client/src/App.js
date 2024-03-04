@@ -35,7 +35,7 @@ function App() {
         <Route path="/shoe/:id" element={<ShoeDetails />} />
         <Route path="/YourItem" element={<YourItem />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/message" element={<Message />} />
+        <Route path="/message/:id" element={<Message />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/ToReceive" element={<ToReceive />} />
         <Route path="*" element={<NotFound />} />

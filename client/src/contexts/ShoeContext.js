@@ -46,6 +46,7 @@ const ShoeProvider = ({ children }) => {
                     const colorType = color?.data?.attributes.name;
                     const genderType = gender?.data?.attributes.name;
                     const Seller = seller?.data?.attributes.username;
+                    const sellerid = seller?.data?.id
                     //const product_color = color.data.products_name
                     //const category = attributes.categories?.data.map(cat => cat.attributes.name) || ['uncategorized'];;
                     return {
@@ -60,6 +61,7 @@ const ShoeProvider = ({ children }) => {
                         genderType,
                         status,
                         Seller,
+                        sellerid,
                         size,
                         payment
                     };

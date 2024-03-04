@@ -1,9 +1,10 @@
-export default function YourMessage(data) {
+export default function YourMessage(data,pic) {
+    console.log("🚀 ~ YourMessage ~ data:", data)
     return (
         <div className="flex justify-start mb-4 mr-10 items-end">
             <div className="h-8 w-8">
                 <img
-                    src={data.data.pic}
+                    src={data.pic}
                     class="object-cover h-8 w-8 rounded-full ring-1"
                     alt=""
                 />

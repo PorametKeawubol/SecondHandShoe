@@ -5,16 +5,64 @@ import MyMessage from "./message/MyMessage";
 import YourMessage from "./message/YourMessage";
 import axios from "axios";
 import conf from "../config/main";
+import { useParams } from "react-router-dom";
 export default function Message() {
     const [Message, setMessage] = useState();
     const [inputText, setInputText] = useState("");
+    const [userData,setUserdata] = useState('')
+    const id = useParams()
+    const receiverID = parseInt(id.id);
+    console.log("🚀 ~ Message ~ receiverID:", receiverID)
+    
     axios.defaults.headers.common["Authorization"] =
         `Bearer ${sessionStorage.getItem("authToken")}`;
     useEffect(() => {
         fetchMessages();
-    }, []);
-    const senderID = 12;
-    const receiverID = 2;
+    }, [userData]);
+    useEffect(()=>{
+        fetchUserData();
+    },[])
+  
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get(
+                conf.apiUrlPrefix+"/users/me?populate=Profile_Picture",
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+                    },
+                }
+            );
+            const response2 = await axios.get(
+                conf.apiUrlPrefix+`/users/${receiverID}?populate=Profile_Picture`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+                    },
+                }
+            );
+
+            const id1 = response.data.id
+            let profile_picture1;
+            if (response.data.Profile_Picture === null) {
+                profile_picture1 = "";
+            } else {
+                profile_picture1 =
+                    conf.urlPrefix + response.data.Profile_Picture.url;
+            }
+            const id2 = response2.data.id
+            let profile_picture2;
+            if (response.data.Profile_Picture === null) {
+                profile_picture2 = "";
+            } else {
+                profile_picture2 =
+                    conf.urlPrefix + response.data.Profile_Picture.url;
+            }
+            setUserdata({id1,profile_picture1,id2,profile_picture2})
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        }
+    };
 
     const fetchMessages = async () => {
         try {
@@ -46,13 +94,12 @@ export default function Message() {
                 });
 
                 const Message = MessagesData.filter((chat) => {
-      
                     
                         return (
-                            (chat.Sender.id === senderID &&
+                            (chat.Sender.id === userData.id1 &&
                                 chat.Receiver.id === receiverID) ||
                             (chat.Sender.id === receiverID &&
-                                chat.Receiver.id === senderID)
+                                chat.Receiver.id === userData.id1)
                         );
                     
                 });
@@ -74,8 +121,9 @@ export default function Message() {
             const messageData = {
                 data: {
                     text: inputText,
-                    sender: { connect: [senderID] },
-                    receiver: { connect: [receiverID] },
+                    sender: { connect: [userData.id1] },
+                    receiver: { connect: [userData.id2
+                    ] },
                 },
             };
 
@@ -95,10 +143,10 @@ export default function Message() {
                 <div className="flex flex-col mt-5">
                     {Message &&
                         Message.map((chat) => {
-                            if (chat.Sender.id === senderID) {
-                                return <MyMessage data={chat} />;
+                            if (chat.Sender.id === userData.id1) {
+                                return <MyMessage data={chat} pic={userData.profile_picture1}/>;
                             } else {
-                                return <YourMessage data={chat} />;
+                                return <YourMessage data={chat} pic={userData.profile_picture2}/>;
                             }
                         })}
 

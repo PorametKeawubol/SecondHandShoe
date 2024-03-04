@@ -5,10 +5,17 @@ export default function MyMessage(data) {
                 <h className="text-slate-300">{data.data.sender}</h>
                 <div class="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
                     {data.data.text}
+                    <div>
+                        <img
+                            src={data.data.image}
+                            class="object-cover max-h-[40%] max-w-52 rounded-full"
+                            alt=""
+                        />
+                    </div>
                 </div>
             </div>
             <img
-                src={data.data.pic}
+                src={data.pic}
                 class="object-cover h-8 w-8 rounded-full ring-1"
                 alt=""
             />

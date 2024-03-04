@@ -1,12 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useState, useEffect, } from "react";
+import { useParams,Link } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import { ShoeContext } from "../contexts/ShoeContext";
 import Header from "../Component/Header";
 import { GrLocation } from "react-icons/gr";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
-import { Link } from "react-router-dom";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import Footer from "../Component/Footer";
 import SellerRatingSummary from "../Component/Ratingsum";
@@ -15,6 +14,7 @@ const ShoeDetails = () => {
   const { id } = useParams();
   const { addToCart } = useContext(CartContext);
   const { shoes } = useContext(ShoeContext);
+  console.log("🚀 ~ ShoeDetails ~ shoes:", shoes)
   const [slides, setSlides] = useState([]);
   const [activeAccordionIndex, setActiveAccordionIndex] = useState(null);
   const [buttonActive, setButtonActive] = useState(false);
@@ -68,6 +68,7 @@ const ShoeDetails = () => {
     colorType,
     genderType,
     size,
+    sellerid
   } = shoe;
 
   const accordions = [
@@ -205,8 +206,13 @@ const ShoeDetails = () => {
               <div className="text-[25px] text-red-500 font-medium mb-2">
                 {price} THB
               </div>
-              <div className="text-2xl text-black-500 font-medium mb-2">
-                ลงขายโดย : {Seller}
+              <div className="flex justify-between text-2xl text-black-500 font-medium mb-2">
+                <div>ลงขายโดย : {Seller}</div>
+                <Link to={`/message/${sellerid}`} >
+                  <button className="bg-slate-400 rounded-lg p-2 px-2">Chat</button>
+                </Link>
+                
+                
               </div>
               <SellerRatingSummary sellerName={shoe.Seller} />
               <h1 className="text-[20px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">
