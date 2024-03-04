@@ -32,6 +32,8 @@ const ShoeProvider = ({ children }) => {
                         seller,
                         size,
                         payment,
+                        buyer,
+                        complete,
                     } = attributes;
                     const image =
                         picture && picture.data && picture.data.length > 0
@@ -47,6 +49,8 @@ const ShoeProvider = ({ children }) => {
                     const genderType = gender?.data?.attributes.name;
                     const Seller = seller?.data?.attributes.username;
                     const sellerid = seller?.data?.id
+                    const buyerid = buyer?.data?.id
+                
                     //const product_color = color.data.products_name
                     //const category = attributes.categories?.data.map(cat => cat.attributes.name) || ['uncategorized'];;
                     return {
@@ -63,7 +67,10 @@ const ShoeProvider = ({ children }) => {
                         Seller,
                         sellerid,
                         size,
-                        payment
+                        payment,
+                        buyerid,
+                        complete
+                    
                     };
                 });
                 setShoes(shoeData);

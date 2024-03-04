@@ -16,7 +16,7 @@ const ShoeContainer = styled.div`
 `;
 
 
-export default function ToShipContent() {
+export default function ToComplete() {
     const { shoes } = useContext(ShoeContext);
     console.log("🚀 ~ ToShipContent ~ shoes:", shoes)
     const [MyShoes, setMyShoes] = useState([]);
@@ -85,7 +85,7 @@ export default function ToShipContent() {
     const fetchMyShoes = () => {
         const myShoesIsSole = allId.map((item) => {
             const shoefiltered = shoes.filter((shoe) => {
-                return shoe.id === item.shoe_id && shoe.sellerid === MyId;
+                return shoe.id === item.shoe_id && shoe.buyerid === MyId && shoe.complete  === true ;
             })
             return shoefiltered[0]
         })
@@ -103,11 +103,10 @@ export default function ToShipContent() {
                             <img src={shoe.image[0]} alt={shoe.name} className="mx-auto mb-4 float-left" style={{ maxWidth: "150px" }} />
                             <div className="ml-4 flex-grow">
                                 <h3 className="text-xl font-semibold">{shoe.products_name}</h3>
-                                <p className="text-gray-600 mt-1">{shoe.buyer}</p>
                                 <p className="text-gray-600 mt-1">{shoe.price} THB</p>
                             </div>
                             <div className="ml-auto">
-                                <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">View Status</button>
+                                <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">ได้รับสินค้าเเล้ว</button>
                             </div>
                         </div>
                     </ShoeContainer>
