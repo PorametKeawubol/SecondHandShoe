@@ -153,10 +153,10 @@ const EditProfile = ({ setProfile }) => {
   }
 
   const handleVerify = async () => {
-    if (realName === null || address === null || telNum === null /*|| other === ""*/) {
+    if (realName === "" || realName === null || address === "" || address === null || telNum === "" || telNum === null || Bank_account === "" || Bank_account === null  /*|| other === ""*/) {
       setErrorMessage("Please fill in all fields")
       console.log('verify error')
-      setIsWaiting(null);
+      setIsWaiting(false);
     } else {
       try {
         const response = await axios.put(`http://localhost:1337/api/users/${userId}`, {
@@ -268,7 +268,7 @@ const EditProfile = ({ setProfile }) => {
             <div className="mb-6 mt-8">
               <label htmlFor="message" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"></label>
               <p className='mb-2'>Real Name</p>
-                  <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter your real name Ex. Mrs.Supanee Thidasan"
+                  <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter your real name Ex. Mr.Hello Neptune"
                   defaultValue={realName}
                   onChange={(e) => setRealName(e.target.value)} />
                 <label htmlFor="message" className="block mb-5 text-sm font-medium text-indigo-900 dark:text-white"></label>
@@ -284,7 +284,7 @@ const EditProfile = ({ setProfile }) => {
                   defaultValue={telNum}
                   onChange={(e) => setTelNum(e.target.value)}/>
               <p className='mb-2 mt-3'>Bank Accounts</p>
-                  <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter your name and number bank account"
+                  <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter name and number of your bank account"
                   defaultValue={Bank_account}
                   onChange={(e) => setbankaccout(e.target.value)}/>
                   {errorMessage && (
