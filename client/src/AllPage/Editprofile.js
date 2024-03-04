@@ -152,7 +152,7 @@ const EditProfile = ({ setProfile }) => {
   }
 
   const handleVerify = async () => {
-    if (realName.trim() === "" || address.trim() === "" || telNum.trim() === "" /*|| other.trim() === ""*/) {
+    if (realName === null || address === null || telNum === null /*|| other === ""*/) {
       setErrorMessage("Please fill in all fields")
       console.log('verify error')
     } else {
@@ -167,9 +167,9 @@ const EditProfile = ({ setProfile }) => {
       } catch (error) {
         console.error("Error editing profile:", error);
       }
+      setIsWaiting(true);
+      //admin verify ให้ set waiting เป็น false และ set verify เป็น true
     }
-    setIsWaiting(true);
-    //admin verify ให้ set waiting เป็น false และ set verify เป็น true
   };
 
   
@@ -289,7 +289,7 @@ const EditProfile = ({ setProfile }) => {
                   {errorMessage && (
                     <p className='mt-5 text-red-500'>{errorMessage}.</p>
                   )}
-                  <div className="mt-8 flex justify">
+                  <div className="mt-7 flex justify">
                   <button
                   type="button"
                   onClick={handleVerify} 
