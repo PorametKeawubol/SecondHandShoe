@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import { ShoeContext } from "../contexts/ShoeContext";
+import { FaTimes } from 'react-icons/fa'; // Import FaTimes for X icon
 
 const baseURL = "http://localhost:1337/api/";
 
@@ -24,9 +25,24 @@ function EditItem({ itemId, onClose, user }) {
     const [genderTags, setGenderTags] = useState([]);
     const [uploadMessage, setUploadMessage] = useState(""); // State for upload message
     const [uploadError, setUploadError] = useState(""); // State for upload error
+    const modalRef = useRef(null);
 
     axios.defaults.headers.common["Authorization"] =
         `Bearer ${sessionStorage.getItem("authToken")}`;
+
+    const handleCloseModal = (e) => {
+        if (modalRef.current && !modalRef.current.contains(e.target)) {
+            onClose();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleCloseModal);
+
+        return () => {
+            document.removeEventListener("mousedown", handleCloseModal);
+        };
+    }, []);
 
     const { setShoes } = useContext(ShoeContext);
     const handleFetchShoes = async () => {
@@ -53,10 +69,10 @@ function EditItem({ itemId, onClose, user }) {
                     const image =
                         picture && picture.data && picture.data.length > 0
                             ? picture.data.map(
-                                  (img) =>
-                                      "http://localhost:1337" +
-                                      img.attributes.url
-                              )
+                                (img) =>
+                                    "http://localhost:1337" +
+                                    img.attributes.url
+                            )
                             : [];
 
                     const brandType = brand?.data?.attributes.name;
@@ -156,6 +172,18 @@ function EditItem({ itemId, onClose, user }) {
                     : files,
             };
         });
+    };
+
+    const handleRemovePreviewImage = (index) => {
+        // Remove the image from newImages state
+        const updatedImages = [...newImages];
+        updatedImages.splice(index, 1);
+        setNewImages(updatedImages);
+
+        // Remove the corresponding image from editedData
+        const updatedEditedData = { ...editedData };
+        updatedEditedData.picture.splice(index, 1);
+        setEditedData(updatedEditedData);
     };
 
     const handleRemoveImage = async (index) => {
@@ -329,11 +357,10 @@ function EditItem({ itemId, onClose, user }) {
 
     return (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-100 bg-opacity-50 flex justify-center items-center">
-            <div
-                className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg"
-                style={{ maxHeight: "calc(100vh - 180px)", overflowY: "auto" }}
-            >
-                <div className="justify-end">
+            <div ref={modalRef} className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg relative" style={{ maxHeight: "calc(100vh)", overflowY: "auto" }}>
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                    <FaTimes />
+                </button>
                     <h2 className="text-2xl font-semibold mb-4">Edit Item</h2>
                     {shoeData ? (
                         <form onSubmit={handleSubmit}>
@@ -534,13 +561,47 @@ function EditItem({ itemId, onClose, user }) {
                                             )
                                         )}
                                 </div>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleImageChange}
-                                    multiple
-                                    className="mt-2"
-                                />
+                                <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
+                                    {/* Text inside the dropzone */}
+                                    <span className="text-gray-600">Drop or click to upload images</span>
+                                    {/* Input element for file selection */}
+                                    <input id="dropzone-file" type="file" className="hidden" onChange={handleImageChange} multiple accept="image/jpeg,image/png" />
+                                    {/* New code for displaying image previews */}
+                                    <div className="flex flex-wrap items-center justify-center">
+                                        {newImages.map((imageUrl, index) => (
+                                            <div key={index} className="relative mr-4 mb-4">
+                                                <img
+                                                    src={imageUrl}
+                                                    alt={`Preview ${index}`}
+                                                    className="w-20 h-20 object-cover rounded-md"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                                    onClick={() => handleRemovePreviewImage(index)}
+                                                >
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-4 w-4"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M6 18L18 6M6 6l12 12"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </label>
+
+
+
                             </div>
                             <div className="flex">
                                 <button
@@ -571,7 +632,6 @@ function EditItem({ itemId, onClose, user }) {
                     )}
                 </div>
             </div>
-        </div>
     );
 }
 

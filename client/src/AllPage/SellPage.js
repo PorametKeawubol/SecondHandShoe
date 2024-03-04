@@ -186,11 +186,10 @@ const ImageUploadPopup = ({ onClose }) => {
 
     return (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-100 bg-opacity-50 flex justify-center items-center">
-            <div ref={popupRef} className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg" style={{ maxHeight: "calc(100vh - 40px)", overflowY: "auto" }}>
-                <div className="justify-end">
-                    <button onClick={onClose} className="text-gray-600 hover:text-gray-900">
-                        <FaTimes />
-                    </button>
+            <div ref={popupRef} className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg relative" style={{ maxHeight: "calc(100vh)", overflowY: "auto" }}>
+                <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                    <FaTimes />
+                </button>
                     <h2 className="text-2xl font-semibold mb-4 text-center">Post Item</h2>
                     <form onSubmit={handleSubmit} className="w-full">
                         <label className="block mb-4">
@@ -342,7 +341,6 @@ const ImageUploadPopup = ({ onClose }) => {
                     </form>
                 </div>
             </div>
-        </div>
     );
 }
 export default ImageUploadPopup;
