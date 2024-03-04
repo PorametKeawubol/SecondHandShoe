@@ -12,6 +12,7 @@ const EditProfile = ({ setProfile }) => {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [Bank_account, setbankaccout] = useState("")
   const [address, setAddress] = useState("");
   const [bio, setBio] = useState("");
   const [token, setToken] = useState(""); // Add token state
@@ -44,7 +45,7 @@ const EditProfile = ({ setProfile }) => {
       setRealName(userData.Real_Name);
       setTelNum(userData.PhoneNum);
       setIsWaiting(userData.VerificationWaiting);
-
+      setbankaccout(userData.Bankaccounts)
       setIsAdmin(user.role.name === "admin");
       setIsVerify(user.Verify === true);
       if (isAdmin) {
@@ -152,16 +153,19 @@ const EditProfile = ({ setProfile }) => {
   }
 
   const handleVerify = async () => {
-    if (realName.trim() === "" || address.trim() === "" || telNum.trim() === "" /*|| other.trim() === ""*/) {
+    if (realName==="" || address === "" || telNum === "" /*|| other.trim() === ""*/) {
       setErrorMessage("Please fill in all fields")
       console.log('verify error')
+      setIsWaiting(null);
     } else {
       try {
         const response = await axios.put(`http://localhost:1337/api/users/${userId}`, {
           Real_Name: realName,
           Address: address,
           PhoneNum: telNum,
-          VerificationWaiting: true,
+          Bankaccounts : Bank_account,
+          VerificationWaiting: true
+
         });
         console.log("Wait for verifying..", response.data);
       } catch (error) {
@@ -263,32 +267,29 @@ const EditProfile = ({ setProfile }) => {
             <h2 className="text-2xl font-bold sm:text-xl">For verify your account</h2>
             <div className="mb-6 mt-8">
               <label htmlFor="message" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"></label>
-              <p className='mb-3'>Real Name</p>
+              <p className='mb-2'>Real Name</p>
                   <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter your real name Ex. Mrs.Supanee Thidasan"
                   defaultValue={realName}
                   onChange={(e) => setRealName(e.target.value)} />
                 <label htmlFor="message" className="block mb-5 text-sm font-medium text-indigo-900 dark:text-white"></label>
-              <p className='mb-3'>Address</p>
+              <p className='mb-2'>Address</p>
               <textarea id="message" rows="4" className="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 " 
               onChange={(e) => setAddress(e.target.value)}
               value={address}
               placeholder="Enter your address"></textarea>
             </div>
               <label htmlFor="first_name" className="block text-sm font-medium text-indigo-900 dark:text-white"></label>
-              <p className='mb-3'>Phone Number</p>
+              <p className='mb-2'>Phone Number</p>
                   <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter your phone number"
                   defaultValue={telNum}
                   onChange={(e) => setTelNum(e.target.value)}/>
-              {/* ใส่ input เพิ่มได้ตรงนี้ */}
-              {/* <label htmlFor="message" className="block mb-5 text-sm font-medium text-indigo-900 dark:text-white"></label>
-              <p className='mb-3'>Other</p>
-                  <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Other..."
-                  value={}
-                  onChange={(e) => set(e.target.value)} defaultValue=""
-                  /> */}
                   {errorMessage && (
                     <p className='mt-5 text-red-500'>{errorMessage}.</p>
                   )}
+                   <p className='mb-2 mt-3'>Bank Accounts</p>
+                  <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter your phone number"
+                  defaultValue={Bank_account}
+                  onChange={(e) => setbankaccout(e.target.value)}/>
                   <div className="mt-8 flex justify">
                   <button
                   type="button"

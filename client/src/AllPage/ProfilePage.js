@@ -27,7 +27,7 @@ function Profile() {
     const [showImageUploadPopup, setShowImageUploadPopup] = useState(false); // State to control the visibility of the ImageUploadPopup
     const [isAdmin, setIsAdmin] = useState("");
     const userProfile = sessionStorage.getItem("Profile_Picture");
-    const [isVerified, setIsVerified] = useState("")
+    const [isVerified, setIsVerified] = useState(null)
     const handleToRateOpen = () => {
         setShowToRateModal(true);
     };
@@ -49,11 +49,12 @@ function Profile() {
                 );
 
                 const userData = response.data;
+                console.log("🚀 ~ fetchUserData ~ userData:", userData)
                 setUsername(userData.username);
                 setEmail(userData.email);
                 setBio(userData.Bio);
                 setIsAdmin(userData.role.name === 'admin'); 
-                setIsVerified(userData.Verify === true);
+                setIsVerified(userData.Verify);
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
@@ -63,7 +64,7 @@ function Profile() {
     }, []);
 
     const handlePostSellClick = () => {
-        if (!isVerified) {
+        if (isVerified=== false || isVerified === null) {
             alert("Please verify your account first.");
             //แก้ให้ดูดีกว่านี้ก็ได้นะงับ
         } else {

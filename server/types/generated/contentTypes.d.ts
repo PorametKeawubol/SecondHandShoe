@@ -801,7 +801,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     Verify: Attribute.Boolean;
     Real_Name: Attribute.String;
     PhoneNum: Attribute.String;
-    VerificationWaiting: Attribute.Boolean;
+    VerificationWaiting: Attribute.Boolean & Attribute.DefaultTo<false>;
+    Bankaccounts: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

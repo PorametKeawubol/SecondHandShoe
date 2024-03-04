@@ -134,7 +134,11 @@
       "type": "string"
     },
     "VerificationWaiting": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
+    },
+    "Bankaccounts": {
+      "type": "string"
     }
   }
 }
