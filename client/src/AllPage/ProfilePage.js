@@ -11,6 +11,8 @@ import {
     FaReply,
     FaHistory,
     FaStoreAlt,
+    FaCheck,
+    FaTimes,
 } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 import { Link } from "react-router-dom";
@@ -24,6 +26,7 @@ function Profile() {
     const [showToRateModal, setShowToRateModal] = useState(false);
     const [showImageUploadPopup, setShowImageUploadPopup] = useState(false); // State to control the visibility of the ImageUploadPopup
     const userProfile = sessionStorage.getItem("Profile_Picture");
+    const [isVerified, setIsVerified] = useState(false)
     const handleToRateOpen = () => {
         setShowToRateModal(true);
     };
@@ -99,16 +102,32 @@ function Profile() {
                         />
                     )}
 
-                    <div>
-                        <p style={{ fontSize: "30px", color: "white" }}>
-                            {username}
-                        </p>
+                    <div >
+                    <p style={{ fontSize: "30px", color: "white", display: "flex", alignItems: "center"}}>
+                        <span style={{ marginRight: "10px"}}>{username}</span>
+                        {!isVerified && (
+                            <span style={{ display: "flex", alignItems: "center"}}>
+                                <FaTimes color="#a3a6a2" size="20" style={{ marginRight: "5px", marginTop: "5px"}} />
+                                <span style={{ fontSize: "14px", color: "#a3a6a2",marginTop: "3px"}}>not verified</span>
+                            </span>
+                        )}
+                        {isVerified && (
+                            <span style={{ display: "flex", alignItems: "center"}}>
+                                <FaCheck color="#79d160" size="20" style={{ marginRight: "5px", marginTop: "5px"}} />
+                                <span style={{ fontSize: "14px", color: "#79d160", marginTop: "4px"}}>verified</span>
+                            </span>
+                        )}
+                    </p>
+
+
+
                         <p style={{ fontSize: "18px", color: "white" }}>
                             {email}
                         </p>
-                        <p className="mt-1 mb-1" style={{ fontSize: "12px", color: "white" }}>
-                            bio : {bio}
-                        </p>
+                        {bio &&(
+                        <p className="mt-1 mb-1" style={{ fontSize: "12px", color: "white" }}> bio : {bio}
+                        </p>)}
+                        
                         <button className="mt-1" style={{ fontSize: "12px", color: "white", border: "1px solid white", borderRadius: "8px", padding: "8px 16px"}}>
                             <Link to="/Editprofile" style={{ color: "white" }}>Edit Profile 🔧</Link>
                         </button>

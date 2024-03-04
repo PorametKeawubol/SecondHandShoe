@@ -134,6 +134,9 @@ const EditProfile = ({ setProfile }) => {
   
   const handleCancle = () => {
     navigate('/Profile');
+  }
+
+  const handleVerify = () => {
     //put your code here
   }
 
@@ -207,16 +210,20 @@ const EditProfile = ({ setProfile }) => {
                   placeholder="Add your bio"
                   style={{ resize: "none" }}></textarea>
                   </div>
-
-                  <div className="mb-6">
+                  {/*<div className="mb-6">
                     <label htmlFor="message" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"></label>
                     <p className='mb-3'>Your Address</p>
                     <textarea id="message" rows="4" className="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 " 
                     onChange={(e) => setAddress(e.target.value)}
                     value={address}
                     placeholder="Your address"></textarea>
+                  </div>*/}
+                  <div className="flex justify">
+                    <button type="button" onClick={handleVerify} className="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-400 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-400 dark:hover:bg-green-500 dark:focus:ring-green-600">
+                      Verify your account
+                    </button>
                   </div>
-                  <div className="flex justify- mt-8">
+                  <div className="flex justify mt-8">
                       <button type="button" onClick={handleSubmit} className="text-white bg-indigo-700 mr-80 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Save</button>
                       <button 
                       type="button" 
