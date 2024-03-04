@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import { ShoeContext } from "../contexts/ShoeContext";
 import axios from "axios";
 import styled from "styled-components"; // import styled-components
-import status from "./status";
 // Styled component for the shoe container
 const ShoeContainer = styled.div`
     background-color: #E5E7EB; /* Set background color */
@@ -17,7 +16,8 @@ const ShoeContainer = styled.div`
 
 
 export default function ToReceiveContent() {
-    const { shoes } = useContext(ShoeContext);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("authToken")}`
+    const { shoes,fetchShoes } = useContext(ShoeContext);
     console.log("🚀 ~ ToShipContent ~ shoes:", shoes)
     const [MyShoes, setMyShoes] = useState([]);
     const [MyId, setMyId] = useState([]);
@@ -32,7 +32,25 @@ export default function ToReceiveContent() {
 
     useEffect(() => {
         fetchMyShoes();
-    }, [allId]);
+    }, [allId,shoes]);
+
+    const comfirmcomplete = async () => {
+        
+        const payload = {
+            data: {
+                complete: true,
+            },
+        };
+        try {
+            await axios.put(`http://localhost:1337/api/shoes/1`, payload);
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        } finally {
+            fetchShoes()
+            
+        }
+        
+    };
 
     const fetchUserData = async () => {
         try {
@@ -85,7 +103,7 @@ export default function ToReceiveContent() {
     const fetchMyShoes = () => {
         const myShoesIsSole = allId.map((item) => {
             const shoefiltered = shoes.filter((shoe) => {
-                return shoe.id === item.shoe_id && shoe.buyerid === MyId && shoe.complete  !== true ;
+                return shoe.id === item.shoe_id && shoe.buyerid === MyId && shoe.complete !== true;
             })
             return shoefiltered[0]
         })
@@ -95,9 +113,9 @@ export default function ToReceiveContent() {
 
     return (
         <div className="p-6">
-            <h1 className="text-3xl font-bold mb-4">Shipping Status</h1>
+            <h1 className="text-3xl font-bold mb-4">Delivery status</h1>
             <div className="grid gap-4">
-                 {MyShoes && MyShoes[0] !== undefined && MyShoes.map((shoe) => (
+                {MyShoes && MyShoes[0] !== undefined && MyShoes.map((shoe) => (
                     <ShoeContainer key={shoe.id}>
                         <div className="border rounded p-4 relative w-[100%] flex items-center">
                             <img src={shoe.image[0]} alt={shoe.name} className="mx-auto mb-4 float-left" style={{ maxWidth: "150px" }} />
@@ -106,11 +124,13 @@ export default function ToReceiveContent() {
                                 <p className="text-gray-600 mt-1">{shoe.price} THB</p>
                             </div>
                             <div className="ml-auto">
-                                <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">ได้รับสินค้าเเล้ว</button>
+                                <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => {
+                            comfirmcomplete();
+                          }}>ได้รับสินค้าเเล้ว</button>
                             </div>
                         </div>
                     </ShoeContainer>
-                ))} 
+                ))}
             </div>
         </div>
     );

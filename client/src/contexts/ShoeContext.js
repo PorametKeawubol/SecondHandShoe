@@ -87,7 +87,7 @@ const ShoeProvider = ({ children }) => {
   
 
     return (
-        <ShoeContext.Provider value={{shoes,setShoes}}>
+        <ShoeContext.Provider value={{shoes,setShoes,fetchShoes}}>
             {children}
         </ShoeContext.Provider>
     );

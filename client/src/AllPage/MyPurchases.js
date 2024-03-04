@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { useEffect } from 'react';
 import Header from "../Component/Header";
 import { Link } from 'react-router-dom';
@@ -8,10 +8,11 @@ import ToReceiveContent from '../Component/ToReceiveContent';
 import styled from "styled-components"; // import styled-components
 import ToShipContent from '../Component/ToShipContent';
 import ToComplete from '../Component/ToComplete';
+import { ShoeContext } from '../contexts/ShoeContext';
 const MyPurchases = () => {
   const [activeTab, setActiveTab] = useState('cart');
   const location = useLocation();
-
+  const {shoes} = useContext(ShoeContext)
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const tab = params.get('tab');
