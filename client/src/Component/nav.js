@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { Bars4Icon } from '@heroicons/react/20/solid';
 
 const HamburgerMenu = ({ handleLogout }) => {
+  const isAdmin = sessionStorage.getItem("role");
+  console.log("🚀 ~ HamburgerMenu ~ isAdmin:", isAdmin)
   return (
     <div className="relative group">
       <Menu as="div" className="relative inline-block text-left">
@@ -18,9 +20,8 @@ const HamburgerMenu = ({ handleLogout }) => {
             </div>
 
             <Menu.Items
-              className={`absolute right-0 mt-2 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition-all duration-300 ${
-                open ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
-              }`}
+              className={`absolute right-0 mt-2 w-56 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none transition-all duration-300 ${open ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+                }`}
             >
               <div className="px-1 py-1">
                 <Menu.Item>
@@ -48,6 +49,19 @@ const HamburgerMenu = ({ handleLogout }) => {
                     </Link>
                   )}
                 </Menu.Item>
+                {isAdmin === "admin" && (
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link
+                        to="/admin"
+                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                        } group flex rounded-md items-center w-full px-2 py-2 text-sm border-b `}
+                      >
+                        admin
+                      </Link>
+                    )}
+                  </Menu.Item>
+                )}
 
                 <Menu.Item>
                   {({ active }) => (

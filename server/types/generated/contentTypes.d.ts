@@ -1025,6 +1025,7 @@ export interface ApiPaymentPayment extends Schema.CollectionType {
       'api::shoe.shoe'
     >;
     Confirm: Attribute.Boolean & Attribute.DefaultTo<false>;
+    Price: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

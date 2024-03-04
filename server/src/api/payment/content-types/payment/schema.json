@@ -38,6 +38,9 @@
     "Confirm": {
       "type": "boolean",
       "default": false
+    },
+    "Price": {
+      "type": "integer"
     }
   }
 }

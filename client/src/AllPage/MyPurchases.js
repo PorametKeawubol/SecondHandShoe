@@ -47,9 +47,9 @@ const MyPurchases = () => {
 
 const BarPurchases = ({ activeTab, handleTabChange }) => {
   return (
-    <StyledNav className="flex justify-evenly bg-gray-200 py-4 mt-0" style={{  position: 'sticky',  }}>
+    <StyledNav className="flex justify-evenly  py-4 mt-0" style={{  position: 'sticky',  }}>
       <StyledButton
-        className={`${activeTab === 'cart' ? 'active' : ''}`}
+        className={`${activeTab === 'cart' ? 'active' : ''}  `}
         onClick={() => handleTabChange('cart')}
       >
         To pay
@@ -78,7 +78,7 @@ const BarPurchases = ({ activeTab, handleTabChange }) => {
 
 const StyledNav = styled.nav`
   .active {
-    background-color: #4CAF50; /* Green */
+    background-color: rgb(37 99 235);
     border: none;
     color: white;
     padding: 10px 24px;
@@ -87,13 +87,13 @@ const StyledNav = styled.nav`
     display: inline-block;
     font-size: 20px;
     margin: 4px 2px;
-    transition-duration: 0.4s;
+
     cursor: pointer;
     border-radius: 12px;
   }
 
   .active:hover {
-    background-color: #45a049;
+    background-color: rgb(37 99 235);
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
   }
 `;
@@ -108,7 +108,6 @@ const StyledButton = styled.button`
   display: inline-block;
   font-size: 16px;
   margin: 4px 2px;
-  transition-duration: 0.4s;
   cursor: pointer;
   border-radius: 12px;
 

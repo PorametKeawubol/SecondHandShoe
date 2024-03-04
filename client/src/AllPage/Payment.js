@@ -96,6 +96,7 @@ function Payment() {
                     Buyer: user.id,
                     Bill: uploadedImages.map((image) => ({ id: image.id })),
                     shoe: parseInt(id),
+                    Price:parseFloat(price).toFixed(2)
 
                     // Assuming Strapi returns image objects with an id field
                };

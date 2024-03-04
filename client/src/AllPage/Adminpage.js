@@ -1,128 +1,122 @@
-import "../app.css";
-import Footer from "../Component/Footer";
+import React, { useState,useContext } from 'react';
+import { useEffect } from 'react';
 import Header from "../Component/Header";
-import axios from "axios";
-import { useState, useEffect, useContext } from "react";
-import PaymentList from "../Component/PaymentList";
-
-export default function Admin() {
-  const [ListShoes, setListShoes] = useState("");
-  const [Adminlist, setAdminlist] = useState();
-
+import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import Confrimpayment from '../Component/Confrimpayment';
+import styled from "styled-components"; // import styled-components
+import ToShipContent from '../Component/ToShipContent';
+import ToComplete from '../Component/ToComplete';
+import { ShoeContext } from '../contexts/ShoeContext';
+const MyPurchases = () => {
+  const [activeTab, setActiveTab] = useState('cart');
+  const location = useLocation();
+  const {shoes} = useContext(ShoeContext)
   useEffect(() => {
-    fetchShoesAdmin();
-  }, []);
-  const fetchShoesAdmin = async () => {
-    try {
-      const response = await axios.get("/api/shoes?populate=*");
-      console.log("🚀 ~ fetchShoes ~ response:", response);
-      if (Array.isArray(response.data.data)) {
-        // Check if response.data is an array
-        const shoeData = response.data.data.map((shoe) => {
-          const { id, attributes } = shoe;
-          const {
-            products_name,
-            price,
-            details,
-            location,
-            picture,
-            brand,
-            color,
-            gender,
-            status,
-            seller,
-            size,
-            payment,
-          } = attributes;
-          const image =
-            picture && picture.data && picture.data.length > 0
-              ? picture.data.map(
-                  (img) => "http://localhost:1337" + img.attributes.url
-                )
-              : [];
-
-          const brandType = brand?.data?.attributes.name;
-          const colorType = color?.data?.attributes.name;
-          const genderType = gender?.data?.attributes.name;
-          const Seller = seller?.data?.attributes.username;
-          //const product_color = color.data.products_name
-          //const category = attributes.categories?.data.map(cat => cat.attributes.name) || ['uncategorized'];;
-          return {
-            id,
-            products_name,
-            price,
-            details,
-            location,
-            image,
-            brandType,
-            colorType,
-            genderType,
-            status,
-            Seller,
-            size,
-            payment,
-          };
-        });
-        setAdminlist(shoeData);
-      } else {
-        console.error("Response data is not an array:", response.data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching shoes:", error);
+    const params = new URLSearchParams(location.search);
+    const tab = params.get('tab');
+    if (tab) {
+      handleTabChange(tab);
     }
-  };
+  }, [location.search]);
 
-  axios.defaults.headers.common["Authorization"] =
-    `Bearer ${sessionStorage.getItem("authToken")}`;
-  useEffect(() => {
-    fetchList();
-  }, []);
-  const fetchList = async () => {
-    try {
-      const response = await axios.get("api/payments?populate=*");
 
-      if (Array.isArray(response.data.data)) {
-        const ListData = response.data.data.map((List) => {
-          const { id, attributes } = List;
-          const { shoe, Buyer, Bill, Confirm } = attributes;
-          const bill = "http://localhost:1337" + Bill.data.attributes.url;
-          const shoe_id = shoe.data.id;
-          const Buyer_id = Buyer.data.id;
-          return {
-            id,
-            bill,
-            Confirm,
-            shoe_id,
-            Buyer_id,
-          };
-        });
-        const filteredListData = ListData.filter((List) => {
-          return List.Confirm === false;
-        });
-        setListShoes(filteredListData);
-      }
-    } catch (error) {
-      console.error("Error fetching confirm:", error);
-    }
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
   return (
-    <div className="flex flex-col w-full h-screen backgroundAll">
-      <Header />
-      <div className="flex w-full h-full justify-center mt-10 ">
-        <div className="flex flex-col bg-slate-200 w-[80%] rounded-3xl shadow-2xl opacity-90">
-          <div className="text-slate-600 h-20 p-5 text-xl font-bold">
-            <p className="">confirmation</p>
-          </div>
-          <div>
-            {ListShoes &&
-              ListShoes.map((List) => {
-                return <PaymentList item={List} shoes={Adminlist} />;
-              })}
-          </div>
-        </div>
+    <div className="flex flex-col h-screen">
+    <Header />
+
+      {/* Navigation */}
+      <BarPurchases activeTab={activeTab} handleTabChange={handleTabChange} />
+      
+      {/* Content */}
+      <div className="flex-1 p-4 overflow-y-auto">
+        {/* Display content based on activeTab */}
+        {activeTab === 'PaymentComfirm' && <Confrimpayment />}
+        {activeTab === 'Allpayment' && <Confrimpayment />}
+        {activeTab === 'Allshoe' && <ToShipContent />}
+        {activeTab === 'Verify' && <ToComplete />}
       </div>
-      <Footer />
     </div>
   );
-}
+};
+
+const BarPurchases = ({ activeTab, handleTabChange }) => {
+  return (
+    <StyledNav className="flex justify-evenly bg-gray-200 py-2 mt-0" style={{  position: 'sticky',  }}>
+      <StyledButton
+        className={`${activeTab === 'PaymentComfirm' ? 'active' : ''}  `}
+        onClick={() => handleTabChange('PaymentComfirm')}
+      >
+        Payment Comfirm
+      </StyledButton>
+      <StyledButton
+        className={`${activeTab === 'Verify' ? 'active' : ''}`}
+        onClick={() => handleTabChange('Verify')}
+      >
+        Allshoe
+      </StyledButton>
+      <StyledButton
+        className={`${activeTab === 'Allshoe' ? 'active' : ''}`}
+        onClick={() => handleTabChange('Allshoe')}
+      >
+        Allpayment
+      </StyledButton>
+      <StyledButton
+        className={`${activeTab === 'Allpayment' ? 'active' : ''}`}
+        onClick={() => handleTabChange('Allpayment')}
+      >
+        Verify
+      </StyledButton>
+    </StyledNav>
+  );
+};
+
+const StyledNav = styled.nav`
+  .active {
+    background-color: rgb(37 99 235);
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 4px 2px;
+
+    cursor: pointer;
+    border-radius: 12px;
+  }
+
+  .active:hover {
+    background-color: rgb(37 99 235);
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  }
+`;
+
+const StyledButton = styled.button`
+  background-color: #e7e7e7; /* Green */
+  border: none;
+  color: black;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+
+  &:hover {
+    background-color: #ddd;
+  }
+`;
+
+const Cart = () => {
+ return <Confrimpayment />;
+};
+
+export default MyPurchases;

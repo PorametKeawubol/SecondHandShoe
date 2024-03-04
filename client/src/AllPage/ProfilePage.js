@@ -94,7 +94,7 @@ function Profile() {
                 >
                     {userProfile !== " " ? (
                         <img
-                            className="mr-4 rounded-full"
+                            className="object-cover  p-1 rounded-full ring-2 ring-indigo-300 dark:ring-indigo-500 mr-10"
                             src={userProfile}
                             alt="User Profile"
                             style={{

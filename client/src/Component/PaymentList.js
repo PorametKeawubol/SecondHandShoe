@@ -61,16 +61,16 @@ export default function PaymentList({ item, shoes }) {
           <div className="flex justify-between mb-2">
             <Link
               to={`/shoe/${id}`}
-              className="text-sm uppercase font-medium max-w-[240px] text-primary hover:underline"
+              className="text-sm uppercase  font-medium max-w-[240px] text-primary hover:underline  text-gray-900"
             >
               {shoe[0].products_name}
             </Link>
           </div>
           <div className="flex gap-x-2 h-[36px] text-sm"></div>
-          <div className="flex flex-1 justify-around items-center">
+          <div className="flex flex-1 justify-around items-center text-gray-900 ">
             {shoe[0].price} THB
           </div>
-          <div className="flex justify-center items-center bg-green-200 text-emerald-500 font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
+          <div className="flex justify-center items-center bg-green-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
             <button
               onClick={() => {
                 setOpenAccepted(true);
@@ -162,7 +162,7 @@ export default function PaymentList({ item, shoes }) {
               </div>
             </Dialog>
           </Transition.Root>
-          <div className="flex justify-center items-center bg-red-200 text-rose-500 font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
+          <div className="flex justify-center items-center bg-red-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
             <button
               onClick={() => {
                 setOpen(true);
