@@ -5,7 +5,7 @@ import { Bars4Icon } from '@heroicons/react/20/solid';
 
 const HamburgerMenu = ({ handleLogout }) => {
   return (
-    <div className="relative">
+    <div className="relative transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:duration-300 ...">
       <Menu as="div" className="relative inline-block text-left">
         {({ open }) => (
           <>
@@ -31,7 +31,7 @@ const HamburgerMenu = ({ handleLogout }) => {
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                       } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                     >
-                      Profile
+                      Profile 👤
                     </Link>
                   )}
                 </Menu.Item>
@@ -56,13 +56,13 @@ const HamburgerMenu = ({ handleLogout }) => {
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                       } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                     >
-                      Contact
+                      Contact ☎️
                     </Link>
                   )}
                 </Menu.Item>
                 <Menu.Item>
                   <button onClick={handleLogout} className="group flex rounded-md items-center w-full px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none">
-                    Logout
+                    Logout ↪
                   </button>
                 </Menu.Item>
               </div>

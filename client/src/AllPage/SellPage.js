@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FaTimes } from 'react-icons/fa'; // Import FaTimes for X icon
 import axios from 'axios';
 
+
+const baseURL = "http://localhost:1337/api/";
 // Notification component
 const Notification = ({ message, isError }) => {
     const bgColor = isError ? 'bg-red-500' : 'bg-green-500';
@@ -25,6 +27,9 @@ const ImageUploadPopup = ({ onClose }) => {
     const [uploadMessage, setUploadMessage] = useState('');
     const [uploadError, setUploadError] = useState('');
 
+    axios.defaults.headers.common["Authorization"] =
+    `Bearer ${sessionStorage.getItem("authToken")}`;
+
     useEffect(() => {
         fetchTagsFromServer();
         fetchUserFromServer();
@@ -47,9 +52,9 @@ const ImageUploadPopup = ({ onClose }) => {
 
     const fetchTagsFromServer = async () => {
         try {
-            const brandResponse = await axios.get('http://localhost:1337/api/brands');
-            const colorResponse = await axios.get('http://localhost:1337/api/colors');
-            const genderResponse = await axios.get('http://localhost:1337/api/genders');
+            const brandResponse = await axios.get(`${baseURL}brands`);
+            const colorResponse = await axios.get(`${baseURL}colors`);
+            const genderResponse = await axios.get(`${baseURL}genders`);
 
             setBrandTags(brandResponse.data.data);
             setColorTags(colorResponse.data.data);
@@ -123,7 +128,7 @@ const ImageUploadPopup = ({ onClose }) => {
             const formData = new FormData();
             formData.append('data', JSON.stringify(shoeData));
 
-            const response = await axios.post('http://localhost:1337/api/shoes', formData, {
+            const response = await axios.post(`${baseURL}shoes`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -144,7 +149,7 @@ const ImageUploadPopup = ({ onClose }) => {
         try {
             const formData = new FormData();
             formData.append('files', image);
-            const response = await axios.post('http://localhost:1337/api/upload', formData, {
+            const response = await axios.post(`${baseURL}upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -173,8 +178,8 @@ const ImageUploadPopup = ({ onClose }) => {
     };
 
     return (
-        <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-100 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg" style={{ maxHeight: "calc(100vh - 180px)", overflowY: "auto" }}>
+        <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-100 bg-opacity-50 flex justify-center items-center" >
+            <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-lg" style={{ maxHeight: "calc(100vh)", overflowY: "auto" }}>
                 <div className="justify-end">
                     <button onClick={onClose} className="text-gray-600 hover:text-gray-900">
                         <FaTimes />
@@ -204,10 +209,18 @@ const ImageUploadPopup = ({ onClose }) => {
                             <span className="text-gray-700">Location:</span>
                             <input type="text" name="location" className="mt-1 block w-full rounded-md border-black border shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
                         </label>
-                        <label className="block mb-4">
-                            <span className="text-gray-700">Select Images:</span>
-                            <input type="file" accept="image/*" multiple onChange={handleImageChange} className="mt-1 block w-full" />
-                        </label>
+                        <div class="flex items-center justify-center w-full">
+                        <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">PNG, JPG (MAX. 800x400px)</p>
+                                </div>
+                                <input id="dropzone-file" type="file" className="hidden" onChange={handleImageChange} multiple accept="image/jpeg,image/png" />
+                            </label>
+                        </div>
                         {images.length > 0 && (
                             <div>
                                 <h3 className="text-2xl font-semibold text-gray-800 mb-4">Preview:</h3>
@@ -311,7 +324,7 @@ const ImageUploadPopup = ({ onClose }) => {
                                 </label>
                             </div>
                         </div>
-                        <button type="submit" disabled={images.length === 0} className="w-full bg-black text-white rounded-md py-2 hover:bg-gray-900">Upload</button>
+                        <button type="submit" disabled={images.length === 0} className="w-full bg-black text-white rounded-md py-2 hover:bg-gray-900">Upload 📤 </button>
                         {uploadMessage && <Notification message={uploadMessage} />} {/* Render upload message if present */}
                         {uploadError && <Notification message={uploadError} isError />} {/* Render error message if present */}
                     </form>
