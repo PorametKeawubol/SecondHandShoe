@@ -32,7 +32,7 @@ function HomePage() {
   useEffect(() => {
     const shoesfiltered = shoes.filter((item) => {
       return (
-        item.status === false
+        item.payment.data === null
       ); // &&คือ and , ||คือ or
     });
     setFilteredShoes(shoesfiltered);
