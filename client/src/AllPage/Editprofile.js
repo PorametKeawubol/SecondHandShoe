@@ -15,7 +15,13 @@ const EditProfile = ({ setProfile }) => {
   const [address, setAddress] = useState("");
   const [bio, setBio] = useState("");
   const [token, setToken] = useState(""); // Add token state
+  const [isAdmin, setIsAdmin] = useState("");
+  const [isVerify, setIsVerify] = useState("");
+  const [telNum, setTelNum] = useState("");
+  const [realName, setRealName] = useState("");
+  const [isWaiting, setIsWaiting] = useState("");
   const [setisUserUpdated, setSetisUserUpdated] = useState(""); // Add setisUserUpdated state
+  const [errorMessage, setErrorMessage] = useState("")
   axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("authToken")}`
   useEffect(() => {
     fetchUserData();
@@ -23,7 +29,9 @@ const EditProfile = ({ setProfile }) => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get("http://localhost:1337/api/users/me?populate=Profile_Picture");
-  
+      const getRole = await axios.get("http://localhost:1337/api/users/me?populate=*")
+
+      const user = getRole.data;
       const userData = response.data;
       console.log("🚀 ~ fetchUserData ~ userData:", userData)
 
@@ -33,7 +41,15 @@ const EditProfile = ({ setProfile }) => {
       setLastName(userData.Last_Name);
       setAddress(userData.Address);
       setBio(userData.Bio);
-  
+      setRealName(userData.Real_Name);
+      setTelNum(userData.PhoneNum);
+      setIsWaiting(userData.VerificationWaiting);
+
+      setIsAdmin(user.role.name === "admin");
+      setIsVerify(user.Verify === true);
+      if (isAdmin) {
+        setIsVerify(true);
+      }
       
       if (userData.Profile_Picture && userData.Profile_Picture.url) {
         setUserProfile("http://localhost:1337" + userData.Profile_Picture.url);
@@ -122,7 +138,6 @@ const EditProfile = ({ setProfile }) => {
         First_Name: firstName,
         Last_Name: lastName,
         Bio: bio,
-        Address: address,
       });
       console.log("Edit successful:", response.data);
       //pop up success
@@ -136,9 +151,28 @@ const EditProfile = ({ setProfile }) => {
     navigate('/Profile');
   }
 
-  const handleVerify = () => {
-    //put your code here
-  }
+  const handleVerify = async () => {
+    if (realName.trim() === "" || address.trim() === "" || telNum.trim() === "" /*|| other.trim() === ""*/) {
+      setErrorMessage("Please fill in all fields")
+      console.log('verify error')
+    } else {
+      try {
+        const response = await axios.put(`http://localhost:1337/api/users/${userId}`, {
+          Real_Name: realName,
+          Address: address,
+          PhoneNum: telNum,
+          VerificationWaiting: true,
+        });
+        console.log("Wait for verifying..", response.data);
+      } catch (error) {
+        console.error("Error editing profile:", error);
+      }
+    }
+    setIsWaiting(true);
+    //admin verify ให้ set waiting เป็น false และ set verify เป็น true
+  };
+
+  
 
   return (
     <>
@@ -210,19 +244,7 @@ const EditProfile = ({ setProfile }) => {
                   placeholder="Add your bio"
                   style={{ resize: "none" }}></textarea>
                   </div>
-                  {/*<div className="mb-6">
-                    <label htmlFor="message" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"></label>
-                    <p className='mb-3'>Your Address</p>
-                    <textarea id="message" rows="4" className="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 " 
-                    onChange={(e) => setAddress(e.target.value)}
-                    value={address}
-                    placeholder="Your address"></textarea>
-                  </div>*/}
-                  <div className="flex justify">
-                    <button type="button" onClick={handleVerify} className="text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-400 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-400 dark:hover:bg-green-500 dark:focus:ring-green-600">
-                      Verify your account
-                    </button>
-                  </div>
+                  
                   <div className="flex justify mt-8">
                       <button type="button" onClick={handleSubmit} className="text-white bg-indigo-700 mr-80 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800">Save</button>
                       <button 
@@ -236,7 +258,52 @@ const EditProfile = ({ setProfile }) => {
                 </div>
               </div>
             </div>
+            {!isAdmin && !isVerify && !isWaiting && (
+            <div className="w-full px-6 pb-8 mt-8 sm:max-w-xl sm:rounded-lg">
+            <h2 className="text-2xl font-bold sm:text-xl">For verify your account</h2>
+            <div className="mb-6 mt-8">
+              <label htmlFor="message" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"></label>
+              <p className='mb-3'>Real Name</p>
+                  <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter your real name Ex. Mrs.Supanee Thidasan"
+                  defaultValue={realName}
+                  onChange={(e) => setRealName(e.target.value)} />
+                <label htmlFor="message" className="block mb-5 text-sm font-medium text-indigo-900 dark:text-white"></label>
+              <p className='mb-3'>Address</p>
+              <textarea id="message" rows="4" className="block p-2.5 w-full text-sm text-indigo-900 bg-indigo-50 rounded-lg border border-indigo-300 focus:ring-indigo-500 focus:border-indigo-500 " 
+              onChange={(e) => setAddress(e.target.value)}
+              value={address}
+              placeholder="Enter your address"></textarea>
+            </div>
+              <label htmlFor="first_name" className="block text-sm font-medium text-indigo-900 dark:text-white"></label>
+              <p className='mb-3'>Phone Number</p>
+                  <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter your phone number"
+                  defaultValue={telNum}
+                  onChange={(e) => setTelNum(e.target.value)}/>
+              {/* ใส่ input เพิ่มได้ตรงนี้ */}
+              {/* <label htmlFor="message" className="block mb-5 text-sm font-medium text-indigo-900 dark:text-white"></label>
+              <p className='mb-3'>Other</p>
+                  <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Other..."
+                  value={}
+                  onChange={(e) => set(e.target.value)} defaultValue=""
+                  /> */}
+                  {errorMessage && (
+                    <p className='mt-5 text-red-500'>{errorMessage}.</p>
+                  )}
+                  <div className="mt-8 flex justify">
+                  <button
+                  type="button"
+                  onClick={handleVerify} 
+                  className="text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-500 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-500 dark:hover:bg-green-600 dark:focus:ring-green-700">
+                      Verify your account
+                    </button>
+                  </div>
+            </div>)}
           </div>
+          {isWaiting && (
+          <div className="flex justify-center items-center bg-yellow-500 text-white py-2 fixed bottom-0 left-0 right-0 z-50">
+            <p>Your account is waiting for verification.</p>
+          </div>
+        )}
         </main>
       </div>
     </>

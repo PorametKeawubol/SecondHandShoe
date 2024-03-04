@@ -25,8 +25,9 @@ function Profile() {
     const [bio, setBio] = useState("");
     const [showToRateModal, setShowToRateModal] = useState(false);
     const [showImageUploadPopup, setShowImageUploadPopup] = useState(false); // State to control the visibility of the ImageUploadPopup
+    const [isAdmin, setIsAdmin] = useState("");
     const userProfile = sessionStorage.getItem("Profile_Picture");
-    const [isVerified, setIsVerified] = useState(false)
+    const [isVerified, setIsVerified] = useState("")
     const handleToRateOpen = () => {
         setShowToRateModal(true);
     };
@@ -39,7 +40,7 @@ function Profile() {
         const fetchUserData = async () => {
             try {
                 const response = await axios.get(
-                    "http://localhost:1337/api/users/me",
+                    "http://localhost:1337/api/users/me?populate=*",
                     {
                         headers: {
                             Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
@@ -51,6 +52,8 @@ function Profile() {
                 setUsername(userData.username);
                 setEmail(userData.email);
                 setBio(userData.Bio);
+                setIsAdmin(userData.role.name === 'admin'); 
+                setIsVerified(userData.Verify === true);
             } catch (error) {
                 console.error("Error fetching user data:", error);
             }
@@ -60,7 +63,12 @@ function Profile() {
     }, []);
 
     const handlePostSellClick = () => {
-        setShowImageUploadPopup(true); // Open the ImageUploadPopup when the "Post sell" button is clicked
+        if (!isVerified) {
+            alert("Please verify your account first.");
+            //แก้ให้ดูดีกว่านี้ก็ได้นะงับ
+        } else {
+            setShowImageUploadPopup(true); // Open the ImageUploadPopup when the "Post sell" button is clicked
+        }
     };
 
     return (
@@ -105,29 +113,35 @@ function Profile() {
                     <div >
                     <p style={{ fontSize: "30px", color: "white", display: "flex", alignItems: "center"}}>
                         <span style={{ marginRight: "10px"}}>{username}</span>
-                        {!isVerified && (
+                        {isAdmin ? (
                             <span style={{ display: "flex", alignItems: "center"}}>
-                                <FaTimes color="#a3a6a2" size="20" style={{ marginRight: "5px", marginTop: "5px"}} />
-                                <span style={{ fontSize: "14px", color: "#a3a6a2",marginTop: "3px"}}>not verified</span>
+                                <FaStar color="#edd745" size="20" style={{ marginRight: "5px", marginTop: "5px"}} />
+                                <span style={{ fontSize: "15px", color: "#edd745", marginTop: "6px"}}>admin</span>
                             </span>
-                        )}
-                        {isVerified && (
-                            <span style={{ display: "flex", alignItems: "center"}}>
-                                <FaCheck color="#79d160" size="20" style={{ marginRight: "5px", marginTop: "5px"}} />
-                                <span style={{ fontSize: "14px", color: "#79d160", marginTop: "4px"}}>verified</span>
-                            </span>
+                        ) : (
+                            <>
+                                {!isVerified && (
+                                    <span style={{ display: "flex", alignItems: "center"}}>
+                                        <FaTimes color="#a3a6a2" size="20" style={{ marginRight: "5px", marginTop: "5px"}} />
+                                        <span style={{ fontSize: "14px", color: "#a3a6a2",marginTop: "3px"}}>not verified</span>
+                                    </span>
+                                )}
+                                {isVerified && (
+                                    <span style={{ display: "flex", alignItems: "center"}}>
+                                        <FaCheck color="#79d160" size="20" style={{ marginRight: "5px", marginTop: "5px"}} />
+                                        <span style={{ fontSize: "14px", color: "#79d160", marginTop: "4px"}}>verified</span>
+                                    </span>
+                                )}
+                            </>
                         )}
                     </p>
-
-
-
                         <p style={{ fontSize: "18px", color: "white" }}>
                             {email}
                         </p>
                         {bio &&(
                         <p className="mt-1 mb-1" style={{ fontSize: "12px", color: "white" }}> bio : {bio}
                         </p>)}
-                        
+
                         <button className="mt-1" style={{ fontSize: "12px", color: "white", border: "1px solid white", borderRadius: "8px", padding: "8px 16px"}}>
                             <Link to="/Editprofile" style={{ color: "white" }}>Edit Profile 🔧</Link>
                         </button>
