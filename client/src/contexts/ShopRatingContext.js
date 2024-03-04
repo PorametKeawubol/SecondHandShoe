@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
-axios.defaults.baseURL =
-  process.env.REACT_APP_BASE_URL || "http://localhost:1337";
+
 export const ReviewContext = createContext();
 
 const ReviewProvider = ({ children }) => {
@@ -39,7 +38,7 @@ const ReviewProvider = ({ children }) => {
         console.error("Response data is not an array:", response.data.data);
       }
     } catch (error) {
-      console.error("Error fetching shoes:", error);
+      console.error("Error fetching rating:", error);
     }
   };
 

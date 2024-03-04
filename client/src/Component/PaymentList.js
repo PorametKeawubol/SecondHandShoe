@@ -1,11 +1,8 @@
 import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { IoMdAdd, IoMdClose, IoMdRemove } from "react-icons/io";
-import { ShoeContext } from "../contexts/ShoeContext";
+import { Link, } from "react-router-dom";
 
-export default function PaymentList({ item }) {
-    const { shoes } = useContext(ShoeContext);
-    console.log("🚀 ~ PaymentList ~ shoes:", shoes);
+
+export default function PaymentList({ item,shoes }) {
     const id = item.id;
     const Buyer_id = item.Buyer_id;
     const Confirm = item.Confirm;
@@ -13,7 +10,7 @@ export default function PaymentList({ item }) {
     const shoe = shoes.filter((item) => {
         return item.id === shoe_id;
     });
-    console.log("🚀 ~ shoe ~ shoe:", shoe);
+
     return (
         <div className="flex flex-row gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500">
             <div className="w-full min-h-[150px] flex items-center gap-x-4 pl-10">

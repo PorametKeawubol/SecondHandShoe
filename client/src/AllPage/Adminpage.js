@@ -2,12 +2,14 @@ import '../app.css';
 import Footer from '../Component/Footer';
 import Header from "../Component/Header";
 import axios from 'axios';
-import { useState,useEffect } from 'react';
+import { useState,useEffect,useContext } from 'react';
 import PaymentList from '../Component/PaymentList';
-
+import { ShoeContext } from '../contexts/ShoeContext';
 export default function Admin(){
+    const { shoes } = useContext(ShoeContext);
+  
     const [ListShoes,setListShoes] = useState("")
-    console.log("🚀 ~ Admin ~ ListShoes:", ListShoes)
+
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("authToken")}`
     useEffect(() => {
         fetchList();
@@ -15,7 +17,7 @@ export default function Admin(){
     const fetchList = async() =>{
         try{
             const response = await axios.get('api/payments?populate=*');
-            console.log("🚀 ~ fetchList ~ response:", response)
+            
             if (Array.isArray(response.data.data)){
                 const ListData = response.data.data.map((List)=>{
                     const { id, attributes } = List;
@@ -34,10 +36,9 @@ export default function Admin(){
             }   
             
         }catch(error) {
-            console.error("Error fetching shoes:", error);
+            console.error("Error fetching confirm:", error);
         }
     }
-    
     
     return(
         <div className="flex flex-col w-full h-screen backgroundAll">
@@ -49,7 +50,7 @@ export default function Admin(){
                     </div>
                     <div>
                         {ListShoes&&ListShoes.map((List)=>{
-                            return <PaymentList item={List}/>
+                            return <PaymentList item={List} shoes={shoes}/>
                         })}
                     </div>
 

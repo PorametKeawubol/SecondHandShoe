@@ -1,12 +1,11 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
-axios.defaults.baseURL =
-    process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 export const ShoeContext = createContext();
 
 const ShoeProvider = ({ children }) => {
     // shoes state
     const [shoes, setShoes] = useState([]);
+    console.log("🚀 ~ ShoeProvider ~ shoes:", shoes)
 
     // fetch products
     useEffect(() => {
