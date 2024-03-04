@@ -153,7 +153,7 @@ const EditProfile = ({ setProfile }) => {
   }
 
   const handleVerify = async () => {
-    if (realName==="" || address === "" || telNum === "" /*|| other.trim() === ""*/) {
+    if (realName === null || address === null || telNum === null /*|| other === ""*/) {
       setErrorMessage("Please fill in all fields")
       console.log('verify error')
       setIsWaiting(null);
@@ -171,9 +171,9 @@ const EditProfile = ({ setProfile }) => {
       } catch (error) {
         console.error("Error editing profile:", error);
       }
+      setIsWaiting(true);
+      //admin verify ให้ set waiting เป็น false และ set verify เป็น true
     }
-    setIsWaiting(true);
-    //admin verify ให้ set waiting เป็น false และ set verify เป็น true
   };
 
   
@@ -283,13 +283,14 @@ const EditProfile = ({ setProfile }) => {
                   <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter your phone number"
                   defaultValue={telNum}
                   onChange={(e) => setTelNum(e.target.value)}/>
+              <p className='mb-2 mt-3'>Bank Accounts</p>
+                  <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter your name and number bank account"
+                  defaultValue={Bank_account}
+                  onChange={(e) => setbankaccout(e.target.value)}/>
                   {errorMessage && (
                     <p className='mt-5 text-red-500'>{errorMessage}.</p>
                   )}
-                   <p className='mb-2 mt-3'>Bank Accounts</p>
-                  <input type="text" id="last_name" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " placeholder="Enter your phone number"
-                  defaultValue={Bank_account}
-                  onChange={(e) => setbankaccout(e.target.value)}/>
+                  
                   <div className="mt-8 flex justify">
                   <button
                   type="button"
