@@ -144,7 +144,7 @@ export default function Example() {
             }}
           >
             <Link to="/">
-              <img className="h-16 w-auto ml-5" src={logo} alt="Logo" />
+              <img className="h-16 w-auto ml-5 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:duration-300 ..." src={logo} alt="Logo" />
             </Link>
           </div>
           <div className="flex ">
@@ -155,7 +155,7 @@ export default function Example() {
               >
                 {isLoggedIn && (
                   <>
-                    <BsBag className="h-9 text-xl text-yellow-100" />
+                    <BsBag className="h-9 text-xl text-yellow-100 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:duration-300 ..." />
                     <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
                       {itemAmount}
                     </div>

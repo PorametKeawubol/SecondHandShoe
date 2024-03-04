@@ -1,10 +1,17 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { ShoeContext } from "../contexts/ShoeContext";
 
 const baseURL = "http://localhost:1337/api/";
 
-
+const Notification = ({ message, isError }) => {
+    const bgColor = isError ? 'bg-red-500' : 'bg-green-500';
+    return (
+        <div className={`absolute bottom-4 right-4 text-white py-2 px-4 rounded ${bgColor}`}>
+            {message}
+        </div>
+    );
+}
 
 function EditItem({ itemId, onClose, user }) {
     const [shoeData, setShoeData] = useState({ picture: [] }); // Initialize shoeData.picture as an empty array
@@ -23,60 +30,60 @@ function EditItem({ itemId, onClose, user }) {
     const { setShoes } = useContext(ShoeContext);
     const handleFetchShoes = async () => {
         try {
-          const response = await axios.get("/api/shoes?populate=*");
-          if (Array.isArray(response.data.data)) {
-            // Check if response.data is an array
-            const shoeData = response.data.data.map((shoe) => {
-              const { id, attributes } = shoe;
-              const {
-                products_name,
-                price,
-                details,
-                location,
-                picture,
-                brand,
-                color,
-                gender,
-                status,
-                seller,
-                size,
-              } = attributes;
-              const image =
-                picture && picture.data && picture.data.length > 0
-                  ? picture.data.map(
-                      (img) => "http://localhost:1337" + img.attributes.url
-                    )
-                  : [];
-    
-              const brandType = brand?.data?.attributes.name;
-              const colorType = color?.data?.attributes.name;
-              const genderType = gender?.data?.attributes.name;
-              const Seller = seller?.data?.attributes.username;
-              //const product_color = color.data.products_name
-              //const category = attributes.categories?.data.map(cat => cat.attributes.name) || ['uncategorized'];;
-              return {
-                id,
-                products_name,
-                price,
-                details,
-                location,
-                image,
-                brandType,
-                colorType,
-                genderType,
-                status,
-                Seller,
-                size,
-              };
-            });
-            setShoes(shoeData);
-          } else {
-            console.error("Response data is not an array:", response.data.data);
-          }
+            const response = await axios.get("/api/shoes?populate=*");
+            if (Array.isArray(response.data.data)) {
+                // Check if response.data is an array
+                const shoeData = response.data.data.map((shoe) => {
+                    const { id, attributes } = shoe;
+                    const {
+                        products_name,
+                        price,
+                        details,
+                        location,
+                        picture,
+                        brand,
+                        color,
+                        gender,
+                        status,
+                        seller,
+                        size,
+                    } = attributes;
+                    const image =
+                        picture && picture.data && picture.data.length > 0
+                            ? picture.data.map(
+                                (img) => "http://localhost:1337" + img.attributes.url
+                            )
+                            : [];
+
+                    const brandType = brand?.data?.attributes.name;
+                    const colorType = color?.data?.attributes.name;
+                    const genderType = gender?.data?.attributes.name;
+                    const Seller = seller?.data?.attributes.username;
+                    //const product_color = color.data.products_name
+                    //const category = attributes.categories?.data.map(cat => cat.attributes.name) || ['uncategorized'];;
+                    return {
+                        id,
+                        products_name,
+                        price,
+                        details,
+                        location,
+                        image,
+                        brandType,
+                        colorType,
+                        genderType,
+                        status,
+                        Seller,
+                        size,
+                    };
+                });
+                setShoes(shoeData);
+            } else {
+                console.error("Response data is not an array:", response.data.data);
+            }
         } catch (error) {
-          console.error("Error fetching shoes:", error);
+            console.error("Error fetching shoes:", error);
         }
-      };
+    };
 
     useEffect(() => {
         const fetchShoeData = async () => {
@@ -190,101 +197,98 @@ function EditItem({ itemId, onClose, user }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
             const requestData = { ...shoeData, ...editedData };
-
+    
             // Append product name if available
             if (editedData.productName || shoeData?.products_name) {
                 requestData.products_name = editedData.productName || shoeData.products_name;
             }
-
+    
             // Append price if available and convert it to a fixed number with 2 decimal places
             if (editedData.price || shoeData?.price) {
                 requestData.price = parseFloat(editedData.price || shoeData.price).toFixed(2);
             }
-
+    
             // Append details if available
             if (editedData.details || shoeData?.details) {
                 requestData.details = editedData.details || shoeData.details;
             }
-
+    
             // Append location if available
             if (editedData.location || shoeData?.location) {
                 requestData.location = editedData.location || shoeData.location;
             }
-
+    
             // Append brand ID if available
             if (editedData.brand || shoeData?.brand?.id) {
                 requestData.brand = editedData.brand || shoeData.brand.id;
             }
-
+    
             // Append color ID if available
             if (editedData.color || shoeData?.color?.id) {
                 requestData.color = editedData.color || shoeData.color.id;
             }
-
+    
             // Append gender ID if available
             if (editedData.gender || shoeData?.gender?.id) {
                 requestData.gender = editedData.gender || shoeData.gender.id;
             }
-
+    
             // Append size if available
             if (editedData.usSize || shoeData?.size) {
                 requestData.size = editedData.usSize || shoeData.size;
             }
-
+    
             // Remove unnecessary properties
             delete requestData.picture; // We handle pictures separately
             delete requestData.picture?.data; // Ensure that we don't send picture data to the server
-
+    
             // Append size if available
             requestData.size = editedData.usSize || shoeData?.size;
-
-            // Initialize an array to store the IDs of all images
+    
             let allImageIds = [];
-
-            // Check if editedData.picture is an array and contains elements
+    
             if (Array.isArray(editedData.picture) && editedData.picture.length > 0) {
-                // Upload new images and get their IDs
                 const uploadedImageIds = await uploadImagesToStrapi(editedData.picture);
-
-                // Combine existing and uploaded image IDs
                 allImageIds = [...shoeData.picture?.data?.map(image => image.id) || [], ...uploadedImageIds];
             } else {
-                // If no new pictures are uploaded, use the existing image IDs
                 allImageIds = shoeData.picture?.data?.map(image => image.id) || [];
             }
-
-            // Set the requestData.picture to the array of all image IDs
+    
             requestData.picture = allImageIds;
-
-            // Log requestData object for debugging
-            console.log(requestData);
-
-            // Construct the final request body with a "data" field
+    
             const requestBody = { data: requestData };
-
-            // Send requestBody object via axios PUT request
+    
             await axios.put(`${baseURL}shoes/${itemId}`, requestBody, {
                 headers: {
-                    "Content-Type": "application/json", // Specify content type as JSON
+                    "Content-Type": "application/json",
                 },
             });
-
-            // Close the modal after successful submission
-            onClose();
-            handleFetchShoes();
-
+    
+            // Set success message
+            setUploadMessage("Shoe data updated successfully.");
+    
+            // Clear any previous error message
+            setUploadError("");
+    
+            // Close the modal after 2 seconds
+            setTimeout(() => {
+                onClose();
+                handleFetchShoes();
+            }, 1000);
+    
         } catch (error) {
             console.error("Error updating shoe data:", error);
             // Set error message
             setUploadError("Error updating shoe data. Please try again.");
-
+    
             // Clear success message if any
             setUploadMessage("");
         }
-    };
+    };  
+    
 
 
 
@@ -433,10 +437,12 @@ function EditItem({ itemId, onClose, user }) {
                                 />
                             </div>
                             <div className="flex">
-                                <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600 mr-2">Save</button>
+                                <button type="submit" className="bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600 mr-2">Save ✎ </button>
                                 <button type="button" onClick={onClose} className="bg-gray-500 text-white rounded px-4 py-2 hover:bg-gray-600">Cancel</button>
                             </div>
-                            </form>
+                            {uploadMessage && <Notification message={uploadMessage} />} {/* Render upload message if present */}
+                            {uploadError && <Notification message={uploadError} isError />} {/* Render error message if present */}
+                        </form>
                     ) : (
                         <p>Loading...</p>
                     )}
