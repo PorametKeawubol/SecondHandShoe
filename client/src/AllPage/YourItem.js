@@ -6,7 +6,7 @@ import { FaTrash, FaEdit } from "react-icons/fa";
 import EditItem from "../AllPage/Edititem";
 
 function YourItem() {
-     const { shoes } = useContext(ShoeContext);
+     const { shoes, fetchShoes } = useContext(ShoeContext);
      const [MyShoes, setMyShoes] = useState([]);
      const [showEditemModal, setEditemModal] = useState(false);
      const [selectedItemId, setSelectedItemId] = useState(null); // State to store the selected item ID
@@ -15,13 +15,14 @@ function YourItem() {
           setSelectedItemId(id); // Set the selected item ID
           setEditemModal(true);
 
-      };
+     };
 
      const handleEditemClose = () => {
           setEditemModal(false);
      };
 
      useEffect(() => {
+          fetchShoes()
           const fetchUserData = async () => {
                try {
                     const response = await axios.get(
@@ -44,7 +45,7 @@ function YourItem() {
 
      const fetchMyShoes = (shoes, username) => {
           return shoes.filter((item) => {
-               return item.Seller === username;
+               return item.Seller === username ;
           });
      };
 
@@ -99,13 +100,23 @@ function YourItem() {
                                              <p className="text-gray-600 mt-1">Seller: {shoe.Seller}</p>
                                         </div>
                                         <div className="flex flex-col justify-between">
-                                             <button onClick={() => handleDeleteItem(shoe.id)} className="bg-red-500 rounded-full w-10 h-10 flex items-center justify-center">
-                                                  <FaTrash className="h-6 w-6 text-white" />
-                                             </button>
-                                             <button onClick={() => handleEditem(handleEditemClose, shoe.id)} className="bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center">
-                                                  <FaEdit className="h-6 w-6 text-white" />
-                                             </button>
+                                             {/* Check if buyerid is not undefined */}
+                                             {shoe.buyerid !== undefined ? (
+                                                  <button className="mt-10 mr-6 text-center text-white bg-red-500 rounded-lg w-20 h-10 flex items-center justify-center">
+                                                       Sold
+                                                  </button>
+                                             ) : (
+                                                  <>
+                                                       <button onClick={() => handleDeleteItem(shoe.id)} className="mr-9 bg-red-500 rounded-full w-10 h-10 flex items-center justify-center">
+                                                            <FaTrash className="h-6 w-6 text-white" />
+                                                       </button>
+                                                       <button onClick={() => handleEditem(handleEditemClose, shoe.id)} className="mr-9 bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center">
+                                                            <FaEdit className="h-6 w-6 text-white" />
+                                                       </button>
+                                                  </>
+                                             )}
                                         </div>
+
                                    </div>
                               </div>
                          ))}
