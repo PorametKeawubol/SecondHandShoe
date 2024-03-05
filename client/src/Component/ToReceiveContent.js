@@ -20,16 +20,14 @@ export default function ToReceiveContent() {
   axios.defaults.headers.common["Authorization"] =
     `Bearer ${sessionStorage.getItem("authToken")}`;
   const { shoes, fetchShoes } = useContext(ShoeContext);
-  console.log("🚀 ~ ToShipContent ~ shoes:", shoes);
   const [MyShoes, setMyShoes] = useState([]);
   const [MyId, setMyId] = useState([]);
-  console.log("🚀 ~ ToShipContent ~ MyId:", MyId);
   const [allId, setallId] = useState([]);
-  console.log("🚀 ~ ToShipContent ~ allId:", allId);
-  console.log("Myshoes", MyShoes);
+
   useEffect(() => {
     fetchMypaydata();
     fetchUserData();
+    fetchShoes();
   }, []);
 
   useEffect(() => {

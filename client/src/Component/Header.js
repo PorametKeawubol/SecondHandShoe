@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import LoginForm from "../AllPage/Loginform";
-import RegisterForm from "../AllPage/RegisterForm";
+import Singin from "../AllPage/Singin";
+import Register from "../AllPage/Register";
 import logo from "../Component/Picture/logoSecondHandShoe.png";
 import Nav from "../Component/nav";
 import axios from "axios";
-import { BsBag } from "react-icons/bs";
 import { SidebarContext } from "../contexts/SidebarContext";
 import { CartContext } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import { ShoeContext } from "../contexts/ShoeContext";
+import "./Header.css";
 
 export default function Example() {
   const { setShoes } = useContext(ShoeContext);
@@ -20,8 +20,9 @@ export default function Example() {
   const { isOpen, setIsOpen } = useContext(SidebarContext);
   const { itemAmount } = useContext(CartContext);
   const navigate = useNavigate();
+
   const hasSessionStorage = sessionStorage.getItem("authToken") !== null;
-  
+
   const handleFetchShoes = async () => {
     try {
       const response = await axios.get("/api/shoes?populate=*");
@@ -41,20 +42,20 @@ export default function Example() {
             status,
             seller,
             size,
-            payment
+            payment,
           } = attributes;
           const image =
             picture && picture.data && picture.data.length > 0
               ? picture.data.map(
-                (img) => "http://localhost:1337" + img.attributes.url
-              )
+                  (img) => "http://localhost:1337" + img.attributes.url
+                )
               : [];
 
           const brandType = brand?.data?.attributes.name;
           const colorType = color?.data?.attributes.name;
           const genderType = gender?.data?.attributes.name;
           const Seller = seller?.data?.attributes.username;
-          const sellerid = seller?.data?.id
+          const sellerid = seller?.data?.id;
           //const product_color = color.data.products_name
           //const category = attributes.categories?.data.map(cat => cat.attributes.name) || ['uncategorized'];;
           return {
@@ -71,7 +72,7 @@ export default function Example() {
             Seller,
             sellerid,
             size,
-            payment
+            payment,
           };
         });
         setShoes(shoeData);
@@ -145,7 +146,11 @@ export default function Example() {
             }}
           >
             <Link to="/">
-              <img className="h-16 w-auto ml-5 transition ease-in-out delay-150 hover:scale-110 hover:duration-300 ..." src={logo} alt="Logo" />
+              <img
+                className="h-16 w-auto ml-5 transition ease-in-out delay-150 hover:scale-110 hover:duration-300 ..."
+                src={logo}
+                alt="Logo"
+              />
             </Link>
           </div>
           <div className="flex ">
@@ -156,9 +161,19 @@ export default function Example() {
               >
                 {isLoggedIn && (
                   <>
-
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 mt-2 text-white">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6 mt-2 text-white"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                      />
                     </svg>
 
                     <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
@@ -185,7 +200,7 @@ export default function Example() {
         </nav>
       </div>
       {showLoginModal && (
-        <LoginForm
+        <Singin
           toggleModal={toggleLoginModal}
           toggleRegisterModal={toggleRegisterModal}
           onLogin={handleLogin}
@@ -193,7 +208,7 @@ export default function Example() {
         />
       )}
       {showRegisterModal && (
-        <RegisterForm
+        <Register
           toggleModal={toggleRegisterModal}
           toggleLoginModal={toggleLoginModal}
           onLogin={handleLogin}

@@ -8,7 +8,7 @@ import { ShoeContext } from "../contexts/ShoeContext";
 export default function Confrimpayment() {
   const [ListShoes, setListShoes] = useState("");
   const [Adminlist, setAdminlist] = useState();
-  const {fetchShoes} = useContext(ShoeContext)
+  const { fetchShoes } = useContext(ShoeContext);
   useEffect(() => {
     fetchShoesAdmin();
   }, []);
@@ -109,18 +109,22 @@ export default function Confrimpayment() {
   return (
     <div className="flex w-full h-auto min-h-screen justify-center mt-10 ">
       <div className="flex flex-col bg-slate-200 w-[90%] rounded-3xl shadow-2xl">
-      <div className="text-white bg-indigo-900 rounded-t-3xl  drop-shadow-md  p-5 text-xl font-bold border-b-4 border-slate-100 border-opacity-10">
+        <div className="text-white bg-indigo-900 rounded-t-3xl  drop-shadow-md  p-5 text-xl font-bold border-b-4 border-slate-100 border-opacity-10">
           <p className="">confirmation</p>
         </div>
         <div className="flex flex-col">
           {ListShoes &&
             ListShoes.map((List) => {
-              return <PaymentList item={List} shoes={Adminlist} fetchList={fetchList}/>;
+              return (
+                <PaymentList
+                  item={List}
+                  shoes={Adminlist}
+                  fetchList={fetchList}
+                />
+              );
             })}
         </div>
       </div>
     </div>
   );
-  
-  
 }

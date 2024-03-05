@@ -1026,6 +1026,7 @@ export interface ApiPaymentPayment extends Schema.CollectionType {
     >;
     Confirm: Attribute.Boolean & Attribute.DefaultTo<false>;
     Price: Attribute.Integer;
+    Address: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
