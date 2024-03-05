@@ -22,6 +22,7 @@ const ReviewProvider = ({ children }) => {
             attributes;
           const rating_by_name = rating_by?.data?.attributes.username;
           const seller_rating_name = seller_rating?.data?.attributes.username;
+          const rating_by_id = rating_by?.data?.id;
 
           return {
             id,
@@ -30,6 +31,7 @@ const ReviewProvider = ({ children }) => {
             createdAt,
             seller_rating_name,
             rating_by_name,
+            rating_by_id,
           };
         });
         setReview(reviewData);

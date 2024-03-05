@@ -8,9 +8,8 @@ import React, {
 import { ShoeContext } from "../contexts/ShoeContext";
 import axios from "axios";
 import styled from "styled-components"; // import styled-components
-import status from "./status";
-import { Link } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
+import { FaStar } from "react-icons/fa"; // import FaStar icon
 import {
   ExclamationTriangleIcon,
   CheckCircleIcon,
@@ -32,15 +31,16 @@ const ShoeContainer = styled.div`
 
 export default function ToComplete() {
   const cancelButtonRef = useRef(null);
-  const [open, setOpen] = useState(false);
+  const [isButtonVisible, setIsButtonVisible] = useState(true);
   const { shoes } = useContext(ShoeContext);
-  console.log("🚀 ~ ToShipContent ~ shoes:", shoes);
   const [MyShoes, setMyShoes] = useState([]);
   const [MyId, setMyId] = useState([]);
-  console.log("🚀 ~ ToShipContent ~ MyId:", MyId);
   const [allId, setallId] = useState([]);
-  console.log("🚀 ~ ToShipContent ~ allId:", allId);
-  console.log("Myshoes", MyShoes);
+  const [rating, setRating] = useState(0); // State for storing rating
+  const [comment, setComment] = useState(""); // State for storing comment
+  const [open, setOpen] = useState(false);
+  const [hoverRating, setHoverRating] = useState(0); // State for hovering rating
+
   useEffect(() => {
     fetchMypaydata();
     fetchUserData();
@@ -57,7 +57,6 @@ export default function ToComplete() {
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },
       });
-
       const userData = response.data;
       setMyId(userData.id);
     } catch (error) {
@@ -84,12 +83,16 @@ export default function ToComplete() {
       const filteredData1 = Data1.filter((item) => {
         return item.Confirm === true;
       });
-      console.log("🚀 ~ filteredData1 ~ filteredData1:", filteredData1);
       setallId(filteredData1);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
+  const colors = {
+    orange: "#FFBA5A",
+    grey: "#a9a9a9",
+  };
+
   const fetchMyShoes = () => {
     const myShoesIsSole = allId.map((item) => {
       const shoefiltered = shoes.filter((shoe) => {
@@ -101,8 +104,29 @@ export default function ToComplete() {
       });
       return shoefiltered[0];
     });
-    console.log("🚀 ~ myShoesIsSole ~ myShoesIsSole:", myShoesIsSole);
     setMyShoes(myShoesIsSole);
+  };
+
+  const handleSubmit = async (sellerid) => {
+    try {
+      console.log(sellerid);
+      const response = await axios.post("http://localhost:1337/api/ratings", {
+        data: {
+          score: rating,
+          comment: comment,
+          seller_rating: sellerid,
+          rating_by: MyId,
+        },
+      });
+      console.log(response.data);
+      setOpen(false); // Close the dialog after submission
+      // Reset rating and comment state after submission
+      setRating(0);
+      setComment("");
+      setIsButtonVisible(false);
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+    }
   };
 
   return (
@@ -127,6 +151,9 @@ export default function ToComplete() {
                   <p className="text-gray-600 mt-1">{shoe.price} THB</p>
                 </div>
                 <div className="ml-auto">
+                  <div className="flex justify-center items-center bg-amber-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
+                    <button onClick={() => setOpen(true)}>Rate</button>
+                  </div>
                   <Transition.Root show={open} as={Fragment}>
                     <Dialog
                       as="div"
@@ -160,45 +187,84 @@ export default function ToComplete() {
                             <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
                               <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                                 <div className="sm:flex sm:items-start">
-                                  <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                                    <CheckCircleIcon
-                                      className="h-6 w-6 text-green-600"
-                                      aria-hidden="true"
-                                    />
+                                  <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-yellow-100 sm:mx-0 sm:h-10 sm:w-10">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      strokeWidth={1.5}
+                                      stroke="currentColor"
+                                      className="w-6 h-6"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
+                                        className="h-6 w-6 text-yellow-400"
+                                        aria-hidden="true"
+                                      />
+                                    </svg>
                                   </div>
                                   <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                     <Dialog.Title
                                       as="h3"
                                       className="text-base font-semibold leading-6 text-gray-900"
                                     >
-                                      Payment Accepted
+                                      To Rate
                                     </Dialog.Title>
-                                    <div className="mt-2">
-                                      <p className="text-sm text-gray-500">
-                                        Your payment for
-                                      </p>
+                                    <div className="mt-2 flex items-center">
+                                      {[1, 2, 3, 4, 5].map((value) => (
+                                        <FaStar
+                                          key={value}
+                                          size={24}
+                                          onClick={() => setRating(value)}
+                                          onMouseOver={() =>
+                                            setHoverRating(value)
+                                          }
+                                          onMouseLeave={() => setHoverRating(0)}
+                                          color={
+                                            (hoverRating || rating) >= value
+                                              ? colors.orange
+                                              : colors.grey
+                                          }
+                                          style={{
+                                            marginRight: 5,
+                                            cursor: "pointer",
+                                          }}
+                                        />
+                                      ))}
                                     </div>
+                                    <textarea
+                                      value={comment}
+                                      onChange={(e) =>
+                                        setComment(e.target.value)
+                                      }
+                                      rows="4"
+                                      className="mt-2 border border-gray-300 rounded-md p-2 w-full"
+                                      placeholder="Enter your comment..."
+                                    ></textarea>
                                   </div>
                                 </div>
                               </div>
                               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                {isButtonVisible && (
+                                  <button
+                                    type="button"
+                                    className="mx-3 inline-flex w-full justify-center rounded-md bg-amber-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-300 sm:ml-3 sm:w-auto"
+                                    onClick={() => {
+                                      handleSubmit(shoe.sellerid);
+                                    }}
+                                  >
+                                    Submit
+                                  </button>
+                                )}
                                 <button
                                   type="button"
-                                  className="mt-3 w-full inline-flex justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 sm:w-auto"
+                                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                                   onClick={() => setOpen(false)}
                                   ref={cancelButtonRef}
                                 >
-                                  Close
-                                </button>
-                                <button
-                                  type="button"
-                                  className="mx-3 mt-3 w-full text-white inline-flex justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-green-400 sm:w-auto"
-                                  onClick={() => {
-                                    setOpen(false);
-                                  }}
-                                  ref={cancelButtonRef}
-                                >
-                                  Accept
+                                  Cancel
                                 </button>
                               </div>
                             </Dialog.Panel>
@@ -207,12 +273,6 @@ export default function ToComplete() {
                       </div>
                     </Dialog>
                   </Transition.Root>
-                  <button
-                    onClick={() => {}}
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                  >
-                    ได้รับสินค้าเเล้ว
-                  </button>
                 </div>
               </div>
             </ShoeContainer>
