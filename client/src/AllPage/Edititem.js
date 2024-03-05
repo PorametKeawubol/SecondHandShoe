@@ -1,3 +1,7 @@
+import React, { useState, useEffect, useContext, useRef } from "react";
+import axios from "axios";
+import { ShoeContext } from "../contexts/ShoeContext";
+import { FaTimes } from 'react-icons/fa';
 const Notification = ({ message, isError }) => {
     const bgColor = isError ? "bg-red-500" : "bg-green-500";
     return (
@@ -9,10 +13,7 @@ const Notification = ({ message, isError }) => {
     );
 };
 
-import React, { useState, useEffect, useContext, useRef } from "react";
-import axios from "axios";
-import { ShoeContext } from "../contexts/ShoeContext";
-import { FaTimes } from 'react-icons/fa'; // Import FaTimes for X icon
+ // Import FaTimes for X icon
 
 const baseURL = "http://localhost:1337/api/";
 
