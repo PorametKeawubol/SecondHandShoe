@@ -121,13 +121,11 @@ function Register() {
                                                 SIGN UP
                                             </button>
                                             <p className="mt-4 text-gray-600">
-                                                Don't Have an Account?
-                                                <button
-                                                    className="text-blue-500 hover:underline ml-1"
-                                                >
-                                                    Register Now
-                                                </button>
+                                                Already Have an Account?
+                                                <button className="text-blue-500 hover:underline ml-1">Back to Login</button>
                                             </p>
+                                            <button  className="text-blue-500 hover:underline ml-1">Maybe not now</button>
+
                                         </div>
                                     </form>
                                 </div>
@@ -135,7 +133,7 @@ function Register() {
                             <div className="flex items-center  lg:w-6/12 rounded-r-lg">
                                 <div className="text-white w-full h-full ">
                                     <img
-                                        src="PictureforShow/4545.png"
+                                        src="PictureforShow/8888.png"
                                         alt="description_of_image"
                                         className="mb-4 w-full h-full rounded-r-lg"
                                     />
