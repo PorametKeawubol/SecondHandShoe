@@ -30,11 +30,11 @@ function Contact() {
         },
         {
             question: 'Q : อื่นๆ',
-            answer: 'A : ...',
+            answer: 'A : <3',
             steps: [
-                '...',
-                '...',
-                '...'
+                '',
+                '',
+                ''
             ]
         },
     ];

@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, version } from 'react';
 import Header from "../Component/Header";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { FaSleigh, FaStreetView } from 'react-icons/fa';
 
 const EditProfile = ({ setProfile }) => {
   const [username, setUsername] = useState("");
@@ -53,10 +54,11 @@ const EditProfile = ({ setProfile }) => {
       setIsWaiting(userData.VerificationWaiting);
       setbankaccout(userData.Bankaccounts)
       setIsAdmin(user.role.name === "admin");
-      setIsVerify(user.Verify === true);
+      setIsVerify(user.Verify);
       if (isAdmin) {
         setIsVerify(true);
       }
+      console.log("Verify",isVerify)
       
       if (userData.Profile_Picture && userData.Profile_Picture.url) {
         setUserProfile("http://localhost:1337" + userData.Profile_Picture.url);
@@ -210,15 +212,15 @@ const EditProfile = ({ setProfile }) => {
           Address: address,
           PhoneNum: telNum,
           Bankaccounts : Bank_account,
-          VerificationWaiting: true
-
+          VerificationWaiting: true,
+          Verify: null
         });
         console.log("Wait for verifying..", response.data);
       } catch (error) {
         console.error("Error editing profile:", error);
       }
+      setIsVerify(null)
       setIsWaiting(true);
-      //admin verify ให้ set waiting เป็น false และ set verify เป็น true
     }
   };
 
@@ -355,11 +357,16 @@ const EditProfile = ({ setProfile }) => {
                   </div>
             </div>)}
           </div>
-          {isWaiting && (
+          {isWaiting && !isVerify && (
           <div className="flex justify-center items-center bg-yellow-500 text-white py-2 fixed bottom-0 left-0 right-0 z-50">
             <p>Your account is waiting for verification.</p>
           </div>
-        )}
+          )}
+          {isVerify === false && (
+            <div className="flex justify-center items-center bg-red-700 text-white py-2 fixed bottom-0 left-0 right-0 z-50">
+              <p>Your verification has been denied.</p>
+            </div>
+          )}
         </main>
       </div>
 
@@ -410,7 +417,7 @@ const EditProfile = ({ setProfile }) => {
       {successOpen && (
         <PopupContainer>
           <PopupContent>
-            <h2 className='mb-10'>Saved</h2>
+            <h2 className='mb-10'>Saved successfully</h2>
             <ButtonContainer2>
               <OkButton onClick={handleOk}>Got it!</OkButton>
             </ButtonContainer2>
@@ -422,12 +429,15 @@ const EditProfile = ({ setProfile }) => {
       <>
       {isWaitingOpen && (
         <PopupContainer>
-          <PopupContent>
-            <h2 className='mb-10'>Waiting...</h2>
+          <PopupContent2>
+            <h2 className='mb-6 text-xl font-semibold text-yellow-400'>กำลังอยู่ในระหว่างการตรวจสอบยืนยันตัวตน...</h2>
+            <h2>ขณะนี้แอดมินกำลังทำการตรวจสอบข้อมูลของคุณ</h2>
+            <h2>ซึ่งจะมีการตอบกลับภายใน 48 ชั่วโมง</h2>
+            <h2>หากพบปัญหา โปรดติดต่อที่ 08-88888</h2>
             <ButtonContainer2>
-              <OkButton className="mt-5" onClick={handleOk2}>Got it!</OkButton>
+              <OkButton className="mt-8" onClick={handleOk2}>Got it!</OkButton>
             </ButtonContainer2>
-          </PopupContent>
+          </PopupContent2>
         </PopupContainer>
       )}
       </>
@@ -458,6 +468,17 @@ const PopupContent = styled.div`
   justify-content: center;
   text-align: center;
   width: 400px;
+`;
+
+const PopupContent2 = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 550px;
 `;
 
 const ButtonContainer = styled.div`

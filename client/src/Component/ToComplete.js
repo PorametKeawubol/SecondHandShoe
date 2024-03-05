@@ -107,7 +107,7 @@ export default function ToComplete() {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold mb-4">Shipping Status</h1>
+      <h1 className="text-3xl font-bold mb-4">Completed Shoes Data</h1>
       <div className="grid gap-4">
         {MyShoes &&
           MyShoes[0] !== undefined &&
