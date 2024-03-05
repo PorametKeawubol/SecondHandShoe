@@ -20,6 +20,7 @@ import ToShipContent from "./Component/ToShipContent";
 import Confrimpayment from "./Component/Confrimpayment";
 import MessageDashbord from "./Component/MessageDashbord";
 import Allpayment from "./Component/Allpayment";
+import Varifyconfirm from "./Component/Varifyconfirm";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path="/Confrimpayment" element={<Confrimpayment />} />
         <Route path="/Allpayment" element={<Allpayment />} />
         <Route path="/Payment/:id" element={<Payment />} />
+        <Route path="/Varifyconfirm" element={<Varifyconfirm />} />
         <Route path="/shoe/:id" element={<ShoeDetails />} />
         <Route path="/YourItem" element={<YourItem />} />
         <Route path="/contact" element={<Contact />} />

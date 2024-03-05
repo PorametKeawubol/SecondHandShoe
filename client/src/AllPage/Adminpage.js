@@ -10,6 +10,7 @@ import ToComplete from '../Component/ToComplete';
 import { ShoeContext } from '../contexts/ShoeContext';
 import Allpayment from '../Component/Allpayment';
 import Allpaymenlist from '../Component/Allpaymenlist';
+import Varifyconfirm from '../Component/Varifyconfirm';
 const MyPurchases = () => {
   const [activeTab, setActiveTab] = useState('cart');
   const location = useLocation();
@@ -39,7 +40,7 @@ const MyPurchases = () => {
         {/* Display content based on activeTab */}
         {activeTab === 'PaymentComfirm' && <Confrimpayment />}
         {activeTab === 'Allpayment' && <Allpayment />}
-        {activeTab === 'Verify' && <ToComplete />}
+        {activeTab === 'Verify' && <Varifyconfirm />}
       </div>
     </div>
   );

@@ -102,12 +102,12 @@ export default function Allpayment() {
   };
 
   return (
-    <div className="flex w-full h-full justify-center mt-10 ">
+    <div className="flex w-full h-auto justify-center mt-10 ">
       <div className="flex flex-col bg-slate-200 w-[90%] rounded-3xl shadow-2xl">
-        <div className="text-white bg-indigo-900 rounded-t-3xl  drop-shadow-md h-20 p-5 text-xl font-bold border-b-4 border-slate-100 border-opacity-10">
+        <div className="text-white bg-indigo-900 rounded-t-3xl  drop-shadow-md  p-5 text-xl font-bold border-b-4 border-slate-100 border-opacity-10">
           <p className="">confirmation</p>
         </div>
-        <div>
+        <div className="flex flex-col">
           {ListShoes &&
             ListShoes.map((List) => {
               return <Allpaymenlist item={List} shoes={Adminlist} />;
