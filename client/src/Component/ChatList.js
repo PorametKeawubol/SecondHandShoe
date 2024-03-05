@@ -3,9 +3,12 @@ import { MdAccountCircle } from "react-icons/md";
 import conf from "../config/main";
 import { useEffect, useState, } from "react";
 import {Link} from "react-router-dom"
+import Message from "./Message";
 export default function Chat(data) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("authToken")}`
     const [userData, setUserdata] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    
     const id = data.data
     useEffect(()=>{
         fetchUserData()
@@ -37,9 +40,10 @@ export default function Chat(data) {
         }
     };
     return (
-        <Link to={`/message/${userData.id1}`}>
-        <div className="flex items-center hover:bg-slate-200 rounded-2xl">
+        // <Link to={`/message/${userData.id1}`}>
+        <div onClick={()=>{setShowModal(true)}} className="flex items-center hover:bg-slate-200 rounded-2xl">
             <div
+                
                 className="px-6 rounded-full"
                 style={{ display: "flex", alignItems: "center" }}
             >
@@ -61,7 +65,8 @@ export default function Chat(data) {
             <div className="font-medium text-slate-400">
                 {userData.username}
             </div>
+            {showModal && <Message setShowModal={setShowModal} id={id} />}
         </div>
-        </Link>
+        // </Link>
     );
 }

@@ -2,14 +2,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import conf from "../config/main";
 import Chat from "./ChatList";
+import Header from "../Component/Header";
+import Message from "./Message";
 export default function MessageDashbord() {
     const [Message, setMessage] = useState([]);
     const [chatRoom, setChatRoom] = useState([]);
+    console.log("🚀 ~ MessageDashbord ~ chatRoom:", chatRoom);
     const [userData, setUserdata] = useState([]);
 
     useEffect(() => {
         fetchUserData();
     }, []);
+    
 
     const fetchUserData = async () => {
         try {
@@ -121,22 +125,30 @@ export default function MessageDashbord() {
 
     return (
         <div>
+            <Header />
             <div class="py-10 h-screen bg-gray-300 px-2">
                 <div class="max-w-md mx-auto bg-gray-100 shadow-lg rounded-lg overflow-hidden md:max-w-lg">
                     <div class="md:flex">
                         <div class="w-full p-2">
                             <div class="relative"> </div>
                             <ul>
-                                <div className="text-lg font-bold text-slate-400 mt-2 mb-4 px-10">All Message</div>
+                                <div className="text-lg font-bold text-slate-400 mt-2 mb-4 px-10">
+                                    All Message
+                                </div>
                                 {chatRoom.length > 0 &&
-                                    chatRoom.map((item) => (
-                                        <Chat data={item} />
+                                    chatRoom.map((id) => (
+                                        <Chat
+                                            key={id}
+                                            data={id}
+                                            
+                                        />
                                     ))}
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
+            {/* {showModal && <Message toggleModal={toggleModal} />} */}
         </div>
     );
 }

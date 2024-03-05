@@ -3,6 +3,7 @@ import { ShoeContext } from "../contexts/ShoeContext";
 import axios from "axios";
 import styled from "styled-components"; // import styled-components
 import status from "./status";
+import conf from "../config/main";
 // Styled component for the shoe container
 const ShoeContainer = styled.div`
   background-color: #e5e7eb; /* Set background color */
@@ -37,7 +38,7 @@ export default function ToShipContent() {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("/api/users/me", {
+      const response = await axios.get(conf.apiUrlPrefix+"/users/me", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import conf from "../config/main";
 export const ShoeContext = createContext();
 
 const ShoeProvider = ({ children }) => {
@@ -14,7 +15,7 @@ const ShoeProvider = ({ children }) => {
 
     const fetchShoes = async () => {
         try {
-            const response = await axios.get("/api/shoes?populate=*");
+            const response = await axios.get(conf.apiUrlPrefix+"/shoes?populate=*");
             if (Array.isArray(response.data.data)) {
                 // Check if response.data is an array
                 const shoeData = response.data.data.map((shoe) => {
@@ -39,7 +40,7 @@ const ShoeProvider = ({ children }) => {
                         picture && picture.data && picture.data.length > 0
                             ? picture.data.map(
                                   (img) =>
-                                      "http://localhost:1337" +
+                                      conf.urlPrefix +
                                       img.attributes.url
                               )
                             : [];

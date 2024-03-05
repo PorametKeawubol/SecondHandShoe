@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { ShoeContext } from "../contexts/ShoeContext";
 import axios from "axios";
-import styled from "styled-components"; // import styled-components
+import styled from "styled-components"; 
+import conf from "../config/main";// import styled-components
 // Styled component for the shoe container
 const ShoeContainer = styled.div`
   background-color: #e5e7eb; /* Set background color */
@@ -43,7 +44,7 @@ export default function ToReceiveContent() {
       },
     };
     try {
-      await axios.put(`http://localhost:1337/api/shoes/${id}`, payload);
+      await axios.put(conf.apiUrlPrefix+"/shoes"/id, payload);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
@@ -53,7 +54,7 @@ export default function ToReceiveContent() {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("/api/users/me", {
+      const response = await axios.get(conf.apiUrlPrefix+"/users/me", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },
@@ -65,11 +66,11 @@ export default function ToReceiveContent() {
       console.error("Error fetching user data:", error);
     }
   };
-
+  //conf.apiUrlPrefix+"/users"/userId
   const fetchMypaydata = async () => {
     try {
       const [response1] = await Promise.all([
-        axios.get(`/api/payments?populate=*`, {
+        axios.get(conf.apiUrlPrefix+"/payments?populate=*", {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
           },

@@ -1,25 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import MyMessage from "./message/MyMessage";
 import YourMessage from "./message/YourMessage";
 import axios from "axios";
 import conf from "../config/main";
 import { useParams } from "react-router-dom";
-export default function Message() {
+
+export default function Message({ setShowModal, id }) {
+    console.log("🚀 ~ Message ~ setShowModal:", setShowModal)
+    const modalRef = useRef(null);
     const [Message, setMessage] = useState();
-    const [inputText, setInputText] = useState('');
+    const [inputText, setInputText] = useState("");
     const [userData, setUserdata] = useState("");
-    console.log("🚀 ~ Message ~ userData:", userData);
-    const id = useParams();
-    const receiverID = parseInt(id.id);
+    const receiverID = parseInt(id);
 
     axios.defaults.headers.common["Authorization"] =
         `Bearer ${sessionStorage.getItem("authToken")}`;
     useEffect(() => {
         fetchMessages();
+        const interval = setInterval(fetchMessages, 5000);
+
+        return () => clearInterval(interval);
     }, [userData]);
-    useEffect(() => {
-        fetchUserData();
-    }, []);
 
     const fetchUserData = async () => {
         try {
@@ -63,10 +64,14 @@ export default function Message() {
             console.error("Error fetching user data:", error);
         }
     };
+    if (userData === "") {
+        fetchUserData();
+    }
+    
 
     const fetchMessages = async () => {
         try {
-            const response = await axios.get("/api/messages?populate=*");
+            const response = await axios.get(conf.apiUrlPrefix +"/messages?populate=*");
             if (Array.isArray(response.data.data)) {
                 const MessagesData = response.data.data.map((chat) => {
                     const { id, attributes } = chat;
@@ -112,7 +117,7 @@ export default function Message() {
         }
     };
 
-    const handleSend = async () => {
+    const handleSubmit = async () => {
         try {
             const messageData = {
                 data: {
@@ -122,8 +127,8 @@ export default function Message() {
                 },
             };
 
-            const response = await axios.post("/api/messages", messageData);
-            fetchMessages();
+            const response = await axios.post(conf.apiUrlPrefix +"/messages", messageData);
+
             // Handle response if needed
             setInputText("");
         } catch (err) {
@@ -132,62 +137,101 @@ export default function Message() {
         }
     };
 
-    return (
-        <div className=" flex justify-center bg-black p-10">
-            <div className="flex justify-center bg-white w-[60%] h-screen rounded-xl">
-                <div className="w-full px-5 flex flex-col justify-between overflow-y-scroll">
-                    <div className="flex flex-col mt-5 ">
-                        {Message &&
-                            Message.map((chat) => {
-                                if (chat.Sender.id === userData.id1) {
-                                    return (
-                                        <MyMessage
-                                            data={chat}
-                                            pic={userData.profile_picture1}
-                                        />
-                                    );
-                                } else {
-                                    return (
-                                        <YourMessage
-                                            data={chat}
-                                            pic={userData.profile_picture2}
-                                        />
-                                    );
-                                }
-                            })}
+    // Function to handle closing the modal
+    // const handleCloseModal = () => {
+    //     if (toggleModal) {
+    //         toggleModal(false);
+    //     }
+    // };
 
-                        <div className="py-5 w-full px-4">
-                            <div className="">
-                                <div className="flex justify-between w-full  bg-gray-300 py-5 px-5  rounded-xl">
-                                    <input
-                                        className=" bg-gray-300 w-full h-auto border-none outline-none"
-                                        type="text"
-                                        placeholder="type your message here..."
-                                        value={inputText}
-                                        onChange={(e) => {
-                                            setInputText(e.target.value);
-                                        }}
-                                    />
-                                    <button
-                                        onClick={() => {
-                                            handleSend();
-                                        }}
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="1.5"
-                                            stroke="currentColor"
-                                            className="w-6 h-6"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+    return (
+        <div className="">
+            <div
+                onClick={()=>{alert("hhhhh")}}
+                className="fixed inset-0 z-0 w-full h-full bg-opacity-80  overflow-y-auto bg-[#302b63]  flex justify-center items-center"
+            >
+                <div
+                    ref={modalRef}
+                    className="z-0 bg-white w-[80%] h-[80%] rounded-2xl shadow-md  flex flex-col items-center"
+                >
+                    <button
+                        className="absolute top-4 right-4"
+                        
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </button>
+                    <div className=" w-full  px-5 flex flex-col justify-between overflow-y-scroll">
+                        <div className="flex relative flex-col">
+                            {Message &&
+                                Message.map((chat) => {
+                                    if (chat.Sender.id === userData.id1) {
+                                        return (
+                                            <MyMessage
+                                                data={chat}
+                                                pic={userData.profile_picture1}
                                             />
-                                        </svg>
-                                    </button>
+                                        );
+                                    } else {
+                                        return (
+                                            <YourMessage
+                                                data={chat}
+                                                pic={userData.profile_picture2}
+                                            />
+                                        );
+                                    }
+                                })}
+                            <div className="py-5 w-full px-4">
+                                <div className="">
+                                    <div className="flex justify-between w-full  bg-gray-300 py-5 px-5  rounded-xl">
+                                        <input
+                                            className=" bg-gray-300 w-full h-auto border-none outline-none"
+                                            type="text"
+                                            placeholder="type your message here..."
+                                            value={inputText}
+                                            onChange={(e) => {
+                                                setInputText(e.target.value);
+                                            }}
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                    e.preventDefault();
+                                                    handleSubmit();
+                                                }
+                                            }}
+                                        />
+                                        <button
+                                            onClick={() => {
+                                                handleSubmit();
+                                            }}
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke-width="1.5"
+                                                stroke="currentColor"
+                                                className="w-6 h-6"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
