@@ -22,6 +22,7 @@ import MessageDashbord from "./Component/MessageDashbord";
 import Allpayment from "./Component/Allpayment";
 import Varifyconfirm from "./Component/Varifyconfirm";
 import Singin from "./AllPage/Singin";
+import Register from "./AllPage/Register";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Singin" element={<Singin />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/Register" element={<Register />} />
         <Route path="/Editprofile" element={<EditProfile />} />{" "}
         {/* Changed component name to EditProfile */}
         <Route path="/Purchases" element={<MyPurchases />} />
