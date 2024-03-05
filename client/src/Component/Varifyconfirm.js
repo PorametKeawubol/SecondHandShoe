@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Varifyconfirm = ({ setProfile }) => {
   const [users, setUsers] = useState([]);
@@ -11,6 +12,8 @@ const Varifyconfirm = ({ setProfile }) => {
   const [popupPosition, setPopupPosition] = useState({ top: 0, left: 0 });
   const [showPopupOnLeft, setShowPopupOnLeft] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [isOpen, setIsOpen] = useState("");
+  const [isDeniedOpen, setIsDeniedOpen] = useState("");
 
   axios.defaults.headers.common["Authorization"] =
   `Bearer ${sessionStorage.getItem("authToken")}`;
@@ -40,7 +43,7 @@ const Varifyconfirm = ({ setProfile }) => {
         VerificationWaiting: false,
         Verify: true,
       });
-      alert('Your verification request has been submitted successfully!');
+      setIsOpen(true);
     } catch (error) {
       console.error('Error submitting verification request:', error);
     } finally {
@@ -48,13 +51,18 @@ const Varifyconfirm = ({ setProfile }) => {
     }
   };
 
+  const handleOk = () => {
+    setIsOpen(false);
+    setIsDeniedOpen(false);
+  }
+
   const handleRequestVerificationDecline = async (userId) => {
     try {
       await axios.put(`http://localhost:1337/api/users/${userId}`, {
         VerificationWaiting: false,
         Verify: false,
       });
-      alert('Your verification request has been submitted successfully!');
+      setIsDeniedOpen(true)
     } catch (error) {
       console.error('Error submitting verification request:', error);
     } finally {
@@ -185,8 +193,83 @@ const Varifyconfirm = ({ setProfile }) => {
           </div>
         )}
       </div>
+      {isOpen && (
+      <PopupContainer>
+        <PopupContent>
+          <h2 className='mb-10'>Verification accepted</h2>
+          <ButtonContainer>
+            <OkButton onClick={handleOk}>okay</OkButton>
+          </ButtonContainer>
+        </PopupContent>
+      </PopupContainer>
+    )}
+    {isDeniedOpen && (
+      <PopupContainer>
+        <PopupContent>
+          <h2 className='mb-10'>Verification declined</h2>
+          <ButtonContainer>
+            <OkButton onClick={handleOk}>okay</OkButton>
+          </ButtonContainer>
+        </PopupContent>
+      </PopupContainer>
+    )}<PopupBackground show={isOpen || isDeniedOpen} />
     </>
   );
 };
+
+const PopupContainer = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+`;
+
+const PopupContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 400px;
+  position: relative;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const OkButton = styled.button`
+  padding: 6px 16px;
+  background-color: #3aa836;
+  color: white; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  &:hover {
+    background-color: #66d663;
+  }
+`;
+
+const PopupBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* สีของพื้นหลัง */
+  z-index: 9998; /* ต่ำกว่า PopupContainer */
+  display: ${(props) => (props.show ? "block" : "none")}; /* แสดงเฉพาะเมื่อ show=true */
+`;
+
 
 export default Varifyconfirm;
