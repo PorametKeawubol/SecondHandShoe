@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { ShoeContext } from "../contexts/ShoeContext";
 import "./Header.css";
 
+
 export default function Example() {
   const { setShoes } = useContext(ShoeContext);
   const [showLoginModal, setShowLoginModal] = useState(false);

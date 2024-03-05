@@ -9,10 +9,10 @@ import { RxDotFilled } from "react-icons/rx";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import Footer from "../Component/Footer";
 import SellerRatingSummary from "../Component/Ratingsum";
-import LoginForm from "../AllPage/Loginform";
-import RegisterForm from "../AllPage/RegisterForm";
+import Register from "../AllPage/Register";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
+import Singin from "./Singin";
 
 const ShoeDetails = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -200,7 +200,7 @@ const ShoeDetails = () => {
         </nav>
         <div className="md:mx-6">
           <div className="flex md:flex-row flex-col items-center">
-            <div className="max-w-[640px] md:h-[540px] h-[400px] w-full m-auto py-16 px-4 relative group drop-shadow-xl">
+            <div className="max-w-[640px] md:w-[540px] h-[400px] w-[80%] m-auto py-16 px-4  drop-shadow-xl">
               {slides.length > 0 && (
                 <div
                   style={{
@@ -327,7 +327,7 @@ const ShoeDetails = () => {
           </div>
         </div>
         {showLoginModal && (
-          <LoginForm
+          <Singin
             toggleModal={toggleLoginModal}
             toggleRegisterModal={toggleRegisterModal}
             onLogin={handleLogin}
@@ -335,7 +335,7 @@ const ShoeDetails = () => {
           />
         )}
         {showRegisterModal && (
-          <RegisterForm
+          <Register
             toggleModal={toggleRegisterModal}
             toggleLoginModal={toggleLoginModal}
             onLogin={handleLogin}

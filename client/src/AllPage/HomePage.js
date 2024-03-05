@@ -7,7 +7,6 @@ import Shoe from "../Component/Shoe";
 import Searchbar from "../Component/Searchbar";
 import CarouselBar from "../Component/CarouselBar";
 import Footer from "../Component/Footer";
-import backgroundImg from '../Component/Picture/bg1.png'
 import TitleHome from "../Component/TitleHome";
 axios.defaults.baseURL =
   process.env.REACT_APP_BASE_URL || "http://localhost:1337";
