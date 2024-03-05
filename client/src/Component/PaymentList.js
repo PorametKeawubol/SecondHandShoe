@@ -73,36 +73,34 @@ export default function PaymentList({ item, shoes, fetchList }) {
 
   return (
     <div
-      className="flex flex-row gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500"
-      onClick={(e) => {
-        // Check if the click event originated from the accept or decline buttons
-        if (
-          !e.target.closest(".accept-button") &&
-          !e.target.closest(".decline-button")
-        ) {
-          setOpenDetail(true);
-          fetchDataForPopup();
-        }
-      }}
-    >
+      className="flex flex-row gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500">
       <div className="w-full min-h-[150px] flex items-center gap-x-4 pl-10">
-        <img className="max-w-[80px]" src={shoe[0].image[0]} alt="" />
-        <div className="w-full flex flex-row p-6">
-          <div className="flex justify-between mb-2">
-            <Link
-              to={`/shoe/${id}`}
-              className="text-sm uppercase  font-medium max-w-[240px] text-primary hover:underline  text-gray-900"
-            >
-              {shoe[0].products_name}
-            </Link>
+        <img className="max-w-[80px] transition duration-300 transform hover:scale-110 " src={shoe[0].image[0]} alt="" />
+        <div className="w-full flex flex-row justify-between p-6">
+            <div className="flex justify-between ">
+              <Link
+                to={`/shoe/${id}`}
+                className="text-sm uppercase font-medium max-w-[240px] text-primary hover:underline text-gray-900 "
+              >
+                {shoe[0].products_name}
+              </Link>
+              <span
+                className="text-sm uppercase font-medium text-blue-500 hover:underline cursor-pointer ml-16" // Use text-blue-500 for blue color
+                onClick={() => {
+                  setOpenDetail(true);
+                  fetchDataForPopup();
+                }}
+              >
+                View Payment
+              </span>
           </div>
-          <div className="flex gap-x-2 h-[36px] text-sm"></div>
+          <div className="flex text-sm"></div>
           <div className="flex flex-1 justify-around items-center text-gray-900 ">
             {shoe[0].price} THB
           </div>
-          <div className="flex justify-center items-center bg-green-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
+          <div className="flex justify-center items-center bg-green-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2 transition duration-300 transform hover:scale-110 ">
             <button
-              className="accept-button"
+              className="accept-button "
               onClick={() => {
                 setOpenAccepted(true);
               }}
@@ -153,7 +151,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
                     <div className="mt-6 flex justify-center">
                       <button
                         type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-green-500 border border-transparent rounded-md hover:bg-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-green-500 border border-transparent rounded-md hover:bg-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 "
                         onClick={() => {
                           setOpenAccepted(false);
                           ConfirmPayment();
@@ -167,7 +165,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
               </div>
             </Dialog>
           </Transition.Root>
-          <div className="flex justify-center items-center bg-red-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
+          <div className="flex justify-center items-center bg-red-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2 transition duration-300 transform hover:scale-110">
             <button
               className="decline-button"
               onClick={() => {
@@ -291,7 +289,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
                     <div className="mt-6 flex justify-center">
                       <button
                         type="button"
-                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 transition duration-300 transform hover:scale-110 "
                         onClick={(e) => {
                           e.stopPropagation();
                           setOpenDetail(false);
