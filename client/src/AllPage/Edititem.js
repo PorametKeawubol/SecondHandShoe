@@ -1,10 +1,3 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
-import axios from "axios";
-import { ShoeContext } from "../contexts/ShoeContext";
-import { FaTimes } from 'react-icons/fa'; // Import FaTimes for X icon
-
-const baseURL = "http://localhost:1337/api/";
-
 const Notification = ({ message, isError }) => {
     const bgColor = isError ? "bg-red-500" : "bg-green-500";
     return (
@@ -16,15 +9,24 @@ const Notification = ({ message, isError }) => {
     );
 };
 
+import React, { useState, useEffect, useContext, useRef } from "react";
+import axios from "axios";
+import { ShoeContext } from "../contexts/ShoeContext";
+import { FaTimes } from 'react-icons/fa'; // Import FaTimes for X icon
+
+const baseURL = "http://localhost:1337/api/";
+
 function EditItem({ itemId, onClose, user }) {
     const [shoeData, setShoeData] = useState({ picture: [] }); // Initialize shoeData.picture as an empty array
     const [editedData, setEditedData] = useState({});
+    const [selectedImages, setSelectedImages] = useState([]); // State for selected images
     const [newImages, setNewImages] = useState([]);
     const [brandTags, setBrandTags] = useState([]);
     const [colorTags, setColorTags] = useState([]);
     const [genderTags, setGenderTags] = useState([]);
     const [uploadMessage, setUploadMessage] = useState(""); // State for upload message
     const [uploadError, setUploadError] = useState(""); // State for upload error
+    const [showNotification, setShowNotification] = useState(false); // State to control notification visibility
     const modalRef = useRef(null);
 
     axios.defaults.headers.common["Authorization"] =
@@ -174,6 +176,7 @@ function EditItem({ itemId, onClose, user }) {
         });
     };
 
+
     const handleRemovePreviewImage = (index) => {
         // Remove the image from newImages state
         const updatedImages = [...newImages];
@@ -184,6 +187,17 @@ function EditItem({ itemId, onClose, user }) {
         const updatedEditedData = { ...editedData };
         updatedEditedData.picture.splice(index, 1);
         setEditedData(updatedEditedData);
+    };
+
+
+    const handleSelectImage = (index) => {
+        // If the image index is already in selectedImages, remove it
+        if (selectedImages.includes(index)) {
+            setSelectedImages(selectedImages.filter((i) => i !== index));
+        } else {
+            // Otherwise, add it to selectedImages
+            setSelectedImages([...selectedImages, index]);
+        }
     };
 
     const handleRemoveImage = async (index) => {
@@ -334,6 +348,10 @@ function EditItem({ itemId, onClose, user }) {
                 },
             });
 
+            if (selectedImages.length > 0) {
+                await Promise.all(selectedImages.map((index) => handleRemoveImage(index)));
+            }
+
             // Set success message
             setUploadMessage("Shoe data updated successfully.");
 
@@ -342,9 +360,9 @@ function EditItem({ itemId, onClose, user }) {
 
             // Close the modal after 2 seconds
             setTimeout(() => {
-                onClose();
+                setShowNotification(true);
                 handleFetchShoes();
-            }, 1000);
+            },);
         } catch (error) {
             console.error("Error updating shoe data:", error);
             // Set error message
@@ -362,8 +380,20 @@ function EditItem({ itemId, onClose, user }) {
                     <FaTimes />
                 </button>
                 <h2 className="text-2xl font-semibold mb-4">Edit Item</h2>
-                {shoeData ? (
-                    <form onSubmit={handleSubmit}>
+                {showNotification ? (
+                    <div>
+                        {uploadMessage && (
+                            <Notification message={uploadMessage} />
+                        )}{" "}
+                        {/* Render upload message if present */}
+                        {uploadError && (
+                            <Notification message={uploadError} isError />
+                        )}{" "}
+                        {/* Render error message if present */}
+                    </div>
+                ) : (
+                    shoeData ? (
+                        <form onSubmit={handleSubmit}>
                         <div className="mb-4">
                             <label
                                 htmlFor="productName"
@@ -536,31 +566,30 @@ function EditItem({ itemId, onClose, user }) {
                             <div className="flex flex-wrap items-center">
                                 {shoeData.picture &&
                                     shoeData.picture.data &&
-                                    shoeData.picture.data.map(
-                                        (image, index) => (
-                                            <div
-                                                key={index}
-                                                className="relative mr-4 mb-4"
-                                            >
+                                    shoeData.picture.data.map((image, index) => (
+                                        <div key={index} className="relative mr-4 mb-4">
+                                            <div className="relative">
                                                 <img
                                                     src={`http://localhost:1337${image.attributes.url}`}
                                                     alt={`Image ${index}`}
-                                                    className="w-20 h-20 object-cover rounded-md"
+                                                    className="w-20 h-20 object-cover rounded-md cursor-pointer"
+                                                    onClick={() => handleSelectImage(index)}
+                                                    style={{ border: selectedImages.includes(index) ? '2px solid red' : 'none' }}
                                                 />
-                                                <button
-                                                    onClick={() =>
-                                                        handleRemoveImage(
-                                                            index
-                                                        )
-                                                    }
-                                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 -mt-1 -mr-1"
-                                                >
-                                                    Remove 
-                                                    
-                                                </button>
+                                                {selectedImages.includes(index) && (
+                                                    <div
+                                                        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center cursor-pointer hover:rotate-12 transition-transform"
+                                                        onClick={() => handleSelectImage(index)}
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </div>
+                                                )}
                                             </div>
-                                        )
-                                    )}
+                                        </div>
+                                    ))
+                                }
                             </div>
                             <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
                                 {/* Text inside the dropzone */}
@@ -631,8 +660,9 @@ function EditItem({ itemId, onClose, user }) {
                         )}{" "}
                         {/* Render error message if present */}
                     </form>
-                ) : (
-                    <p>Loading...</p>
+                    ) : (
+                        <p>Loading...</p>
+                    )
                 )}
             </div>
         </div>
