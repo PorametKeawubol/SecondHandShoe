@@ -8,6 +8,8 @@ import styled from "styled-components"; // import styled-components
 import ToShipContent from '../Component/ToShipContent';
 import ToComplete from '../Component/ToComplete';
 import { ShoeContext } from '../contexts/ShoeContext';
+import Allpayment from '../Component/Allpayment';
+import Allpaymenlist from '../Component/Allpaymenlist';
 const MyPurchases = () => {
   const [activeTab, setActiveTab] = useState('cart');
   const location = useLocation();
@@ -36,8 +38,7 @@ const MyPurchases = () => {
       <div className="flex-1 p-4 overflow-y-auto">
         {/* Display content based on activeTab */}
         {activeTab === 'PaymentComfirm' && <Confrimpayment />}
-        {activeTab === 'Allpayment' && <Confrimpayment />}
-        {activeTab === 'Allshoe' && <ToShipContent />}
+        {activeTab === 'Allpayment' && <Allpayment />}
         {activeTab === 'Verify' && <ToComplete />}
       </div>
     </div>
@@ -54,20 +55,14 @@ const BarPurchases = ({ activeTab, handleTabChange }) => {
         Payment Comfirm
       </StyledButton>
       <StyledButton
-        className={`${activeTab === 'Verify' ? 'active' : ''}`}
-        onClick={() => handleTabChange('Verify')}
-      >
-        Allshoe
-      </StyledButton>
-      <StyledButton
-        className={`${activeTab === 'Allshoe' ? 'active' : ''}`}
-        onClick={() => handleTabChange('Allshoe')}
+        className={`${activeTab === 'Allpayment' ? 'active' : ''}`}
+        onClick={() => handleTabChange('Allpayment')}
       >
         Allpayment
       </StyledButton>
       <StyledButton
-        className={`${activeTab === 'Allpayment' ? 'active' : ''}`}
-        onClick={() => handleTabChange('Allpayment')}
+        className={`${activeTab === 'Verify' ? 'active' : ''}`}
+        onClick={() => handleTabChange('Verify')}
       >
         Verify
       </StyledButton>

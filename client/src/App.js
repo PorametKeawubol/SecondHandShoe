@@ -19,6 +19,7 @@ import ShopReviewPage from "./AllPage/ShopReview";
 import ToShipContent from "./Component/ToShipContent";
 import Confrimpayment from "./Component/Confrimpayment";
 import MessageDashbord from "./Component/MessageDashbord";
+import Allpayment from "./Component/Allpayment";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
         {/* Changed component name to Status */}
         <Route path="/ToShipContent" element={<ToShipContent />} />
         <Route path="/Confrimpayment" element={<Confrimpayment />} />
+        <Route path="/Allpayment" element={<Allpayment />} />
         <Route path="/Payment/:id" element={<Payment />} />
         <Route path="/shoe/:id" element={<ShoeDetails />} />
         <Route path="/YourItem" element={<YourItem />} />

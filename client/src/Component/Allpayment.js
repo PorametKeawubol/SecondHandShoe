@@ -1,17 +1,19 @@
 import "../app.css";
-import Footer from "../Component/Footer";
-import Header from "../Component/Header";
+import Footer from "./Footer";
+import Header from "./Header";
 import axios from "axios";
 import { useState, useEffect, useContext } from "react";
-import PaymentList from "../Component/PaymentList";
-import { ShoeContext } from "../contexts/ShoeContext";
-export default function Confrimpayment() {
+import PaymentList from "./PaymentList";
+import Allpaymenlist from "./Allpaymenlist";
+export default function Allpayment() {
   const [ListShoes, setListShoes] = useState("");
   const [Adminlist, setAdminlist] = useState();
-  const {fetchShoes} = useContext(ShoeContext)
+
   useEffect(() => {
     fetchShoesAdmin();
+    fetchList();
   }, []);
+
   const fetchShoesAdmin = async () => {
     try {
       const response = await axios.get("/api/shoes?populate=*");
@@ -45,8 +47,6 @@ export default function Confrimpayment() {
           const colorType = color?.data?.attributes.name;
           const genderType = gender?.data?.attributes.name;
           const Seller = seller?.data?.attributes.username;
-          //const product_color = color.data.products_name
-          //const category = attributes.categories?.data.map(cat => cat.attributes.name) || ['uncategorized'];;
           return {
             id,
             products_name,
@@ -72,11 +72,6 @@ export default function Confrimpayment() {
     }
   };
 
-  axios.defaults.headers.common["Authorization"] =
-    `Bearer ${sessionStorage.getItem("authToken")}`;
-  useEffect(() => {
-    fetchList();
-  }, []);
   const fetchList = async () => {
     try {
       const response = await axios.get("api/payments?populate=*");
@@ -97,7 +92,7 @@ export default function Confrimpayment() {
           };
         });
         const filteredListData = ListData.filter((List) => {
-          return List.Confirm === false;
+          return List.Confirm === true;
         });
         setListShoes(filteredListData);
       }
@@ -109,18 +104,16 @@ export default function Confrimpayment() {
   return (
     <div className="flex w-full h-full justify-center mt-10 ">
       <div className="flex flex-col bg-slate-200 w-[90%] rounded-3xl shadow-2xl">
-      <div className="text-white bg-indigo-900 rounded-t-3xl  drop-shadow-md h-20 p-5 text-xl font-bold border-b-4 border-slate-100 border-opacity-10">
+        <div className="text-white bg-indigo-900 rounded-t-3xl  drop-shadow-md h-20 p-5 text-xl font-bold border-b-4 border-slate-100 border-opacity-10">
           <p className="">confirmation</p>
         </div>
         <div>
           {ListShoes &&
             ListShoes.map((List) => {
-              return <PaymentList item={List} shoes={Adminlist} fetchList={fetchList}/>;
+              return <Allpaymenlist item={List} shoes={Adminlist} />;
             })}
         </div>
       </div>
     </div>
   );
-  
-  
 }

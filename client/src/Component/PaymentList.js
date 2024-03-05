@@ -7,10 +7,12 @@ import {
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import axios from "axios";
+import { ShoeContext } from "../contexts/ShoeContext";
 
-export default function PaymentList({ item, shoes }) {
+export default function PaymentList({ item, shoes,fetchList }) {
   const [open, setOpen] = useState(false);
   const [openAccepted, setOpenAccepted] = useState(false);
+  const {fetchShoes} = useContext(ShoeContext)
 
   const cancelButtonRef = useRef(null);
   const id = item.id;
@@ -38,7 +40,8 @@ export default function PaymentList({ item, shoes }) {
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
-      window.location.reload();
+      fetchShoes();
+      fetchList();
     }
   };
 
@@ -48,7 +51,7 @@ export default function PaymentList({ item, shoes }) {
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
-      window.location.reload();
+      fetchShoes();
     }
   };
 
