@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import Singin from "../AllPage/Singin";
-import RegisterForm from "../AllPage/RegisterForm";
+import Register from "../AllPage/Register";
 import logo from "../Component/Picture/logoSecondHandShoe.png";
 import Nav from "../Component/nav";
 import axios from "axios";
@@ -9,6 +9,7 @@ import { SidebarContext } from "../contexts/SidebarContext";
 import { CartContext } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import { ShoeContext } from "../contexts/ShoeContext";
+
 
 export default function Example() {
   const { setShoes } = useContext(ShoeContext);
@@ -192,7 +193,7 @@ export default function Example() {
         />
       )}
       {showRegisterModal && (
-        <RegisterForm
+        <Register
           toggleModal={toggleRegisterModal}
           toggleLoginModal={toggleLoginModal}
           onLogin={handleLogin}

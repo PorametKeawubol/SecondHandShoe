@@ -9,7 +9,7 @@ import { RxDotFilled } from "react-icons/rx";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import Footer from "../Component/Footer";
 import SellerRatingSummary from "../Component/Ratingsum";
-import RegisterForm from "../AllPage/RegisterForm";
+import Register from "../AllPage/Register";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import Singin from "./Singin";
@@ -335,7 +335,7 @@ const ShoeDetails = () => {
           />
         )}
         {showRegisterModal && (
-          <RegisterForm
+          <Register
             toggleModal={toggleRegisterModal}
             toggleLoginModal={toggleLoginModal}
             onLogin={handleLogin}
