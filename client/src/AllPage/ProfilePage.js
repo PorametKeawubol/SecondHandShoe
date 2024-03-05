@@ -18,6 +18,7 @@ import { MdAccountCircle } from "react-icons/md";
 import { Link } from "react-router-dom";
 import ToRate from "../Component/ToRateContent";
 import ImageUploadPopup from "../AllPage/SellPage"; // Import the ImageUploadPopup component
+import styled from "styled-components";
 
 function Profile() {
     const [username, setUsername] = useState("");
@@ -28,6 +29,7 @@ function Profile() {
     const [isAdmin, setIsAdmin] = useState("");
     const userProfile = sessionStorage.getItem("Profile_Picture");
     const [isVerified, setIsVerified] = useState(null)
+    const [isOpen, setIsOpen] = useState(false);
     const handleToRateOpen = () => {
         setShowToRateModal(true);
     };
@@ -65,12 +67,15 @@ function Profile() {
 
     const handlePostSellClick = () => {
         if (isVerified=== false || isVerified === null) {
-            alert("Please verify your account first.");
-            //แก้ให้ดูดีกว่านี้ก็ได้นะงับ
+            setIsOpen(true);
         } else {
             setShowImageUploadPopup(true); // Open the ImageUploadPopup when the "Post sell" button is clicked
         }
     };
+
+    const handleOk = () => {
+        setIsOpen(false)
+    }
 
     return (
         <div>
@@ -286,8 +291,67 @@ function Profile() {
                 />
             )}{" "}
             {/* Render the ImageUploadPopup component */}
+
+            <>
+            {isOpen && (
+                <PopupContainer>
+                <PopupContent>
+                    <h2 className="mb-5">Please verify your account first.</h2>
+                    <ButtonContainer>
+                        <Button onClick={handleOk}>Got it!</Button>
+                    </ButtonContainer>
+                </PopupContent>
+                </PopupContainer>
+            )}
+            </>
+
         </div>
     );
 }
+
+const PopupContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
+const PopupContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 400px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Button = styled.button`
+  padding: 6px 16px;
+  background-color: #3aa836;
+  color: white; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+  &:hover {
+    background-color: #66d663;
+  }
+`;
+
 
 export default Profile;

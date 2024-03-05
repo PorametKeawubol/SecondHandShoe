@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Header from "../Component/Header";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const EditProfile = ({ setProfile }) => {
   const [username, setUsername] = useState("");
@@ -23,6 +24,11 @@ const EditProfile = ({ setProfile }) => {
   const [isWaiting, setIsWaiting] = useState("");
   const [setisUserUpdated, setSetisUserUpdated] = useState(""); // Add setisUserUpdated state
   const [errorMessage, setErrorMessage] = useState("")
+  const [isDelete, setIsDelete] = useState("");
+  const [isSubmitOpen, setIsSubmitOpen] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false)
+  const [isCancleOpen, setIsCancleOpen] = useState(false);
+  const [isWaitingOpen, setIsWaitingOpen] = useState(false);
   axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("authToken")}`
   useEffect(() => {
     fetchUserData();
@@ -64,8 +70,13 @@ const EditProfile = ({ setProfile }) => {
       console.error("Error fetching user data:", error);
     }
   };
+
+  const handleImageDelete = () => {
+    setIsDelete(true);
+  }
   
-  const handleImageDelete = async () => {
+  const handleDelete = async () => {
+    setIsDelete(false);
     try {
       //Asset ID
       const response = await axios.get("http://localhost:1337/api/users/me?populate=Profile_Picture");
@@ -85,7 +96,9 @@ const EditProfile = ({ setProfile }) => {
     }
   };
   
-  
+  const handleNotDelete = () => {
+    setIsDelete(false);
+  }
 
   const handleImageChange = async () => {
     // Check if there is any file selected
@@ -131,7 +144,11 @@ const EditProfile = ({ setProfile }) => {
 
   
   
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
+    setIsSubmitOpen(true);
+  };
+
+  const handleAcceptSubmit = async () => {
     try {
       const response = await axios.put(`http://localhost:1337/api/users/${userId}`, {
         username: username,
@@ -141,16 +158,44 @@ const EditProfile = ({ setProfile }) => {
         Bio: bio,
       });
       console.log("Edit successful:", response.data);
-      //pop up success
-      navigate('/Profile');
+      setIsSubmitOpen(false);
+      setSuccessOpen(true);
     } catch (error) {
       console.error("Error editing profile:", error);
     }
+    setSuccessOpen(true);
+  }
+
+  const handleOk = () => {
+    navigate('/profile')
+  }
+  const handleOk2 = () => {
+    setIsWaitingOpen(false);
+  }
+  
+  const handleDenySubmit = () => {
+    setIsSubmitOpen(false);
   };
   
   const handleCancle = () => {
-    navigate('/Profile');
-  }
+    setIsCancleOpen(true);
+  };
+
+  const handleAcceptCancle = async () => {
+    try {
+      await fetchUserData();
+      console.log("Changes cancelled");
+      setIsCancleOpen(false);
+      navigate('/profile')
+    } catch (error) {
+      console.error("Error cancelling changes:", error);
+    }
+  };
+  
+
+  const handleDenyCancle = () => {
+    setIsCancleOpen(false);
+  };
 
   const handleVerify = async () => {
     if (realName === "" || realName === null || address === "" || address === null || telNum === "" || telNum === null || Bank_account === "" || Bank_account === null  /*|| other === ""*/) {
@@ -158,6 +203,7 @@ const EditProfile = ({ setProfile }) => {
       console.log('verify error')
       setIsWaiting(false);
     } else {
+      setIsWaitingOpen(true);
       try {
         const response = await axios.put(`http://localhost:1337/api/users/${userId}`, {
           Real_Name: realName,
@@ -230,6 +276,14 @@ const EditProfile = ({ setProfile }) => {
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)} defaultValue="" required />
                     </div>
+                  </div>
+                  <div className="mb-2 sm:mb-6">
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"></label>
+                    <p className='mb-3'>Username</p>
+                    <input type="email" id="email" className="bg-indigo-50 border border-indigo-300 text-indigo-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 " 
+                    onChange={(e) => setUsername(e.target.value)}
+                    value={username}
+                    placeholder="username" required />
                   </div>
                   <div className="mb-2 sm:mb-6">
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-indigo-900 dark:text-white"></label>
@@ -308,8 +362,159 @@ const EditProfile = ({ setProfile }) => {
         )}
         </main>
       </div>
+
+      <>
+      {isDelete && (
+        <PopupContainer>
+          <PopupContent>
+            <h2>Are you sure you want to delete</h2>
+            <h2 className='mb-8'>your profile picture?</h2>
+            <ButtonContainer>
+              <YesButton onClick={handleDelete}>Yes</YesButton>
+              <NoButton onClick={handleNotDelete}>No</NoButton>
+            </ButtonContainer>
+          </PopupContent>
+        </PopupContainer>
+      )}
+      </>
+
+      <>
+      {isSubmitOpen && (
+        <PopupContainer>
+          <PopupContent>
+            <h2 className='mb-10'>Are you sure you want to save changes?</h2>
+            <ButtonContainer>
+              <YesButton onClick={handleAcceptSubmit}>Yes</YesButton>
+              <NoButton onClick={handleDenySubmit}>No</NoButton>
+            </ButtonContainer>
+          </PopupContent>
+        </PopupContainer>
+      )}
+      </>
+
+      <>
+      {isCancleOpen && (
+        <PopupContainer>
+          <PopupContent>
+            <h2 className='mb-10'>Are you sure you want to discard all changes?</h2>
+            <ButtonContainer>
+              <YesButton onClick={handleAcceptCancle}>Yes</YesButton>
+              <NoButton onClick={handleDenyCancle}>No</NoButton>
+            </ButtonContainer>
+          </PopupContent>
+        </PopupContainer>
+      )}
+      </>
+
+      <>
+      {successOpen && (
+        <PopupContainer>
+          <PopupContent>
+            <h2 className='mb-10'>Saved</h2>
+            <ButtonContainer2>
+              <OkButton onClick={handleOk}>Got it!</OkButton>
+            </ButtonContainer2>
+          </PopupContent>
+        </PopupContainer>
+      )}
+      </>
+
+      <>
+      {isWaitingOpen && (
+        <PopupContainer>
+          <PopupContent>
+            <h2 className='mb-10'>Waiting...</h2>
+            <ButtonContainer2>
+              <OkButton className="mt-5" onClick={handleOk2}>Got it!</OkButton>
+            </ButtonContainer2>
+          </PopupContent>
+        </PopupContainer>
+      )}
+      </>
+
     </>
   );
 };
+
+const PopupContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
+const PopupContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 400px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const ButtonContainer2 = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const YesButton = styled.button`
+  padding: 6px 16px;
+  background-color: #28287a;
+  color: white; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-left: 30px;
+
+  &:hover {
+    background-color: #6464c4;
+  }
+`;
+
+const NoButton = styled.button`
+  padding: 6px 16px;
+  background-color: #cf332d;
+  color: white; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s; 
+  margin-right: 30px;
+  
+  &:hover {
+    background-color: #d66663;
+  }
+`;
+
+const OkButton = styled.button`
+  padding: 6px 16px;
+  background-color: #3aa836;
+  color: white; 
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  
+  &:hover {
+    background-color: #66d663;
+  }
+`;
+
+
 
 export default EditProfile;

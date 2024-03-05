@@ -66,7 +66,11 @@ function Searchbar({ onnewfilter }) {
   const handleSearchTxt = (e) => {
     e.preventDefault(); 
     if (searchTxt.trim() === "") {
-      onnewfilter(shoes);
+      const shoe = shoes.filter((item) => {
+        return (
+          item.payment.data === null
+        );})
+      onnewfilter(shoe);
       return;
     }
 
