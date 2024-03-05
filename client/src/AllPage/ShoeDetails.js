@@ -22,7 +22,6 @@ const ShoeDetails = () => {
   const { addToCart } = useContext(CartContext);
   const { shoes } = useContext(ShoeContext);
 
-  console.log("🚀 ~ ShoeDetails ~ shoes:", shoes);
   const [slides, setSlides] = useState([]);
   const [activeAccordionIndex, setActiveAccordionIndex] = useState(null);
   const [buttonActive, setButtonActive] = useState(false);

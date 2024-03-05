@@ -69,12 +69,8 @@ const Rating = () => {
       // ล้างข้อมูลหลังจากส่ง
       setCurrentValue(0);
       setComment("");
-      alert("Feedback submitted successfully!");
     } catch (error) {
       console.error("Error submitting feedback:", error);
-      alert(
-        "An error occurred while submitting feedback. Please try again later."
-      );
     }
   };
 
