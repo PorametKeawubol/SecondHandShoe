@@ -1,19 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  ExclamationTriangleIcon,
-  CheckCircleIcon,
-} from "@heroicons/react/24/outline";
+import { ExclamationTriangleIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { ShoeContext } from "../contexts/ShoeContext";
 import conf from "../config/main";
 
-export default function PaymentList({ item, shoes,fetchList }) {
+export default function PaymentList({ item, shoes, fetchList }) {
   const [open, setOpen] = useState(false);
   const [openAccepted, setOpenAccepted] = useState(false);
-  const {fetchShoes} = useContext(ShoeContext)
+  const [openDetail, setOpenDetail] = useState(false);
+  const [popupData, setPopupData] = useState(null);
+  const { fetchShoes } = useContext(ShoeContext);
 
   const cancelButtonRef = useRef(null);
   const id = item.id;
@@ -56,26 +55,53 @@ export default function PaymentList({ item, shoes,fetchList }) {
     }
   };
 
-  return (
-    <div className="flex flex-row gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500">
-      <div className="w-full min-h-[150px] flex items-center gap-x-4 pl-10">
-        <img className="max-w-[80px]" src={shoe[0].image[0]} alt="" />
+  const fetchDataForPopup = async () => {
+    try {
+      const response = await axios.get(`http://localhost:1337/api/payments/${id}?populate=*`);
+      console.log("Popup data response:", response.data);
+      const { data } = response.data;
+      setPopupData({
+        id: data.id,
+        amount: data.attributes.Price,
+        buyer: data.attributes.Buyer.data.attributes.username,
+        shoe: data.attributes.shoe.data.attributes.products_name,
+        image: data.attributes.Bill.data.attributes.url
+      });
+    } catch (error) {
+      console.error("Error fetching data for popup:", error);
+    }
+  };
 
-        <div className="w-full flex flex-row p-6">
-          <div className="flex justify-between mb-2">
-            <Link
-              to={`/shoe/${id}`}
-              className="text-sm uppercase  font-medium max-w-[240px] text-primary hover:underline  text-gray-900"
-            >
-              {shoe[0].products_name}
-            </Link>
+  return (
+    <div
+      className="flex flex-row gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500">
+      <div className="w-full min-h-[150px] flex items-center gap-x-4 pl-10">
+        <img className="max-w-[80px] transition duration-300 transform hover:scale-110 " src={shoe[0].image[0]} alt="" />
+        <div className="w-full flex flex-row justify-between p-6">
+            <div className="flex justify-between ">
+              <Link
+                to={`/shoe/${id}`}
+                className="text-sm uppercase font-medium max-w-[240px] text-primary hover:underline text-gray-900 "
+              >
+                {shoe[0].products_name}
+              </Link>
+              <span
+                className="text-sm uppercase font-medium text-blue-500 hover:underline cursor-pointer ml-16" // Use text-blue-500 for blue color
+                onClick={() => {
+                  setOpenDetail(true);
+                  fetchDataForPopup();
+                }}
+              >
+                View Payment
+              </span>
           </div>
-          <div className="flex gap-x-2 h-[36px] text-sm"></div>
+          <div className="flex text-sm"></div>
           <div className="flex flex-1 justify-around items-center text-gray-900 ">
             {shoe[0].price} THB
           </div>
-          <div className="flex justify-center items-center bg-green-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
+          <div className="flex justify-center items-center bg-green-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2 transition duration-300 transform hover:scale-110 ">
             <button
+              className="accept-button "
               onClick={() => {
                 setOpenAccepted(true);
               }}
@@ -83,178 +109,198 @@ export default function PaymentList({ item, shoes,fetchList }) {
               Accepted
             </button>
           </div>
-
           <Transition.Root show={openAccepted} as={Fragment}>
             <Dialog
               as="div"
-              className="relative z-10"
-              initialFocus={cancelButtonRef}
+              className="fixed inset-0 z-10 overflow-y-auto"
               onClose={setOpenAccepted}
             >
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-              </Transition.Child>
+              <div className="flex items-center justify-center min-h-screen px-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+                </Transition.Child>
 
-              <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                  <Transition.Child
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    enterTo="opacity-100 translate-y-0 sm:scale-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                    leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                  >
-                    <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                      <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                        <div className="sm:flex sm:items-start">
-                          <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <CheckCircleIcon
-                              className="h-6 w-6 text-green-600"
-                              aria-hidden="true"
-                            />
-                          </div>
-                          <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                            <Dialog.Title
-                              as="h3"
-                              className="text-base font-semibold leading-6 text-gray-900"
-                            >
-                              Payment Accepted
-                            </Dialog.Title>
-                            <div className="mt-2">
-                              <p className="text-sm text-gray-500">
-                                Your payment for {shoe[0].products_name} has
-                                been accepted.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                        <button
-                          type="button"
-                          className="mt-3 w-full inline-flex justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-50 sm:w-auto"
-                          onClick={() => setOpenAccepted(false)}
-                          ref={cancelButtonRef}
-                        >
-                          Close
-                        </button>
-                        <button
-                          type="button"
-                          className="mx-3 mt-3 w-full text-white inline-flex justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:bg-green-400 sm:w-auto"
-                          onClick={() => {
-                            setOpenAccepted(false);
-                            ConfirmPayment();
-                          }}
-                          ref={cancelButtonRef}
-                        >
-                          Accept
-                        </button>
-                      </div>
-                    </Dialog.Panel>
-                  </Transition.Child>
-                </div>
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
+                    <div className="flex items-center justify-center">
+                      <CheckCircleIcon className="h-8 w-8 text-green-500 mr-2" />
+                      <Dialog.Title as="h3" className="text-lg font-medium text-gray-900">
+                        Payment Accepted
+                      </Dialog.Title>
+                    </div>
+                    <div className="mt-4">
+                      <p className="text-sm text-gray-500">
+                        Your payment for {shoe[0].products_name} has been accepted.
+                      </p>
+                    </div>
+                    <div className="mt-6 flex justify-center">
+                      <button
+                        type="button"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-green-500 border border-transparent rounded-md hover:bg-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 "
+                        onClick={() => {
+                          setOpenAccepted(false);
+                          ConfirmPayment();
+                        }}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </Transition.Child>
               </div>
             </Dialog>
           </Transition.Root>
-          <div className="flex justify-center items-center bg-red-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
+          <div className="flex justify-center items-center bg-red-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2 transition duration-300 transform hover:scale-110">
             <button
+              className="decline-button"
               onClick={() => {
                 setOpen(true);
               }}
             >
-              {" "}
               Denied
             </button>
           </div>
           <Transition.Root show={open} as={Fragment}>
             <Dialog
               as="div"
-              className="relative z-10"
-              initialFocus={cancelButtonRef}
+              className="fixed inset-0 z-10 overflow-y-auto"
               onClose={setOpen}
             >
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-              </Transition.Child>
+              <div className="flex items-center justify-center min-h-screen px-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+                </Transition.Child>
 
-              <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                  <Transition.Child
-                    as={Fragment}
-                    enter="ease-out duration-300"
-                    enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                    enterTo="opacity-100 translate-y-0 sm:scale-100"
-                    leave="ease-in duration-200"
-                    leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                    leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                  >
-                    <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                      <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                        <div className="sm:flex sm:items-start">
-                          <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <ExclamationTriangleIcon
-                              className="h-6 w-6 text-red-600"
-                              aria-hidden="true"
-                            />
-                          </div>
-                          <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                            <Dialog.Title
-                              as="h3"
-                              className="text-base font-semibold leading-6 text-gray-900"
-                            >
-                              Deactivate account
-                            </Dialog.Title>
-                            <div className="mt-2">
-                              <p className="text-sm text-gray-500">
-                                Are you sure you want to deactivate your
-                                account? All of your data will be permanently
-                                removed. This action cannot be undone.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
+                    <div className="flex items-center justify-center">
+                      <ExclamationTriangleIcon className="h-8 w-8 text-red-500 mr-2" />
+                      <Dialog.Title as="h3" className="text-lg font-medium text-gray-900">
+                        Deactivate Account
+                      </Dialog.Title>
+                    </div>
+                    <div className="mt-4">
+                      <p className="text-sm text-gray-500">
+                        Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.
+                      </p>
+                    </div>
+                    <div className="mt-6 flex justify-center">
+                      <button
+                        type="button"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        onClick={() => setOpen(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        className="inline-flex justify-center px-4 py-2 ml-4 text-sm font-medium text-white bg-red-500 border border-transparent rounded-md hover:bg-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                        onClick={() => {
+                          setOpen(false);
+                          DeletePayment();
+                        }}
+                      >
+                        Deactivate
+                      </button>
+                    </div>
+                  </div>
+                </Transition.Child>
+              </div>
+            </Dialog>
+          </Transition.Root>
+          <Transition.Root show={openDetail} as={Fragment}>
+            <Dialog
+              as="div"
+              className="fixed inset-0 z-10 overflow-y-auto"
+              onClose={setOpenDetail}
+            >
+              <div className="flex items-center justify-center min-h-screen px-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0"
+                  enterTo="opacity-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+                </Transition.Child>
+
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
+                    <Dialog.Title as="h3" className="text-lg font-medium text-gray-900">
+                      Payment Detail
+                    </Dialog.Title>
+                    {popupData && (
+                      <div>
+                        <p>Payment ID: {popupData.id}</p>
+                        <p>Amount: {popupData.amount}</p>
+                        <p>Buyer: {popupData.buyer}</p>
+                        <p>Shoe: {popupData.shoe}</p>
+                        {popupData.image && (
+                          <img
+                            src={`http://localhost:1337${popupData.image}`}
+                            style={{ maxWidth: '100%' }}
+                          />
+                        )}
+                        {/* Add more details as needed */}
                       </div>
-                      <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                        <button
-                          type="button"
-                          className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                          onClick={() => setOpen(false)}
-                          ref={cancelButtonRef}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="button"
-                          className="mx-3 inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                          onClick={() => {
-                            setOpen(false);
-                            DeletePayment();
-                          }}
-                        >
-                          Deactivate
-                        </button>
-                      </div>
-                    </Dialog.Panel>
-                  </Transition.Child>
-                </div>
+                    )}
+                    <div className="mt-6 flex justify-center">
+                      <button
+                        type="button"
+                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 transition duration-300 transform hover:scale-110 "
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpenDetail(false);
+                        }}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </Transition.Child>
               </div>
             </Dialog>
           </Transition.Root>

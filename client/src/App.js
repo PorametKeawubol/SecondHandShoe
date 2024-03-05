@@ -23,6 +23,7 @@ import Allpayment from "./Component/Allpayment";
 import Varifyconfirm from "./Component/Varifyconfirm";
 import Singin from "./AllPage/Singin";
 import Register from "./AllPage/Register";
+import Allshoe from "./Component/Allshoe";
 axios.defaults.headers.common["Authorization"] = null;
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
       <Routes>
         <Route path="/Profile" element={<Profile />} />
         <Route path="/Singin" element={<Singin />} />
+        <Route path="/Allshoe" element={<Allshoe />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/Editprofile" element={<EditProfile />} />{" "}
