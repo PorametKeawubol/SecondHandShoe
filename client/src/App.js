@@ -46,7 +46,10 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/ToReceive" element={<ToReceive />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/ShopReview/:sellerName" element={<ShopReviewPage />} />
+        <Route
+          path="/ShopReview/:sellerName/:sellerId"
+          element={<ShopReviewPage />}
+        />
         <Route path="/message" element={<MessageDashbord />} />
       </Routes>
       <Sidebar />

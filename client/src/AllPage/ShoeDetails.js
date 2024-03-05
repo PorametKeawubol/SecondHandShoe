@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect, } from "react";
-import { useParams,Link } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 import { CartContext } from "../contexts/CartContext";
 import { ShoeContext } from "../contexts/ShoeContext";
 import Header from "../Component/Header";
@@ -9,12 +9,20 @@ import { RxDotFilled } from "react-icons/rx";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import Footer from "../Component/Footer";
 import SellerRatingSummary from "../Component/Ratingsum";
+import LoginForm from "../AllPage/Loginform";
+import RegisterForm from "../AllPage/RegisterForm";
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const ShoeDetails = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { id } = useParams();
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
   const { addToCart } = useContext(CartContext);
   const { shoes } = useContext(ShoeContext);
-  console.log("🚀 ~ ShoeDetails ~ shoes:", shoes)
+
+  console.log("🚀 ~ ShoeDetails ~ shoes:", shoes);
   const [slides, setSlides] = useState([]);
   const [activeAccordionIndex, setActiveAccordionIndex] = useState(null);
   const [buttonActive, setButtonActive] = useState(false);
@@ -22,6 +30,35 @@ const ShoeDetails = () => {
   const toggleAccordion = (index) => {
     setActiveAccordionIndex(activeAccordionIndex === index ? null : index);
     setButtonActive(!buttonActive); // เปลี่ยนสถานะการกดปุ่ม
+  };
+
+  const checkAuthStatus = () => {
+    const token = sessionStorage.getItem("authToken");
+    const authTokenInHeaders = axios.defaults.headers.common["Authorization"];
+    if (token || authTokenInHeaders !== null) {
+      console.log(token, authTokenInHeaders);
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+    // Assign the value to the export variable
+  };
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
+
+  const toggleLoginModal = () => {
+    setShowLoginModal(!showLoginModal);
+  };
+
+  const toggleRegisterModal = () => {
+    setShowRegisterModal(!showRegisterModal);
+  };
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    setShowLoginModal(false);
   };
 
   useEffect(() => {
@@ -68,7 +105,7 @@ const ShoeDetails = () => {
     colorType,
     genderType,
     size,
-    sellerid
+    sellerid,
   } = shoe;
 
   const accordions = [
@@ -208,13 +245,18 @@ const ShoeDetails = () => {
               </div>
               <div className="flex justify-between text-2xl text-black-500 font-medium mb-2">
                 <div>ลงขายโดย : {Seller}</div>
-                <Link to={`/message/${sellerid}`} >
-                  <button className="bg-slate-400 rounded-lg p-2 px-2">Chat</button>
+
+                <Link to={`/message/${sellerid}`}>
+                  <button className="bg-slate-400 rounded-lg p-2 px-2">
+                    Chat
+                  </button>
                 </Link>
-                
-                
               </div>
-              <SellerRatingSummary sellerName={shoe.Seller} />
+              <SellerRatingSummary
+                sellerName={shoe.Seller}
+                sellerId={sellerid}
+              />
+
               <h1 className="text-[20px] font-medium mb-2 max-w-[450px] mx-auto lg:mx-0">
                 Size : {size} US
               </h1>
@@ -235,11 +277,24 @@ const ShoeDetails = () => {
               >
                 Add to cart
               </button>
-              <Link to={`/Payment/${id}`}>
-                <button className="bg-red-600 py-4 px-8 ml-6 text-white">
+
+              {isLoggedIn ? (
+                <Link to={`/Payment/${id}`}>
+                  <button className="bg-red-600 py-4 px-8 ml-6 text-white">
+                    Buy now
+                  </button>
+                </Link>
+              ) : (
+                <button
+                  onClick={() => {
+                    toggleLoginModal();
+                    checkAuthStatus();
+                  }}
+                  className="bg-red-600 py-4 px-8 ml-6 text-white"
+                >
                   Buy now
                 </button>
-              </Link>
+              )}
               <div className="mt-9">
                 {accordions.map((accordion, index) => (
                   <div key={index} className="mb-4">
@@ -272,6 +327,21 @@ const ShoeDetails = () => {
             </div>
           </div>
         </div>
+        {showLoginModal && (
+          <LoginForm
+            toggleModal={toggleLoginModal}
+            toggleRegisterModal={toggleRegisterModal}
+            onLogin={handleLogin}
+            checkAuthStatus={checkAuthStatus}
+          />
+        )}
+        {showRegisterModal && (
+          <RegisterForm
+            toggleModal={toggleRegisterModal}
+            toggleLoginModal={toggleLoginModal}
+            onLogin={handleLogin}
+          />
+        )}
       </section>
       <Footer />
     </div>

@@ -4,134 +4,143 @@ import axios from "axios";
 import styled from "styled-components"; // import styled-components
 // Styled component for the shoe container
 const ShoeContainer = styled.div`
-    background-color: #E5E7EB; /* Set background color */
-    border-radius: 0.75rem; /* Rounded corners */
-    transition: transform 0.3s, box-shadow 0.3s; /* Add transition for transform and box-shadow properties */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add box shadow */
-    &:hover {
-        transform: translateY(-4px); /* Move the container upward on hover */
-        box-shadow: 0 10px 12px rgba(0, 0, 0, 0.2); /* Increase box shadow on hover */
-    }
+  background-color: #e5e7eb; /* Set background color */
+  border-radius: 0.75rem; /* Rounded corners */
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s; /* Add transition for transform and box-shadow properties */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add box shadow */
+  &:hover {
+    transform: translateY(-4px); /* Move the container upward on hover */
+    box-shadow: 0 10px 12px rgba(0, 0, 0, 0.2); /* Increase box shadow on hover */
+  }
 `;
 
-
 export default function ToReceiveContent() {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem("authToken")}`
-    const { shoes,fetchShoes } = useContext(ShoeContext);
-    console.log("🚀 ~ ToShipContent ~ shoes:", shoes)
-    const [MyShoes, setMyShoes] = useState([]);
-    const [MyId, setMyId] = useState([]);
-    console.log("🚀 ~ ToShipContent ~ MyId:", MyId)
-    const [allId, setallId] = useState([]);
-    console.log("🚀 ~ ToShipContent ~ allId:", allId)
-    console.log("Myshoes", MyShoes)
-    useEffect(() => {
-        fetchMypaydata();
-        fetchUserData();
-    }, []);
+  axios.defaults.headers.common["Authorization"] =
+    `Bearer ${sessionStorage.getItem("authToken")}`;
+  const { shoes, fetchShoes } = useContext(ShoeContext);
+  console.log("🚀 ~ ToShipContent ~ shoes:", shoes);
+  const [MyShoes, setMyShoes] = useState([]);
+  const [MyId, setMyId] = useState([]);
+  console.log("🚀 ~ ToShipContent ~ MyId:", MyId);
+  const [allId, setallId] = useState([]);
+  console.log("🚀 ~ ToShipContent ~ allId:", allId);
+  console.log("Myshoes", MyShoes);
+  useEffect(() => {
+    fetchMypaydata();
+    fetchUserData();
+  }, []);
 
-    useEffect(() => {
-        fetchMyShoes();
-    }, [allId,shoes]);
+  useEffect(() => {
+    fetchMyShoes();
+  }, [allId, shoes]);
 
-    const comfirmcomplete = async () => {
-        
-        const payload = {
-            data: {
-                complete: true,
-            },
-        };
-        try {
-            await axios.put(`http://localhost:1337/api/shoes/1`, payload);
-        } catch (error) {
-            console.error("Error fetching user:", error);
-        } finally {
-            fetchShoes()
-            
-        }
-        
+  const comfirmcomplete = async (id) => {
+    const payload = {
+      data: {
+        complete: true,
+      },
     };
-
-    const fetchUserData = async () => {
-        try {
-            const response = await axios.get(
-                "/api/users/me",
-                {
-                    headers: {
-                        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
-                    },
-                }
-            );
-
-            const userData = response.data;
-            setMyId(userData.id);
-
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-        }
-    };
-
-    const fetchMypaydata = async () => {
-        try {
-            const [response1] = await Promise.all([
-                axios.get(`/api/payments?populate=*`, {
-                    headers: {
-                        Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
-                    },
-                }),
-
-            ]);
-
-
-            const Data1 = response1.data.data.map((item) => {
-                const shoe_id = item.attributes.shoe.data.id
-                const Confirm = item.attributes.Confirm
-                return { shoe_id, Confirm }
-            })
-
-
-            const filteredData1 = Data1.filter((item) => {
-                return item.Confirm === true
-            })
-            console.log("🚀 ~ filteredData1 ~ filteredData1:", filteredData1)
-            setallId(filteredData1)
-
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-        }
-    };
-    const fetchMyShoes = () => {
-        const myShoesIsSole = allId.map((item) => {
-            const shoefiltered = shoes.filter((shoe) => {
-                return shoe.id === item.shoe_id && shoe.buyerid === MyId && shoe.complete !== true;
-            })
-            return shoefiltered[0]
-        })
-        console.log("🚀 ~ myShoesIsSole ~ myShoesIsSole:", myShoesIsSole)
-        setMyShoes(myShoesIsSole)
+    try {
+      await axios.put(`http://localhost:1337/api/shoes/${id}`, payload);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    } finally {
+      fetchShoes();
     }
+  };
 
-    return (
-        <div className="p-6">
-            <h1 className="text-3xl font-bold mb-4">Delivery status</h1>
-            <div className="grid gap-4">
-                {MyShoes && MyShoes[0] !== undefined && MyShoes.map((shoe) => (
-                    <ShoeContainer key={shoe.id}>
-                        <div className="border rounded p-4 relative w-[100%] flex items-center">
-                            <img src={shoe.image[0]} alt={shoe.name} className="mx-auto mb-4 float-left" style={{ maxWidth: "150px" }} />
-                            <div className="ml-4 flex-grow">
-                                <h3 className="text-xl font-semibold">{shoe.products_name}</h3>
-                                <p className="text-gray-600 mt-1">{shoe.price} THB</p>
-                            </div>
-                            <div className="ml-auto">
-                                <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" onClick={() => {
-                            comfirmcomplete();
-                          }}>ได้รับสินค้าเเล้ว</button>
-                            </div>
-                        </div>
-                    </ShoeContainer>
-                ))}
-            </div>
-        </div>
-    );
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get("/api/users/me", {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+        },
+      });
+
+      const userData = response.data;
+      setMyId(userData.id);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  const fetchMypaydata = async () => {
+    try {
+      const [response1] = await Promise.all([
+        axios.get(`/api/payments?populate=*`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
+          },
+        }),
+      ]);
+
+      const Data1 = response1.data.data.map((item) => {
+        const shoe_id = item.attributes.shoe.data.id;
+        const Confirm = item.attributes.Confirm;
+        return { shoe_id, Confirm };
+      });
+
+      const filteredData1 = Data1.filter((item) => {
+        return item.Confirm === true;
+      });
+      console.log("🚀 ~ filteredData1 ~ filteredData1:", filteredData1);
+      setallId(filteredData1);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+  const fetchMyShoes = () => {
+    const myShoesIsSole = allId.map((item) => {
+      const shoefiltered = shoes.filter((shoe) => {
+        return (
+          shoe.id === item.shoe_id &&
+          shoe.buyerid === MyId &&
+          shoe.complete !== true
+        );
+      });
+      return shoefiltered[0];
+    });
+    console.log("🚀 ~ myShoesIsSole ~ myShoesIsSole:", myShoesIsSole);
+    setMyShoes(myShoesIsSole);
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-3xl font-bold mb-4">Delivery status</h1>
+      <div className="grid gap-4">
+        {MyShoes &&
+          MyShoes[0] !== undefined &&
+          MyShoes.map((shoe) => (
+            <ShoeContainer key={shoe.id}>
+              <div className="border rounded p-4 relative w-[100%] flex items-center">
+                <img
+                  src={shoe.image[0]}
+                  alt={shoe.name}
+                  className="mx-auto mb-4 float-left"
+                  style={{ maxWidth: "150px" }}
+                />
+                <div className="ml-4 flex-grow">
+                  <h3 className="text-xl font-semibold">
+                    {shoe.products_name}
+                  </h3>
+                  <p className="text-gray-600 mt-1">{shoe.price} THB</p>
+                </div>
+                <div className="ml-auto">
+                  <button
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    onClick={() => {
+                      comfirmcomplete(shoe.id);
+                    }}
+                  >
+                    ได้รับสินค้าเเล้ว
+                  </button>
+                </div>
+              </div>
+            </ShoeContainer>
+          ))}
+      </div>
+    </div>
+  );
 }

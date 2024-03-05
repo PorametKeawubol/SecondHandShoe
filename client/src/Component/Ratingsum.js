@@ -3,7 +3,7 @@ import { ReviewContext } from "../contexts/ShopRatingContext";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const SellerRatingSummary = ({ sellerName }) => {
+const SellerRatingSummary = ({ sellerName, sellerId }) => {
   const { reviews } = useContext(ReviewContext);
 
   // Filter reviews by seller name
@@ -28,8 +28,8 @@ const SellerRatingSummary = ({ sellerName }) => {
       ) : (
         <p>No reviews yet</p>
       )}
-      <Link to={`/ShopReview/${sellerName}`}>
-        <p> | {sellerReviews.length} review</p>
+      <Link to={`/ShopReview/${sellerName}/${sellerId}`}>
+        <p className="mx-3">{sellerReviews.length} review</p>
       </Link>
     </div>
   );

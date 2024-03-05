@@ -1,26 +1,25 @@
-import React, { useState,useContext } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useContext } from "react";
+import { useEffect } from "react";
 import Header from "../Component/Header";
-import { Link } from 'react-router-dom';
-import CartContent from '../Component/CartContent'; // Import CartContent component
-import { useLocation } from 'react-router-dom';
-import ToReceiveContent from '../Component/ToReceiveContent';
+import { Link } from "react-router-dom";
+import CartContent from "../Component/CartContent"; // Import CartContent component
+import { useLocation } from "react-router-dom";
+import ToReceiveContent from "../Component/ToReceiveContent";
 import styled from "styled-components"; // import styled-components
-import ToShipContent from '../Component/ToShipContent';
-import ToComplete from '../Component/ToComplete';
-import { ShoeContext } from '../contexts/ShoeContext';
+import ToShipContent from "../Component/ToShipContent";
+import ToComplete from "../Component/ToComplete";
+import { ShoeContext } from "../contexts/ShoeContext";
 const MyPurchases = () => {
-  const [activeTab, setActiveTab] = useState('cart');
+  const [activeTab, setActiveTab] = useState("cart");
   const location = useLocation();
-  const {shoes} = useContext(ShoeContext)
+  const { shoes } = useContext(ShoeContext);
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const tab = params.get('tab');
+    const tab = params.get("tab");
     if (tab) {
       handleTabChange(tab);
     }
   }, [location.search]);
-
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -28,18 +27,18 @@ const MyPurchases = () => {
 
   return (
     <div className="flex flex-col h-screen">
-    <Header />
+      <Header />
 
       {/* Navigation */}
       <BarPurchases activeTab={activeTab} handleTabChange={handleTabChange} />
-      
+
       {/* Content */}
       <div className="flex-1 p-4 overflow-y-auto">
         {/* Display content based on activeTab */}
-        {activeTab === 'cart' && <Cart />}
-        {activeTab === 'toReceive' && <ToReceiveContent />}
-        {activeTab === 'toShip' && <ToShipContent />}
-        {activeTab === 'completed' && <ToComplete />}
+        {activeTab === "cart" && <Cart />}
+        {activeTab === "toReceive" && <ToReceiveContent />}
+        {activeTab === "toShip" && <ToShipContent />}
+        {activeTab === "completed" && <ToComplete />}
       </div>
     </div>
   );
@@ -47,28 +46,31 @@ const MyPurchases = () => {
 
 const BarPurchases = ({ activeTab, handleTabChange }) => {
   return (
-    <StyledNav className="flex justify-evenly  py-4 mt-0" style={{  position: 'sticky',  }}>
+    <StyledNav
+      className="flex justify-evenly bg-gray-200 py-4 mt-0"
+      style={{ position: "sticky" }}
+    >
       <StyledButton
-        className={`${activeTab === 'cart' ? 'active' : ''}  `}
-        onClick={() => handleTabChange('cart')}
+        className={`${activeTab === "cart" ? "active" : ""}  `}
+        onClick={() => handleTabChange("cart")}
       >
         To pay
       </StyledButton>
       <StyledButton
-        className={`${activeTab === 'toShip' ? 'active' : ''}`}
-        onClick={() => handleTabChange('toShip')}
+        className={`${activeTab === "toShip" ? "active" : ""}`}
+        onClick={() => handleTabChange("toShip")}
       >
         To Ship
       </StyledButton>
       <StyledButton
-        className={`${activeTab === 'toReceive' ? 'active' : ''}`}
-        onClick={() => handleTabChange('toReceive')}
+        className={`${activeTab === "toReceive" ? "active" : ""}`}
+        onClick={() => handleTabChange("toReceive")}
       >
         To Receive
       </StyledButton>
       <StyledButton
-        className={`${activeTab === 'completed' ? 'active' : ''}`}
-        onClick={() => handleTabChange('completed')}
+        className={`${activeTab === "completed" ? "active" : ""}`}
+        onClick={() => handleTabChange("completed")}
       >
         Completed
       </StyledButton>
@@ -94,7 +96,9 @@ const StyledNav = styled.nav`
 
   .active:hover {
     background-color: rgb(37 99 235);
-    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    box-shadow:
+      0 12px 16px 0 rgba(0, 0, 0, 0.24),
+      0 17px 50px 0 rgba(0, 0, 0, 0.19);
   }
 `;
 
@@ -117,7 +121,7 @@ const StyledButton = styled.button`
 `;
 
 const Cart = () => {
- return <CartContent />;
+  return <CartContent />;
 };
 
 const ToReceive = () => {
