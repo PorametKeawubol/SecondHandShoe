@@ -264,7 +264,7 @@ function Payment() {
                                              onClick={handleSubmit}
                                              className="bg-black hover:bg-black text-white py-2 px-4 border border-blue-700 rounded"
                                         >
-                                             summit
+                                             submit
                                         </button>
 
                                         {showConfirmation && (
@@ -298,19 +298,20 @@ function Payment() {
                                                                       ></path>
                                                                  </svg>
                                                             </div>
-                                                            <p className="uppercase text-rhino-300 font-bold text-xs tracking-widest text-center mb-1">
+                                                            <p className="uppercase text-rhino-300 font-bold text-xs tracking-widest text-center mb-1 text-green-500">
                                                                  SUCCESS
                                                             </p>
                                                             <h1 className="font-heading text-center text-2xl lg:text-4xl text-rhino-700 font-semibold mb-6">
                                                                  Your order has
                                                                  been placed
                                                             </h1>
+                                                            <p className="text-center text-rhino-300 text-sm lg:text-lg max-w-md mx-auto">
+                                                                 แอดมินกำลังตรวจสอบสลิปการโอนเงิน
+                                                                 ใช้ระยะเวลาประมาณ 2-3 ชั่วโมง
+                                                            </p>
                                                             <p className="text-center mb-8 text-rhino-300 text-sm lg:text-lg max-w-md mx-auto">
-                                                                 แอดมินกำลังตรวจสอบสลิป
-                                                                 ระยะเวลาประมาณ
-                                                                 2-3 ชั่วโมง
                                                                  หากมีข้อสงสัย
-                                                                 ติดต่อ 08-88888
+                                                                 ติดต่อได้ที่ 08-88888
                                                             </p>
                                                             <div className="flex justify-center">
                                                                  <Link
