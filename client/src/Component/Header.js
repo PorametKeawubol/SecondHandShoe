@@ -175,7 +175,7 @@ export default function Example() {
               <div>
                 <button
                   onClick={toggleLoginModal}
-                  className="font-semibold leading-6 text-black focus:outline-none mr-5"
+                  className="font-semibold leading-6 text-white focus:outline-none"
                 >
                   Log in <span aria-hidden="true">&rarr;</span>
                 </button>

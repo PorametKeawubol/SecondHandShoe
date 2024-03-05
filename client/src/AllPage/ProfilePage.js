@@ -143,8 +143,12 @@ function Profile() {
                         <p className="mt-1 mb-1" style={{ fontSize: "12px", color: "white" }}> bio : {bio}
                         </p>)}
 
-                        <button className="mt-1" style={{ fontSize: "12px", color: "white", border: "1px solid white", borderRadius: "8px", padding: "8px 16px"}}>
-                            <Link to="/Editprofile" style={{ color: "white" }}>Edit Profile 🔧</Link>
+                        <button className="mt-1" style={{ fontSize: "14px", color: "white", border: "1px solid white", borderRadius: "8px", padding: "6px 12px", display: "flex", alignItems: "center" }}>
+                            <Link to="/Editprofile" style={{ color: "white", display: "flex", alignItems: "center" }}><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="square" stroke-linejoin="round" stroke-width="2" d="M7 19H5a1 1 0 0 1-1-1v-1a3 3 0 0 1 3-3h1m4-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm7.4 1.6a2 2 0 0 1 0 2.7l-6 6-3.4.7.7-3.4 6-6a2 2 0 0 1 2.7 0Z"/>
+                                </svg>
+                                <span>Edit Profile</span>
+                            </Link>
                         </button>
 
                     </div>
