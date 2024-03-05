@@ -72,16 +72,22 @@ export default function PaymentList({ item, shoes, fetchList }) {
   };
 
   return (
-    <div className="flex flex-row gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500">
-      <div
-        className="w-full min-h-[150px] flex items-center gap-x-4 pl-10"
-        onClick={() => {
+    <div
+      className="flex flex-row gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500"
+      onClick={(e) => {
+        // Check if the click event originated from the accept or decline buttons
+        if (
+          !e.target.closest(".accept-button") &&
+          !e.target.closest(".decline-button")
+        ) {
           setOpenDetail(true);
           fetchDataForPopup();
-        }}
-      >
+        }
+      }}
+    >
+      <div className="w-full min-h-[150px] flex items-center gap-x-4 pl-10">
         <img className="max-w-[80px]" src={shoe[0].image[0]} alt="" />
-        <div className="w-full flex flex-row p-6" >
+        <div className="w-full flex flex-row p-6">
           <div className="flex justify-between mb-2">
             <Link
               to={`/shoe/${id}`}
@@ -96,6 +102,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
           </div>
           <div className="flex justify-center items-center bg-green-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
             <button
+              className="accept-button"
               onClick={() => {
                 setOpenAccepted(true);
               }}
@@ -162,6 +169,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
           </Transition.Root>
           <div className="flex justify-center items-center bg-red-500 text-white font-medium cursor-pointer w-20 h-8 rounded-md ml-2">
             <button
+              className="decline-button"
               onClick={() => {
                 setOpen(true);
               }}
