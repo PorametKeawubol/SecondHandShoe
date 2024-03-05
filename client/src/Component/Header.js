@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import LoginForm from "../AllPage/Loginform";
+import Singin from "../AllPage/Singin";
 import RegisterForm from "../AllPage/RegisterForm";
 import logo from "../Component/Picture/logoSecondHandShoe.png";
 import Nav from "../Component/nav";
 import axios from "axios";
-import { BsBag } from "react-icons/bs";
 import { SidebarContext } from "../contexts/SidebarContext";
 import { CartContext } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
@@ -185,7 +184,7 @@ export default function Example() {
         </nav>
       </div>
       {showLoginModal && (
-        <LoginForm
+        <Singin
           toggleModal={toggleLoginModal}
           toggleRegisterModal={toggleRegisterModal}
           onLogin={handleLogin}

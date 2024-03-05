@@ -6,26 +6,25 @@ import conf from "../config/main";
 import { useParams } from "react-router-dom";
 export default function Message() {
     const [Message, setMessage] = useState();
-    const [inputText, setInputText] = useState("");
-    const [userData,setUserdata] = useState('')
-    console.log("🚀 ~ Message ~ userData:", userData)
-    const id = useParams()
+    const [inputText, setInputText] = useState('');
+    const [userData, setUserdata] = useState("");
+    console.log("🚀 ~ Message ~ userData:", userData);
+    const id = useParams();
     const receiverID = parseInt(id.id);
-    
-    
+
     axios.defaults.headers.common["Authorization"] =
         `Bearer ${sessionStorage.getItem("authToken")}`;
     useEffect(() => {
         fetchMessages();
     }, [userData]);
-    useEffect(()=>{
+    useEffect(() => {
         fetchUserData();
-    },[])
-  
+    }, []);
+
     const fetchUserData = async () => {
         try {
             const response = await axios.get(
-                conf.apiUrlPrefix+"/users/me?populate=Profile_Picture",
+                conf.apiUrlPrefix + "/users/me?populate=Profile_Picture",
                 {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
@@ -33,16 +32,17 @@ export default function Message() {
                 }
             );
             const response2 = await axios.get(
-                conf.apiUrlPrefix+`/users/${receiverID}?populate=Profile_Picture`,
+                conf.apiUrlPrefix +
+                    `/users/${receiverID}?populate=Profile_Picture`,
                 {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
                     },
                 }
             );
-            console.log("🚀 ~ fetchUserData ~ response2:", response2.data)
+            console.log("🚀 ~ fetchUserData ~ response2:", response2.data);
 
-            const id1 = response.data.id
+            const id1 = response.data.id;
             let profile_picture1;
             if (response.data.Profile_Picture === null) {
                 profile_picture1 = "";
@@ -50,7 +50,7 @@ export default function Message() {
                 profile_picture1 =
                     conf.urlPrefix + response.data.Profile_Picture.url;
             }
-            const id2 = response2.data.id
+            const id2 = response2.data.id;
             let profile_picture2;
             if (response2.data.Profile_Picture === null) {
                 profile_picture2 = "";
@@ -58,7 +58,7 @@ export default function Message() {
                 profile_picture2 =
                     conf.urlPrefix + response2.data.Profile_Picture.url;
             }
-            setUserdata({id1,profile_picture1,id2,profile_picture2})
+            setUserdata({ id1, profile_picture1, id2, profile_picture2 });
         } catch (error) {
             console.error("Error fetching user data:", error);
         }
@@ -66,7 +66,7 @@ export default function Message() {
 
     const fetchMessages = async () => {
         try {
-            const response = await axios.get("/api/messages?populate=*");    
+            const response = await axios.get("/api/messages?populate=*");
             if (Array.isArray(response.data.data)) {
                 const MessagesData = response.data.data.map((chat) => {
                     const { id, attributes } = chat;
@@ -75,15 +75,13 @@ export default function Message() {
                     const image =
                         picture && picture.data && picture.data.length > 0
                             ? picture.data.map(
-                                  (img) =>
-                                      conf.urlPrefix +
-                                      img.attributes.url
+                                  (img) => conf.urlPrefix + img.attributes.url
                               )
                             : [];
 
                     const Receiver = receiver.data;
                     const Sender = sender.data;
-                
+
                     return {
                         text,
                         image,
@@ -94,16 +92,14 @@ export default function Message() {
                 });
 
                 const Message = MessagesData.filter((chat) => {
-                    
-                        return (
-                            (chat.Sender.id === userData.id1 &&
-                                chat.Receiver.id === receiverID) ||
-                            (chat.Sender.id === receiverID &&
-                                chat.Receiver.id === userData.id1)
-                        );
-                    
+                    return (
+                        (chat.Sender.id === userData.id1 &&
+                            chat.Receiver.id === receiverID) ||
+                        (chat.Sender.id === receiverID &&
+                            chat.Receiver.id === userData.id1)
+                    );
                 });
-         
+
                 setMessage(Message);
             } else {
                 console.error(
@@ -122,8 +118,7 @@ export default function Message() {
                 data: {
                     text: inputText,
                     sender: { connect: [userData.id1] },
-                    receiver: { connect: [userData.id2
-                    ] },
+                    receiver: { connect: [userData.id2] },
                 },
             };
 
@@ -138,50 +133,62 @@ export default function Message() {
     };
 
     return (
-        <div>
-            <div className="w-full px-5 flex flex-col justify-between">
-                <div className="flex flex-col mt-5">
-                    {Message &&
-                        Message.map((chat) => {
-                            if (chat.Sender.id === userData.id1) {
-                                return <MyMessage data={chat} pic={userData.profile_picture1}/>;
-                            } else {
-                                return <YourMessage data={chat} pic={userData.profile_picture2}/>;
-                            }
-                        })}
-
-                    <div className="py-5 w-full px-10">
-                        <div>
-                            <div className="flex justify-between w-full  bg-gray-300 py-5 px-5  rounded-xl">
-                                <input
-                                    className=" bg-gray-300 w-full h-auto border-none outline-none"
-                                    type="text"
-                                    placeholder="type your message here..."
-                                    value={inputText}
-                                    onChange={(e) => {
-                                        setInputText(e.target.value);
-                                    }}
-                                />
-                                <button
-                                    onClick={() => {
-                                        handleSend();
-                                    }}
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                        className="w-6 h-6"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+        <div className=" flex justify-center bg-black p-10">
+            <div className="flex justify-center bg-white w-[60%] h-screen rounded-xl">
+                <div className="w-full px-5 flex flex-col justify-between overflow-y-scroll">
+                    <div className="flex flex-col mt-5 ">
+                        {Message &&
+                            Message.map((chat) => {
+                                if (chat.Sender.id === userData.id1) {
+                                    return (
+                                        <MyMessage
+                                            data={chat}
+                                            pic={userData.profile_picture1}
                                         />
-                                    </svg>
-                                </button>
+                                    );
+                                } else {
+                                    return (
+                                        <YourMessage
+                                            data={chat}
+                                            pic={userData.profile_picture2}
+                                        />
+                                    );
+                                }
+                            })}
+
+                        <div className="py-5 w-full px-4">
+                            <div className="">
+                                <div className="flex justify-between w-full  bg-gray-300 py-5 px-5  rounded-xl">
+                                    <input
+                                        className=" bg-gray-300 w-full h-auto border-none outline-none"
+                                        type="text"
+                                        placeholder="type your message here..."
+                                        value={inputText}
+                                        onChange={(e) => {
+                                            setInputText(e.target.value);
+                                        }}
+                                    />
+                                    <button
+                                        onClick={() => {
+                                            handleSend();
+                                        }}
+                                    >
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            className="w-6 h-6"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                                            />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
