@@ -5,7 +5,9 @@ import { Bars4Icon } from '@heroicons/react/20/solid';
 
 const HamburgerMenu = ({ handleLogout }) => {
   const isAdmin = sessionStorage.getItem("role");
+  const userProfile = sessionStorage.getItem("Profile_Picture");
   console.log("🚀 ~ HamburgerMenu ~ isAdmin:", isAdmin)
+
   return (
     <div className="relative group">
       <Menu as="div" className="relative inline-block text-left">
@@ -13,9 +15,10 @@ const HamburgerMenu = ({ handleLogout }) => {
           <>
             <div>
               <Menu.Button
-                className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100 transition duration-300 transform hover:scale-110"
+                className="inline-flex justify-center items-center w-10 h-10 rounded-full border border-gray-300 shadow-sm bg-cover bg-center bg-no-repeat bg-gray-200 overflow-hidden focus:outline-none transition duration-300 transform hover:scale-110"
+                style={{ backgroundImage: `url(${userProfile})` }}
               >
-                <Bars4Icon className="h-5 w-5" aria-hidden="true" />
+                <span className="sr-only">Open menu</span>
               </Menu.Button>
             </div>
 

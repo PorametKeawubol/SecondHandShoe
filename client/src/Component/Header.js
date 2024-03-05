@@ -145,7 +145,7 @@ export default function Example() {
             }}
           >
             <Link to="/">
-              <img className="h-16 w-auto ml-5 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:duration-300 ..." src={logo} alt="Logo" />
+              <img className="h-16 w-auto ml-5 transition ease-in-out delay-150 hover:scale-110 hover:duration-300 ..." src={logo} alt="Logo" />
             </Link>
           </div>
           <div className="flex ">
