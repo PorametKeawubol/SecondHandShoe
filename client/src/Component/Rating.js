@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import axios from "axios";
+import conf from "../config/main";
 
 const Rating = () => {
   const [currentValue, setCurrentValue] = useState(0);
@@ -57,7 +58,7 @@ const Rating = () => {
     event.preventDefault();
     // ส่งข้อมูลไปยัง Strapi โดยใช้ axios
     try {
-      const response = await axios.post("http://localhost:1337/api/ratings", {
+      const response = await axios.post(conf.apiUrlPrefix+"/ratings", {
         data: {
           score: currentValue,
           comment: comment,

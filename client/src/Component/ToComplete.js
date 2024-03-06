@@ -14,6 +14,7 @@ import {
   ExclamationTriangleIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
+import conf from "../config/main";
 
 // Styled component for the shoe container
 const ShoeContainer = styled.div`
@@ -53,7 +54,7 @@ export default function ToComplete() {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("/api/users/me", {
+      const response = await axios.get(conf.apiUrlPrefix+"/users/me", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },
@@ -68,7 +69,7 @@ export default function ToComplete() {
   const fetchMypaydata = async () => {
     try {
       const [response1] = await Promise.all([
-        axios.get(`/api/payments?populate=*`, {
+        axios.get(conf.apiUrlPrefix+"/payments?populate=*", {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
           },
@@ -111,7 +112,7 @@ export default function ToComplete() {
   const handleSubmit = async (sellerid) => {
     try {
       console.log(sellerid);
-      const response = await axios.post("http://localhost:1337/api/ratings", {
+      const response = await axios.post(conf.apiUrlPrefix+"/ratings", {
         data: {
           score: rating,
           comment: comment,

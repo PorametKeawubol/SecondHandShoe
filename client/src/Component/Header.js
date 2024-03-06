@@ -10,7 +10,7 @@ import { CartContext } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import { ShoeContext } from "../contexts/ShoeContext";
 import "./Header.css";
-
+import conf from "../config/main";
 
 export default function Example() {
   const { setShoes } = useContext(ShoeContext);
@@ -26,7 +26,7 @@ export default function Example() {
 
   const handleFetchShoes = async () => {
     try {
-      const response = await axios.get("/api/shoes?populate=*");
+      const response = await axios.get(conf.apiUrlPrefix + "/shoes?populate=*");
       if (Array.isArray(response.data.data)) {
         // Check if response.data is an array
         const shoeData = response.data.data.map((shoe) => {
@@ -47,9 +47,7 @@ export default function Example() {
           } = attributes;
           const image =
             picture && picture.data && picture.data.length > 0
-              ? picture.data.map(
-                  (img) => "http://localhost:1337" + img.attributes.url
-                )
+              ? picture.data.map((img) => conf.urlPrefix + img.attributes.url)
               : [];
 
           const brandType = brand?.data?.attributes.name;

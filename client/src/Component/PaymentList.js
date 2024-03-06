@@ -5,6 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { ShoeContext } from "../contexts/ShoeContext";
+import conf from "../config/main";
 
 export default function PaymentList({ item, shoes, fetchList }) {
   const [open, setOpen] = useState(false);
@@ -34,8 +35,8 @@ export default function PaymentList({ item, shoes, fetchList }) {
       },
     };
     try {
-      await axios.put(`http://localhost:1337/api/payments/${id}`, payload);
-      await axios.put(`http://localhost:1337/api/shoes/${shoe_id}`, payload1);
+      await axios.put(conf.apiUrlPrefix+"/payments"/id, payload);
+      await axios.put(conf.apiUrlPrefix+"/shoes"/shoe_id, payload1);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
@@ -46,7 +47,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
 
   const DeletePayment = async () => {
     try {
-      await axios.delete(`http://localhost:1337/api/payments/${id}`);
+      await axios.delete(conf.apiUrlPrefix+"/payments"/id);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {

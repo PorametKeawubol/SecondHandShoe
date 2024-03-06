@@ -46,7 +46,7 @@ const HamburgerMenu = ({ handleLogout }) => {
                     <Link
                       to="/message/"
                       className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                        } hidden group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
                     >
                       message
                     </Link>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import conf from '../config/main';
 
 const Varifyconfirm = ({ setProfile }) => {
   const [users, setUsers] = useState([]);
@@ -28,7 +29,7 @@ const Varifyconfirm = ({ setProfile }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:1337/api/users?populate=*');
+      const response = await axios.get(conf.apiUrlPrefix+'/users?populate=*');
       setUsers(response.data);
       setIsLoading(false);
     } catch (error) {
@@ -39,7 +40,7 @@ const Varifyconfirm = ({ setProfile }) => {
 
   const handleRequestVerificationAccept = async (userId) => {
     try {
-      await axios.put(`http://localhost:1337/api/users/${userId}`, {
+      await axios.put(conf.apiUrlPrefix+"/users"/userId, {
         VerificationWaiting: false,
         Verify: true,
       });
@@ -58,7 +59,7 @@ const Varifyconfirm = ({ setProfile }) => {
 
   const handleRequestVerificationDecline = async (userId) => {
     try {
-      await axios.put(`http://localhost:1337/api/users/${userId}`, {
+      await axios.put(conf.apiUrlPrefix+"/users"/userId, {
         VerificationWaiting: false,
         Verify: false,
       });
