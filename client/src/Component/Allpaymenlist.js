@@ -33,8 +33,8 @@ export default function Allpaymenlist({ item, shoes }) {
       },
     };
     try {
-      await axios.put(conf.apiUrlPrefix + "/payments" / id, payload);
-      await axios.put(conf.apiUrlPrefix + "/shoes" / shoe_id, payload1);
+      await axios.put(`${conf.apiUrlPrefix}/payments/${id}`, payload); //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
+      await axios.put(`${conf.apiUrlPrefix}/shoes/${shoe_id}`, payload1);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
@@ -44,7 +44,7 @@ export default function Allpaymenlist({ item, shoes }) {
 
   const DeletePayment = async () => {
     try {
-      await axios.delete(conf.apiUrlPrefix + "/payments" / id);
+      await axios.delete(`${conf.apiUrlPrefix}/payments/${id}`);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {

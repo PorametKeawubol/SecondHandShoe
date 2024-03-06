@@ -3,7 +3,6 @@ import { FaTimes } from "react-icons/fa"; // Import FaTimes for X icon
 import axios from "axios";
 import conf from "../config/main";
 
-const baseURL = conf.apiUrlPrefix+"/";
 // Notification component
 const Notification = ({ message, isError }) => {
   const bgColor = isError ? "bg-red-500" : "bg-green-500";
@@ -46,7 +45,7 @@ const ImageUploadPopup = ({ onClose }) => {
 
   const fetchUserFromServer = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix+"/users/me");
+      const response = await axios.get(conf.apiUrlPrefix + "/users/me");
       setUser(response.data); // Assuming the response contains user details
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -55,9 +54,9 @@ const ImageUploadPopup = ({ onClose }) => {
 
   const fetchTagsFromServer = async () => {
     try {
-      const brandResponse = await axios.get(`${baseURL}brands`);
-      const colorResponse = await axios.get(`${baseURL}colors`);
-      const genderResponse = await axios.get(`${baseURL}genders`);
+      const brandResponse = await axios.get(`${conf.apiUrlPrefix}/brands`);
+      const colorResponse = await axios.get(`${conf.apiUrlPrefix}/colors`);
+      const genderResponse = await axios.get(`${conf.apiUrlPrefix}/genders`);
 
       setBrandTags(brandResponse.data.data);
       setColorTags(colorResponse.data.data);
@@ -130,11 +129,15 @@ const ImageUploadPopup = ({ onClose }) => {
       const formData = new FormData();
       formData.append("data", JSON.stringify(shoeData));
 
-      const response = await axios.post(`${baseURL}shoes`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        `${conf.apiUrlPrefix}/shoes`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       console.log("Upload response:", response.data);
       setUploadMessage("Items uploaded successfully."); // Set the upload message
@@ -151,11 +154,15 @@ const ImageUploadPopup = ({ onClose }) => {
     try {
       const formData = new FormData();
       formData.append("files", image);
-      const response = await axios.post(`${baseURL}upload`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        `${conf.apiUrlPrefix}/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       onClose();
       return response.data[0]; // Assuming Strapi returns an array of uploaded files with metadata
     } catch (error) {

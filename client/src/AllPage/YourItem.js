@@ -26,7 +26,7 @@ function YourItem() {
     fetchShoes();
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(conf.apiUrlPrefix+"/users/me", {
+        const response = await axios.get(conf.apiUrlPrefix + "/users/me", {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
           },
@@ -60,7 +60,8 @@ function YourItem() {
   const handleDeleteConfirmed = async () => {
     try {
       // Call the API to delete the selected item
-      await axios.delete(conf.apiUrlPrefix+"/shoes"/selectedItemId, {
+      await axios.delete(`${conf.apiUrlPrefix}/shoes/${selectedItemId}`, {
+        //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },
@@ -85,7 +86,7 @@ function YourItem() {
       <Header />
       <div className="bg-gray-800 text-white py-3 mt-0">
         <div className="container mx-auto text-center mt-10">
-          <h1 className="text-3xl font-semibold mt-10 text-xl">Your Item</h1>
+          <h1 className="text-3xl font-semibold mt-10 text-xl">My Item</h1>
         </div>
       </div>
 

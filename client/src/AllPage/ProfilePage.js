@@ -43,7 +43,7 @@ function Profile() {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          conf.apiUrlPrefix+"/users/me?populate=*",
+          conf.apiUrlPrefix + "/users/me?populate=*",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
@@ -87,7 +87,7 @@ function Profile() {
       ></header>
       <header
         style={{
-          backgroundImage: "url('PictureforShow/ิback.png')",
+          backgroundImage: "url('PictureforShow/back.png')",
           height: "200px",
           display: "flex",
           top: "center",

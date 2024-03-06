@@ -3,7 +3,6 @@ import axios from "axios";
 import conf from "../config/main";
 export const ReviewContext = createContext();
 
-
 const ReviewProvider = ({ children }) => {
   // shoes state
   const [reviews, setReview] = useState([]);
@@ -15,7 +14,9 @@ const ReviewProvider = ({ children }) => {
 
   const fetchShoes = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix+"/ratings?populate=*");
+      const response = await axios.get(
+        conf.apiUrlPrefix + "/ratings?populate=*"
+      );
       if (Array.isArray(response.data.data)) {
         // Check if response.data is an array
         const reviewData = response.data.data.map((review) => {

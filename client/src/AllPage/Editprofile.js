@@ -39,10 +39,10 @@ const EditProfile = ({ setProfile }) => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get(
-       conf.apiUrlPrefix+"/users/me?populate=Profile_Picture"
+        conf.apiUrlPrefix + "/users/me?populate=Profile_Picture"
       );
       const getRole = await axios.get(
-        conf.apiUrlPrefix+"/users/me?populate=*"
+        conf.apiUrlPrefix + "/users/me?populate=*"
       );
 
       const user = getRole.data;
@@ -88,14 +88,14 @@ const EditProfile = ({ setProfile }) => {
     try {
       //Asset ID
       const response = await axios.get(
-       conf.apiUrlPrefix+"/users/me?populate=Profile_Picture"
+        conf.apiUrlPrefix + "/users/me?populate=Profile_Picture"
       );
       const userData = response.data;
       const profilePicture = userData.Profile_Picture;
       const assetId = profilePicture && profilePicture.id;
 
       if (assetId) {
-        await axios.delete(conf.apiUrlPrefix+"/upload/files"/assetId);
+        await axios.delete(`${conf.apiUrlPrefix}/upload/files/${assetId}`);
         fetchUserData(); // Refresh user data after deletion
         console.log("Image deleted successfully");
       } else {
@@ -118,13 +118,10 @@ const EditProfile = ({ setProfile }) => {
 
     const image = inputRef.current.files[0];
     try {
-      const response = await axios.put(
-        conf.apiUrlPrefix+"/users"/userId,
-        {
-          username: username,
-          email: email,
-        }
-      );
+      const response = await axios.put(`${conf.apiUrlPrefix}/users/${userId}`, {
+        username: username,
+        email: email,
+      });
 
       // Check if there is a previous image
       if (userProfile) {
@@ -140,10 +137,10 @@ const EditProfile = ({ setProfile }) => {
         formData.append("files", image);
 
         axios
-          .post(conf.apiUrlPrefix+"/upload", formData)
+          .post(conf.apiUrlPrefix + "/upload", formData)
           .then((response) => {
             console.log(response);
-            const imageUrl = conf.urlPrefix+response.data[0].url;
+            const imageUrl = conf.urlPrefix + response.data[0].url;
             setUserProfile(imageUrl); // Update userProfile directly with the new image URL
             sessionStorage.setItem("Profile_Picture", imageUrl); // Update sessionStorage with the new image URL
           })
@@ -162,16 +159,13 @@ const EditProfile = ({ setProfile }) => {
 
   const handleAcceptSubmit = async () => {
     try {
-      const response = await axios.put(
-        conf.apiUrlPrefix+"/users"/userId,
-        {
-          username: username,
-          email: email,
-          First_Name: firstName,
-          Last_Name: lastName,
-          Bio: bio,
-        }
-      );
+      const response = await axios.put(`${conf.apiUrlPrefix}/users/${userId}`, {
+        username: username,
+        email: email,
+        First_Name: firstName,
+        Last_Name: lastName,
+        Bio: bio,
+      });
       console.log("Edit successful:", response.data);
       setIsSubmitOpen(false);
       setSuccessOpen(true);
@@ -229,7 +223,7 @@ const EditProfile = ({ setProfile }) => {
       setIsWaitingOpen(true);
       try {
         const response = await axios.put(
-          conf.apiUrlPrefix+"/users"/userId,
+          `${conf.apiUrlPrefix}/users/${userId}`,
           {
             Real_Name: realName,
             Address: address,

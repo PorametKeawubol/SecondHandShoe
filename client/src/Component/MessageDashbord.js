@@ -41,9 +41,7 @@ export default function MessageDashbord() {
 
   const fetchMessages = async () => {
     try {
-      const response = await axios.get(
-        conf.apiUrlPrefix + "/messages?populate=*"
-      );
+      const response = await axios.get("/api/messages?populate=*");
       if (Array.isArray(response.data.data)) {
         const MessagesData = response.data.data.map((chat) => {
           const { id, attributes } = chat;

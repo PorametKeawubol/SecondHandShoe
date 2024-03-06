@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { ShoeContext } from "../contexts/ShoeContext";
 import axios from "axios";
-import styled from "styled-components"; 
-import conf from "../config/main";// import styled-components
+import styled from "styled-components";
+import conf from "../config/main"; // import styled-components
 // Styled component for the shoe container
 const ShoeContainer = styled.div`
   background-color: #e5e7eb; /* Set background color */
@@ -42,17 +42,17 @@ export default function ToReceiveContent() {
       },
     };
     try {
-      await axios.put(conf.apiUrlPrefix+"/shoes"/id, payload);
+      await axios.put(`${conf.apiUrlPrefix}/shoes/${id}`, payload); //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
-      fetchShoes()
+      fetchShoes();
     }
   };
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix+"/users/me", {
+      const response = await axios.get(conf.apiUrlPrefix + "/users/me", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },
@@ -68,7 +68,7 @@ export default function ToReceiveContent() {
   const fetchMypaydata = async () => {
     try {
       const [response1] = await Promise.all([
-        axios.get(conf.apiUrlPrefix+"/payments?populate=*", {
+        axios.get(conf.apiUrlPrefix + "/payments?populate=*", {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
           },
@@ -94,12 +94,11 @@ export default function ToReceiveContent() {
     const myFilteredShoes = shoes.filter((shoe) => {
       // ใช้ findIndex ในการค้นหาว่ามี shoe_id ใน allId หรือไม่
       const index = allId.findIndex((item) => item.shoe_id === shoe.id);
-      
+
       // ถ้า index มีค่ามากกว่าหรือเท่ากับ 0 และ shoe.buyerid เท่ากับ MyId และ shoe.complete ไม่เท่ากับ true
       return index >= 0 && shoe.buyerid === MyId && shoe.complete !== true;
     });
-    
-    
+
     // ตั้งค่าตัวแปร myShoes ด้วยรายการรองเท่าที่ผ่านการกรอง
     setMyShoes(myFilteredShoes);
   };

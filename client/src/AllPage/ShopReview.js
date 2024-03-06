@@ -12,7 +12,6 @@ const ShopReviewPage = () => {
   const { sellerName, sellerId } = useParams();
   const [sellerData, setSellerData] = useState(null);
 
-  const apiUrl = conf.apiUrlPrefix+"/users"/sellerId+"?populate=Profile_Picture";
   const apiUrl1 = conf.urlPrefix;
 
   // Filter reviews based on sellerName
@@ -23,7 +22,9 @@ const ShopReviewPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(apiUrl);
+        const response = await axios.get(
+          `${conf.apiUrlPrefix}/users/${sellerId}?populate=Profile_Picture`
+        );
         setSellerData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
