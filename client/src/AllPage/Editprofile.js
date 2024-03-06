@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { FaSleigh, FaStreetView } from "react-icons/fa";
+import conf from "../config/main";
 
 const EditProfile = ({ setProfile }) => {
   const [username, setUsername] = useState("");
@@ -38,10 +39,10 @@ const EditProfile = ({ setProfile }) => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:1337/api/users/me?populate=Profile_Picture"
+       conf.apiUrlPrefix+"/users/me?populate=Profile_Picture"
       );
       const getRole = await axios.get(
-        "http://localhost:1337/api/users/me?populate=*"
+        conf.apiUrlPrefix+"/users/me?populate=*"
       );
 
       const user = getRole.data;
@@ -66,7 +67,7 @@ const EditProfile = ({ setProfile }) => {
       console.log("Verify", isVerify);
 
       if (userData.Profile_Picture && userData.Profile_Picture.url) {
-        setUserProfile("http://localhost:1337" + userData.Profile_Picture.url);
+        setUserProfile(conf.urlPrefix + userData.Profile_Picture.url);
       } else {
         setUserProfile(""); // Set userProfile to an empty string or a default image URL
       }
@@ -87,14 +88,14 @@ const EditProfile = ({ setProfile }) => {
     try {
       //Asset ID
       const response = await axios.get(
-        "http://localhost:1337/api/users/me?populate=Profile_Picture"
+       conf.apiUrlPrefix+"/users/me?populate=Profile_Picture"
       );
       const userData = response.data;
       const profilePicture = userData.Profile_Picture;
       const assetId = profilePicture && profilePicture.id;
 
       if (assetId) {
-        await axios.delete(`http://localhost:1337/api/upload/files/${assetId}`);
+        await axios.delete(conf.apiUrlPrefix+"/upload/files"/assetId);
         fetchUserData(); // Refresh user data after deletion
         console.log("Image deleted successfully");
       } else {
@@ -118,7 +119,7 @@ const EditProfile = ({ setProfile }) => {
     const image = inputRef.current.files[0];
     try {
       const response = await axios.put(
-        `http://localhost:1337/api/users/${userId}`,
+        conf.apiUrlPrefix+"/users"/userId,
         {
           username: username,
           email: email,
@@ -139,10 +140,10 @@ const EditProfile = ({ setProfile }) => {
         formData.append("files", image);
 
         axios
-          .post(`http://localhost:1337/api/upload`, formData)
+          .post(conf.apiUrlPrefix+"/upload", formData)
           .then((response) => {
             console.log(response);
-            const imageUrl = `http://localhost:1337${response.data[0].url}`;
+            const imageUrl = conf.urlPrefix+response.data[0].url;
             setUserProfile(imageUrl); // Update userProfile directly with the new image URL
             sessionStorage.setItem("Profile_Picture", imageUrl); // Update sessionStorage with the new image URL
           })
@@ -162,7 +163,7 @@ const EditProfile = ({ setProfile }) => {
   const handleAcceptSubmit = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:1337/api/users/${userId}`,
+        conf.apiUrlPrefix+"/users"/userId,
         {
           username: username,
           email: email,
@@ -228,7 +229,7 @@ const EditProfile = ({ setProfile }) => {
       setIsWaitingOpen(true);
       try {
         const response = await axios.put(
-          `http://localhost:1337/api/users/${userId}`,
+          conf.apiUrlPrefix+"/users"/userId,
           {
             Real_Name: realName,
             Address: address,

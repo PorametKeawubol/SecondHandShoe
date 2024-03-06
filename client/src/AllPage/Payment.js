@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { ShoeContext } from "../contexts/ShoeContext";
 import { Link } from "react-router-dom";
 import Footer from "../Component/Footer";
+import conf from "../config/main";
 function Payment() {
   const { shoes, fetchShoes } = useContext(ShoeContext);
   const [images, setImages] = useState([]);
@@ -34,7 +35,7 @@ function Payment() {
   }, []);
   const fetchUserFromServer = async () => {
     try {
-      const response = await axios.get("http://localhost:1337/api/users/me");
+      const response = await axios.get(conf.apiUrlPrefix+"/users/me");
       setUser(response.data); // Assuming the response contains user details
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -51,7 +52,7 @@ function Payment() {
 
       const validImageFiles = files.filter((file) => {
         const fileType = file.type.toLowerCase();
-        return fileType === "image/png" || fileType === "image/jpeg";
+        return fileType === "image/png" || fileType === "image/jpeg"|| fileType === "image/webp";
       });
 
       if (validImageFiles.length > 0) {
@@ -103,7 +104,7 @@ function Payment() {
       formData.append("data", JSON.stringify(shoeData));
 
       const response = await axios.post(
-        "http://localhost:1337/api/payments",
+        conf.apiUrlPrefix+"/payments",
         formData,
         {
           headers: {
@@ -127,7 +128,7 @@ function Payment() {
       const formData = new FormData();
       formData.append("files", image);
       const response = await axios.post(
-        "http://localhost:1337/api/upload",
+        conf.apiUrlPrefix+"/upload",
         formData,
         {
           headers: {

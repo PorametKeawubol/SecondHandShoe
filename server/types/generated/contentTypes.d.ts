@@ -773,11 +773,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::shoe.shoe'
     >;
-    shoe: Attribute.Relation<
-      'plugin::users-permissions.user',
-      'oneToOne',
-      'api::shoe.shoe'
-    >;
     Profile_Picture: Attribute.Media;
     Address: Attribute.Text;
     ratings: Attribute.Relation<
@@ -803,6 +798,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     PhoneNum: Attribute.String;
     VerificationWaiting: Attribute.Boolean & Attribute.DefaultTo<false>;
     Bankaccounts: Attribute.String;
+    shoe: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::shoe.shoe'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1138,7 +1138,7 @@ export interface ApiShoeShoe extends Schema.CollectionType {
     >;
     buyer: Attribute.Relation<
       'api::shoe.shoe',
-      'oneToOne',
+      'manyToOne',
       'plugin::users-permissions.user'
     >;
     status: Attribute.Boolean & Attribute.DefaultTo<false>;

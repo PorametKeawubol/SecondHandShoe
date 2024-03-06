@@ -77,12 +77,6 @@
       "target": "api::shoe.shoe",
       "mappedBy": "seller"
     },
-    "shoe": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::shoe.shoe",
-      "mappedBy": "buyer"
-    },
     "Profile_Picture": {
       "type": "media",
       "multiple": false,
@@ -139,6 +133,12 @@
     },
     "Bankaccounts": {
       "type": "string"
+    },
+    "shoe": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::shoe.shoe",
+      "mappedBy": "buyer"
     }
   }
 }

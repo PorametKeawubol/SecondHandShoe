@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaTimes } from "react-icons/fa"; // Import FaTimes for X icon
 import axios from "axios";
+import conf from "../config/main";
 
-const baseURL = "http://localhost:1337/api/";
+const baseURL = conf.apiUrlPrefix+"/";
 // Notification component
 const Notification = ({ message, isError }) => {
   const bgColor = isError ? "bg-red-500" : "bg-green-500";
@@ -45,7 +46,7 @@ const ImageUploadPopup = ({ onClose }) => {
 
   const fetchUserFromServer = async () => {
     try {
-      const response = await axios.get("http://localhost:1337/api/users/me");
+      const response = await axios.get(conf.apiUrlPrefix+"/users/me");
       setUser(response.data); // Assuming the response contains user details
     } catch (error) {
       console.error("Error fetching user:", error);

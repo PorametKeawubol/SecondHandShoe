@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-
+import conf from "../config/main";
 function Singin({
     toggleModal,
     toggleRegisterModal,
@@ -34,7 +34,7 @@ function Singin({
 
         try {
             const response = await axios.post(
-                "http://localhost:1337/api/auth/local",
+                conf.apiUrlPrefix+"/auth/local",
                 {
                     identifier: email,
                     password: password,
@@ -47,17 +47,17 @@ function Singin({
 
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
             let response2 = await axios.get(
-                `/api/users/me?populate=Profile_Picture`
+                conf.apiUrlPrefix+"/users/me?populate=Profile_Picture"
             );
             let profile_picture;
             if (response2.data.Profile_Picture === null) {
                 profile_picture = "";
             } else {
                 profile_picture =
-                    "http://localhost:1337" +
+                    conf.urlPrefix +
                     response2.data.Profile_Picture.url;
             }
-            const response3 = await axios.get(`/api/users/me?populate=role`);
+            const response3 = await axios.get(conf.apiUrlPrefix+"/users/me?populate=role");
 
             sessionStorage.setItem("Profile_Picture", profile_picture);
             sessionStorage.setItem("role", response3.data.role.name);

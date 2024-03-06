@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import { ShoeContext } from "../contexts/ShoeContext";
 import { FaTimes } from 'react-icons/fa';
+import conf from "../config/main";
 const Notification = ({ message, isError }) => {
     const bgColor = isError ? "bg-red-500" : "bg-green-500";
     return (
@@ -15,7 +16,7 @@ const Notification = ({ message, isError }) => {
 
  // Import FaTimes for X icon
 
-const baseURL = "http://localhost:1337/api/";
+const baseURL = conf.apiUrlPrefix ;
 
 function EditItem({ itemId, onClose, user }) {
     const [shoeData, setShoeData] = useState({ picture: [] }); // Initialize shoeData.picture as an empty array
@@ -50,7 +51,7 @@ function EditItem({ itemId, onClose, user }) {
     const { setShoes } = useContext(ShoeContext);
     const handleFetchShoes = async () => {
         try {
-            const response = await axios.get("/api/shoes?populate=*");
+            const response = await axios.get(conf.apiUrlPrefix+"/shoes?populate=*");
             if (Array.isArray(response.data.data)) {
                 // Check if response.data is an array
                 const shoeData = response.data.data.map((shoe) => {
@@ -73,7 +74,7 @@ function EditItem({ itemId, onClose, user }) {
                         picture && picture.data && picture.data.length > 0
                             ? picture.data.map(
                                 (img) =>
-                                    "http://localhost:1337" +
+                                    conf.urlPrefix +
                                     img.attributes.url
                             )
                             : [];

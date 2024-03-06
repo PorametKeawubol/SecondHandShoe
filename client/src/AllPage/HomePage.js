@@ -8,8 +8,9 @@ import Searchbar from "../Component/Searchbar";
 import CarouselBar from "../Component/CarouselBar";
 import Footer from "../Component/Footer";
 import TitleHome from "../Component/TitleHome";
+import conf from "../config/main";
 axios.defaults.baseURL =
-  process.env.REACT_APP_BASE_URL || "http://localhost:1337";
+  process.env.REACT_APP_BASE_URL || conf.urlPrefix;
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState(true);

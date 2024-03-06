@@ -4,6 +4,7 @@ import { ShoeContext } from "../contexts/ShoeContext";
 import Header from "../Component/Header";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import EditItem from "../AllPage/Edititem";
+import conf from "../config/main";
 
 function YourItem() {
   const { shoes, fetchShoes } = useContext(ShoeContext);
@@ -25,7 +26,7 @@ function YourItem() {
     fetchShoes();
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:1337/api/users/me", {
+        const response = await axios.get(conf.apiUrlPrefix+"/users/me", {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
           },
@@ -59,7 +60,7 @@ function YourItem() {
   const handleDeleteConfirmed = async () => {
     try {
       // Call the API to delete the selected item
-      await axios.delete(`http://localhost:1337/api/shoes/${selectedItemId}`, {
+      await axios.delete(conf.apiUrlPrefix+"/shoes"/selectedItemId, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },

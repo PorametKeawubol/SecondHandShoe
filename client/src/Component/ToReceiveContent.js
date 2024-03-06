@@ -42,10 +42,11 @@ export default function ToReceiveContent() {
     };
     try {
       await axios.put(`http://localhost:1337/api/shoes/${id}`, payload);
+      fetchShoes()
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
-      fetchShoes();
+      fetchShoes()
     }
   };
 
@@ -90,18 +91,17 @@ export default function ToReceiveContent() {
     }
   };
   const fetchMyShoes = () => {
-    const myShoesIsSole = allId.map((item) => {
-      const shoefiltered = shoes.filter((shoe) => {
-        return (
-          shoe.id === item.shoe_id &&
-          shoe.buyerid === MyId &&
-          shoe.complete !== true
-        );
-      });
-      return shoefiltered[0];
+    const myFilteredShoes = shoes.filter((shoe) => {
+      // ใช้ findIndex ในการค้นหาว่ามี shoe_id ใน allId หรือไม่
+      const index = allId.findIndex((item) => item.shoe_id === shoe.id);
+      
+      // ถ้า index มีค่ามากกว่าหรือเท่ากับ 0 และ shoe.buyerid เท่ากับ MyId และ shoe.complete ไม่เท่ากับ true
+      return index >= 0 && shoe.buyerid === MyId && shoe.complete !== true;
     });
-    console.log("🚀 ~ myShoesIsSole ~ myShoesIsSole:", myShoesIsSole);
-    setMyShoes(myShoesIsSole);
+    
+    
+    // ตั้งค่าตัวแปร myShoes ด้วยรายการรองเท่าที่ผ่านการกรอง
+    setMyShoes(myFilteredShoes);
   };
 
   return (

@@ -32,7 +32,7 @@ const ShoeContainer = styled.div`
 export default function ToComplete() {
   const cancelButtonRef = useRef(null);
   const [isButtonVisible, setIsButtonVisible] = useState(true);
-  const { shoes } = useContext(ShoeContext);
+  const { shoes,fetchShoes } = useContext(ShoeContext);
   const [MyShoes, setMyShoes] = useState([]);
   const [MyId, setMyId] = useState([]);
   const [allId, setallId] = useState([]);
@@ -44,6 +44,7 @@ export default function ToComplete() {
   useEffect(() => {
     fetchMypaydata();
     fetchUserData();
+    fetchShoes()
   }, []);
 
   useEffect(() => {
@@ -94,17 +95,17 @@ export default function ToComplete() {
   };
 
   const fetchMyShoes = () => {
-    const myShoesIsSole = allId.map((item) => {
-      const shoefiltered = shoes.filter((shoe) => {
-        return (
-          shoe.id === item.shoe_id &&
-          shoe.buyerid === MyId &&
-          shoe.complete === true
-        );
-      });
-      return shoefiltered[0];
+    const myFilteredShoes = shoes.filter((shoe) => {
+      // ใช้ findIndex ในการค้นหาว่ามี shoe_id ใน allId หรือไม่
+      const index = allId.findIndex((item) => item.shoe_id === shoe.id);
+      
+      // ถ้า index มีค่ามากกว่าหรือเท่ากับ 0 และ shoe.buyerid เท่ากับ MyId และ shoe.complete ไม่เท่ากับ true
+      return index >= 0 && shoe.buyerid === MyId && shoe.complete === true;
     });
-    setMyShoes(myShoesIsSole);
+    
+    
+    // ตั้งค่าตัวแปร myShoes ด้วยรายการรองเท่าที่ผ่านการกรอง
+    setMyShoes(myFilteredShoes);
   };
 
   const handleSubmit = async (sellerid) => {
