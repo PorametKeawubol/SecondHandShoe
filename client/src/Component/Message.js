@@ -3,10 +3,10 @@ import MyMessage from "./message/MyMessage";
 import YourMessage from "./message/YourMessage";
 import axios from "axios";
 import conf from "../config/main";
-import { useParams } from "react-router-dom";
 
-export default function Message({ setShowModal, id }) {
-    console.log("🚀 ~ Message ~ setShowModal:", setShowModal)
+export default function Message({ id,setShowModal }) {
+   
+    
     const modalRef = useRef(null);
     const [Message, setMessage] = useState();
     const [inputText, setInputText] = useState("");
@@ -145,16 +145,18 @@ export default function Message({ setShowModal, id }) {
     // };
 
     return (
-        <div className="">
+        <div  className="">
             <div
-                onClick={()=>{alert("hhhhh")}}
-                className="fixed inset-0 z-0 w-full h-full bg-opacity-80  overflow-y-auto bg-[#302b63]  flex justify-center items-center"
+                
+                className="fixed end-px inset-y-px z-0 w-[60%] h-[80%] mt-40 bg-opacity-80  overflow-y-auto  flex justify-center items-center"
             >
                 <div
                     ref={modalRef}
-                    className="z-0 bg-white w-[80%] h-[80%] rounded-2xl shadow-md  flex flex-col items-center"
+                    className=" z-50 bg-white w-[100%] h-[80%] rounded-2xl shadow-md  flex flex-col items-center"
                 >
                     <button
+                        // onClick={()=>{setShowModal(false)}}
+                        
                         className="absolute top-4 right-4"
                         
                     >
