@@ -5,6 +5,7 @@ import axios from "axios";
 import { useState, useEffect, useContext } from "react";
 import PaymentList from "../Component/PaymentList";
 import { ShoeContext } from "../contexts/ShoeContext";
+import conf from "../config/main";
 export default function Confrimpayment() {
   const [ListShoes, setListShoes] = useState("");
   const [Adminlist, setAdminlist] = useState();
@@ -14,7 +15,7 @@ export default function Confrimpayment() {
   }, []);
   const fetchShoesAdmin = async () => {
     try {
-      const response = await axios.get("/api/shoes?populate=*");
+      const response = await axios.get(conf.apiUrlPrefix + "/shoes?populate=*");
       console.log("🚀 ~ fetchShoes ~ response:", response);
       if (Array.isArray(response.data.data)) {
         // Check if response.data is an array
@@ -36,9 +37,7 @@ export default function Confrimpayment() {
           } = attributes;
           const image =
             picture && picture.data && picture.data.length > 0
-              ? picture.data.map(
-                  (img) => "http://localhost:1337" + img.attributes.url
-                )
+              ? picture.data.map((img) => conf.urlPrefix + img.attributes.url)
               : [];
 
           const brandType = brand?.data?.attributes.name;
@@ -85,7 +84,7 @@ export default function Confrimpayment() {
         const ListData = response.data.data.map((List) => {
           const { id, attributes } = List;
           const { shoe, Buyer, Bill, Confirm } = attributes;
-          const bill = "http://localhost:1337" + Bill.data.attributes.url;
+          const bill = conf.urlPrefix + Bill.data.attributes.url;
           const shoe_id = shoe.data.id;
           const Buyer_id = Buyer.data.id;
           return {

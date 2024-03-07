@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import conf from '../config/main';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import conf from "../config/main";
 
 const Varifyconfirm = ({ setProfile }) => {
   const [users, setUsers] = useState([]);
@@ -17,7 +17,7 @@ const Varifyconfirm = ({ setProfile }) => {
   const [isDeniedOpen, setIsDeniedOpen] = useState("");
 
   axios.defaults.headers.common["Authorization"] =
-  `Bearer ${sessionStorage.getItem("authToken")}`;
+    `Bearer ${sessionStorage.getItem("authToken")}`;
 
   useEffect(() => {
     fetchData();
@@ -29,24 +29,24 @@ const Varifyconfirm = ({ setProfile }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix+'/users?populate=*');
+      const response = await axios.get(conf.apiUrlPrefix + "/users?populate=*");
       setUsers(response.data);
       setIsLoading(false);
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error("Error fetching users:", error);
       setIsLoading(false);
     }
   };
 
   const handleRequestVerificationAccept = async (userId) => {
     try {
-      await axios.put(conf.apiUrlPrefix+"/users"/userId, {
+      await axios.put(`${conf.apiUrlPrefix}/users/${userId}`, {
         VerificationWaiting: false,
         Verify: true,
       });
       setIsOpen(true);
     } catch (error) {
-      console.error('Error submitting verification request:', error);
+      console.error("Error submitting verification request:", error);
     } finally {
       fetchData();
     }
@@ -55,17 +55,17 @@ const Varifyconfirm = ({ setProfile }) => {
   const handleOk = () => {
     setIsOpen(false);
     setIsDeniedOpen(false);
-  }
+  };
 
   const handleRequestVerificationDecline = async (userId) => {
     try {
-      await axios.put(conf.apiUrlPrefix+"/users"/userId, {
+      await axios.put(`${conf.apiUrlPrefix}/users/${userId}`, {
         VerificationWaiting: false,
         Verify: false,
       });
-      setIsDeniedOpen(true)
+      setIsDeniedOpen(true);
     } catch (error) {
-      console.error('Error submitting verification request:', error);
+      console.error("Error submitting verification request:", error);
     } finally {
       fetchData();
     }
@@ -81,13 +81,13 @@ const Varifyconfirm = ({ setProfile }) => {
     const popupWidth = 200; // Adjust according to your popup content width
     const popupHeight = 200; // Adjust according to your popup content height
     const popupOffset = 10; // Adjust according to your preference
-  
+
     // Calculate left position relative to the card and window width
     let leftPosition = event.pageX + popupOffset;
     if (event.pageX + popupWidth + popupOffset > window.innerWidth) {
       leftPosition = window.innerWidth - popupWidth - popupOffset; // Adjust if the popup would go off the screen
     }
-  
+
     // Calculate top position relative to the card and window height
     let topPosition = event.pageY - popupHeight / 2;
     if (event.clientY - popupHeight / 2 < 0) {
@@ -95,7 +95,7 @@ const Varifyconfirm = ({ setProfile }) => {
     } else if (event.clientY + popupHeight / 2 > window.innerHeight) {
       topPosition = window.innerHeight - popupHeight; // Adjust if the popup would go off the screen from the bottom
     }
-  
+
     setPopupPosition({ top: topPosition, left: leftPosition });
     setShowPopup(true);
   };
@@ -109,8 +109,8 @@ const Varifyconfirm = ({ setProfile }) => {
     return (
       <div
         className={`fixed bg-white rounded-lg shadow-md overflow-hidden z-10 ${
-          showPopup ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        } ${showPopupOnLeft ? 'left-0' : 'right-0'}`}
+          showPopup ? "opacity-100" : "opacity-0 pointer-events-none"
+        } ${showPopupOnLeft ? "left-0" : "right-0"}`}
         style={{
           top: popupPosition.top,
           left: popupPosition.left,
@@ -139,7 +139,6 @@ const Varifyconfirm = ({ setProfile }) => {
     );
   };
 
-
   return (
     <>
       <div className="container mx-auto px-4 py-8">
@@ -157,33 +156,37 @@ const Varifyconfirm = ({ setProfile }) => {
                 >
                   {/* Default card content */}
                   <img
-                    src={`http://localhost:1337${user.Profile_Picture?.url}`}
+                    src={`${conf.urlPrefix}${user.Profile_Picture?.url}`} //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
                     alt={user.username}
                     className="w-24 h-24 object-cover rounded-full mx-auto mb-4 "
                   />
-                  <h2 className="text-lg font-semibold text-center">{user.username}</h2>
+                  <h2 className="text-lg font-semibold text-center">
+                    {user.username}
+                  </h2>
                   {/* Conditional rendering of buttons */}
                   {hoveredUser === user.id ? (
                     <>
-                    <div className="flex justify-center mt-4">
-                      <button
-                        onClick={() => handleRequestVerificationAccept(user.id)}
-                        className="block w-full py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600 mr-1"
-                      >
-                        Accept
-                      </button>
-                      <button
-                        onClick={() => handleRequestVerificationDecline(user.id)}
-                        className="block w-full py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 "
-                      >
-                        Decline
-                      </button>
-                    </div>
+                      <div className="flex justify-center mt-4">
+                        <button
+                          onClick={() =>
+                            handleRequestVerificationAccept(user.id)
+                          }
+                          className="block w-full py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600 mr-1"
+                        >
+                          Accept
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleRequestVerificationDecline(user.id)
+                          }
+                          className="block w-full py-2 px-4 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600 "
+                        >
+                          Decline
+                        </button>
+                      </div>
                     </>
                   ) : (
-                    <button
-                      className="block w-full mt-4 py-2 px-4 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
-                    >
+                    <button className="block w-full mt-4 py-2 px-4 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600">
                       Request Verification
                     </button>
                   )}
@@ -195,25 +198,26 @@ const Varifyconfirm = ({ setProfile }) => {
         )}
       </div>
       {isOpen && (
-      <PopupContainer>
-        <PopupContent>
-          <h2 className='mb-10'>Verification accepted</h2>
-          <ButtonContainer>
-            <OkButton onClick={handleOk}>okay</OkButton>
-          </ButtonContainer>
-        </PopupContent>
-      </PopupContainer>
-    )}
-    {isDeniedOpen && (
-      <PopupContainer>
-        <PopupContent>
-          <h2 className='mb-10'>Verification declined</h2>
-          <ButtonContainer>
-            <OkButton onClick={handleOk}>okay</OkButton>
-          </ButtonContainer>
-        </PopupContent>
-      </PopupContainer>
-    )}<PopupBackground show={isOpen || isDeniedOpen} />
+        <PopupContainer>
+          <PopupContent>
+            <h2 className="mb-10">Verification accepted</h2>
+            <ButtonContainer>
+              <OkButton onClick={handleOk}>okay</OkButton>
+            </ButtonContainer>
+          </PopupContent>
+        </PopupContainer>
+      )}
+      {isDeniedOpen && (
+        <PopupContainer>
+          <PopupContent>
+            <h2 className="mb-10">Verification declined</h2>
+            <ButtonContainer>
+              <OkButton onClick={handleOk}>okay</OkButton>
+            </ButtonContainer>
+          </PopupContent>
+        </PopupContainer>
+      )}
+      <PopupBackground show={isOpen || isDeniedOpen} />
     </>
   );
 };
@@ -247,7 +251,7 @@ const ButtonContainer = styled.div`
 const OkButton = styled.button`
   padding: 6px 16px;
   background-color: #3aa836;
-  color: white; 
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -255,7 +259,7 @@ const OkButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   &:hover {
     background-color: #66d663;
   }
@@ -269,8 +273,8 @@ const PopupBackground = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5); /* สีของพื้นหลัง */
   z-index: 9998; /* ต่ำกว่า PopupContainer */
-  display: ${(props) => (props.show ? "block" : "none")}; /* แสดงเฉพาะเมื่อ show=true */
+  display: ${(props) =>
+    props.show ? "block" : "none"}; /* แสดงเฉพาะเมื่อ show=true */
 `;
-
 
 export default Varifyconfirm;

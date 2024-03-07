@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaTrash, FaEdit } from "react-icons/fa";
+import conf from "../config/main";
 
 export default function Allshoe() {
   const [adminList, setAdminList] = useState([]);
@@ -12,7 +13,7 @@ export default function Allshoe() {
 
   const fetchShoesAdmin = async () => {
     try {
-      const response = await axios.get("/api/shoes?populate=*");
+      const response = await axios.get(conf.apiUrlPrefix + "/shoes?populate=*");
       console.log("🚀 ~ fetchShoes ~ response:", response);
       if (Array.isArray(response.data.data)) {
         const shoeData = response.data.data.map((shoe) => {
@@ -20,7 +21,7 @@ export default function Allshoe() {
           const { products_name, price, picture, seller } = attributes;
           const image =
             picture && picture.data && picture.data.length > 0
-              ? "http://localhost:1337" + picture.data[0].attributes.url
+              ? conf.urlPrefix + picture.data[0].attributes.url
               : null;
           const sellerName =
             seller?.data?.attributes?.username || "Unknown Seller";
@@ -43,7 +44,7 @@ export default function Allshoe() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/shoes/${id}`);
+      await axios.delete(conf.apiUrlPrefix + "/shoes" / id);
       setAdminList(adminList.filter((shoe) => shoe.id !== id));
     } catch (error) {
       console.error("Error deleting shoe:", error);

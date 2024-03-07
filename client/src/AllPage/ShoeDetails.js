@@ -13,6 +13,7 @@ import Register from "../AllPage/Register";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import Singin from "./Singin";
+import conf from "../config/main";
 
 const ShoeDetails = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

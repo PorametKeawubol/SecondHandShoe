@@ -2,7 +2,10 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationTriangleIcon, CheckCircleIcon } from "@heroicons/react/24/outline";
+import {
+  ExclamationTriangleIcon,
+  CheckCircleIcon,
+} from "@heroicons/react/24/outline";
 import axios from "axios";
 import { ShoeContext } from "../contexts/ShoeContext";
 import conf from "../config/main";
@@ -35,8 +38,8 @@ export default function PaymentList({ item, shoes, fetchList }) {
       },
     };
     try {
-      await axios.put(conf.apiUrlPrefix+"/payments"/id, payload);
-      await axios.put(conf.apiUrlPrefix+"/shoes"/shoe_id, payload1);
+      await axios.put(`${conf.apiUrlPrefix}/payments/${id}`, payload); //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
+      await axios.put(`${conf.apiUrlPrefix}/shoes/${shoe_id}`, payload1);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
@@ -47,7 +50,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
 
   const DeletePayment = async () => {
     try {
-      await axios.delete(conf.apiUrlPrefix+"/payments"/id);
+      await axios.delete(conf.apiUrlPrefix + "/payments" / id);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
@@ -57,7 +60,9 @@ export default function PaymentList({ item, shoes, fetchList }) {
 
   const fetchDataForPopup = async () => {
     try {
-      const response = await axios.get(`http://localhost:1337/api/payments/${id}?populate=*`);
+      const response = await axios.get(
+        `${conf.apiUrlPrefix}/payments/${id}?populate=*` //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
+      );
       console.log("Popup data response:", response.data);
       const { data } = response.data;
       setPopupData({
@@ -65,7 +70,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
         amount: data.attributes.Price,
         buyer: data.attributes.Buyer.data.attributes.username,
         shoe: data.attributes.shoe.data.attributes.products_name,
-        image: data.attributes.Bill.data.attributes.url
+        image: data.attributes.Bill.data.attributes.url,
       });
     } catch (error) {
       console.error("Error fetching data for popup:", error);
@@ -73,27 +78,30 @@ export default function PaymentList({ item, shoes, fetchList }) {
   };
 
   return (
-    <div
-      className="flex flex-row gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500">
+    <div className="flex flex-row gap-x-4 py-2 lg:px-6 border-b border-gray-200 w-full font-light text-gray-500">
       <div className="w-full min-h-[150px] flex items-center gap-x-4 pl-10">
-        <img className="max-w-[80px] transition duration-300 transform hover:scale-110 " src={shoe[0].image[0]} alt="" />
+        <img
+          className="max-w-[80px] transition duration-300 transform hover:scale-110 "
+          src={shoe[0].image[0]}
+          alt=""
+        />
         <div className="w-full flex flex-row justify-between p-6">
-            <div className="flex justify-between ">
-              <Link
-                to={`/shoe/${id}`}
-                className="text-sm uppercase font-medium max-w-[240px] text-primary hover:underline text-gray-900 "
-              >
-                {shoe[0].products_name}
-              </Link>
-              <span
-                className="text-sm uppercase font-medium text-blue-500 hover:underline cursor-pointer ml-16" // Use text-blue-500 for blue color
-                onClick={() => {
-                  setOpenDetail(true);
-                  fetchDataForPopup();
-                }}
-              >
-                View Payment
-              </span>
+          <div className="flex justify-between ">
+            <Link
+              to={`/shoe/${id}`}
+              className="text-sm uppercase font-medium max-w-[240px] text-primary hover:underline text-gray-900 "
+            >
+              {shoe[0].products_name}
+            </Link>
+            <span
+              className="text-sm uppercase font-medium text-blue-500 hover:underline cursor-pointer ml-16" // Use text-blue-500 for blue color
+              onClick={() => {
+                setOpenDetail(true);
+                fetchDataForPopup();
+              }}
+            >
+              View Payment
+            </span>
           </div>
           <div className="flex text-sm"></div>
           <div className="flex flex-1 justify-around items-center text-gray-900 ">
@@ -140,13 +148,17 @@ export default function PaymentList({ item, shoes, fetchList }) {
                   <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
                     <div className="flex items-center justify-center">
                       <CheckCircleIcon className="h-8 w-8 text-green-500 mr-2" />
-                      <Dialog.Title as="h3" className="text-lg font-medium text-gray-900">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-lg font-medium text-gray-900"
+                      >
                         Payment Accepted
                       </Dialog.Title>
                     </div>
                     <div className="mt-4">
                       <p className="text-sm text-gray-500">
-                        Your payment for {shoe[0].products_name} has been accepted.
+                        Your payment for {shoe[0].products_name} has been
+                        accepted.
                       </p>
                     </div>
                     <div className="mt-6 flex justify-center">
@@ -207,13 +219,18 @@ export default function PaymentList({ item, shoes, fetchList }) {
                   <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
                     <div className="flex items-center justify-center">
                       <ExclamationTriangleIcon className="h-8 w-8 text-red-500 mr-2" />
-                      <Dialog.Title as="h3" className="text-lg font-medium text-gray-900">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-lg font-medium text-gray-900"
+                      >
                         Deactivate Account
                       </Dialog.Title>
                     </div>
                     <div className="mt-4">
                       <p className="text-sm text-gray-500">
-                        Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.
+                        Are you sure you want to deactivate your account? All of
+                        your data will be permanently removed. This action
+                        cannot be undone.
                       </p>
                     </div>
                     <div className="mt-6 flex justify-center">
@@ -269,7 +286,10 @@ export default function PaymentList({ item, shoes, fetchList }) {
                   leaveTo="opacity-0 scale-95"
                 >
                   <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
-                    <Dialog.Title as="h3" className="text-lg font-medium text-gray-900">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg font-medium text-gray-900"
+                    >
                       Payment Detail
                     </Dialog.Title>
                     {popupData && (
@@ -281,7 +301,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
                         {popupData.image && (
                           <img
                             src={`http://localhost:1337${popupData.image}`}
-                            style={{ maxWidth: '100%' }}
+                            style={{ maxWidth: "100%" }}
                           />
                         )}
                         {/* Add more details as needed */}

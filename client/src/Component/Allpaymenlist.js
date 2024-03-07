@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import axios from "axios";
 import { ShoeContext } from "../contexts/ShoeContext";
+import conf from "../config/main";
 export default function Allpaymenlist({ item, shoes }) {
   const [open, setOpen] = useState(false);
   const [openAccepted, setOpenAccepted] = useState(false);
@@ -32,8 +33,8 @@ export default function Allpaymenlist({ item, shoes }) {
       },
     };
     try {
-      await axios.put(`http://localhost:1337/api/payments/${id}`, payload);
-      await axios.put(`http://localhost:1337/api/shoes/${shoe_id}`, payload1);
+      await axios.put(`${conf.apiUrlPrefix}/payments/${id}`, payload); //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
+      await axios.put(`${conf.apiUrlPrefix}/shoes/${shoe_id}`, payload1);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
@@ -43,7 +44,7 @@ export default function Allpaymenlist({ item, shoes }) {
 
   const DeletePayment = async () => {
     try {
-      await axios.delete(`http://localhost:1337/api/payments/${id}`);
+      await axios.delete(`${conf.apiUrlPrefix}/payments/${id}`);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {

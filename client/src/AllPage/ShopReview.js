@@ -5,14 +5,14 @@ import { FaStar } from "react-icons/fa";
 import axios from "axios";
 import Header from "../Component/Header";
 import Footer from "../Component/Footer";
+import conf from "../config/main";
 
 const ShopReviewPage = () => {
   const { reviews } = useContext(ReviewContext);
   const { sellerName, sellerId } = useParams();
   const [sellerData, setSellerData] = useState(null);
 
-  const apiUrl = `http://localhost:1337/api/users/${sellerId}?populate=Profile_Picture`;
-  const apiUrl1 = "http://localhost:1337";
+  const apiUrl1 = conf.urlPrefix;
 
   // Filter reviews based on sellerName
   const filteredReviews = reviews.filter(
@@ -22,7 +22,9 @@ const ShopReviewPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(apiUrl);
+        const response = await axios.get(
+          `${conf.apiUrlPrefix}/users/${sellerId}?populate=Profile_Picture`
+        );
         setSellerData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);

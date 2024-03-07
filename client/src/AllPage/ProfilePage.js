@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 import ToRate from "../Component/ToRateContent";
 import ImageUploadPopup from "../AllPage/SellPage"; // Import the ImageUploadPopup component
 import styled from "styled-components";
+import conf from "../config/main";
 
 function Profile() {
   const [username, setUsername] = useState("");
@@ -42,7 +43,7 @@ function Profile() {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:1337/api/users/me?populate=*",
+          conf.apiUrlPrefix + "/users/me?populate=*",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
@@ -86,7 +87,7 @@ function Profile() {
       ></header>
       <header
         style={{
-          backgroundImage: "url('PictureforShow/ิback.png')",
+          backgroundImage: "url('PictureforShow/back.png')",
           height: "200px",
           display: "flex",
           top: "center",

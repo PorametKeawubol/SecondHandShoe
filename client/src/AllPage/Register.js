@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import conf from "../config/main";
 
 function Register({ toggleModal, toggleLoginModal, onLogin }) {
   const [firstname, setFirstName] = useState("");
@@ -27,7 +28,7 @@ function Register({ toggleModal, toggleLoginModal, onLogin }) {
 
     try {
       const response = await axios.post(
-        "http://localhost:1337/api/auth/local/register",
+        conf.apiUrlPrefix + "/auth/local/register",
         {
           username: firstname,
           First_Name: firstname,

@@ -8,13 +8,13 @@ import Searchbar from "../Component/Searchbar";
 import CarouselBar from "../Component/CarouselBar";
 import Footer from "../Component/Footer";
 import TitleHome from "../Component/TitleHome";
-axios.defaults.baseURL =
-  process.env.REACT_APP_BASE_URL || "http://localhost:1337";
+import conf from "../config/main";
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || conf.urlPrefix;
 
 function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const { shoes } = useContext(ShoeContext);
-  console.log("🚀 ~ HomePage ~ shoes:", shoes)
+  console.log("🚀 ~ HomePage ~ shoes:", shoes);
   const [filteredShoes, setFilteredShoes] = useState([]);
   //useEffect(() => {
   //  setIsLoading(true);
@@ -27,30 +27,28 @@ function HomePage() {
   // get only men's and women's clothing category
 
   const newfilter = (filtered) => {
-    setFilteredShoes(filtered)
-  }
+    setFilteredShoes(filtered);
+  };
   useEffect(() => {
     const shoesfiltered = shoes.filter((item) => {
-      
-      return (
-        item.payment.data === null
-      ); // &&คือ and , ||คือ or
+      return item.payment.data === null; // &&คือ and , ||คือ or
     });
     setFilteredShoes(shoesfiltered);
   }, [shoes]);
 
   return (
-    <div className="flex flex-col  backgroundAll" >
+    <div className="flex flex-col  backgroundAll">
       <Header />
-      
+
       <div className="flex flex-col items-center">
-        <TitleHome/>
+        <TitleHome />
         <Searchbar onnewfilter={newfilter} />
       </div>
-      <div className="flex justify-center mt-10 mb-1"> {/* ใช้ flex justify-center เพื่อจัดให้อยู่ตรงกลาง */}
+      <div className="flex justify-center mt-10 mb-1">
+        {" "}
+        {/* ใช้ flex justify-center เพื่อจัดให้อยู่ตรงกลาง */}
         <CarouselBar />
       </div>
-
 
       <section className="py-100">
         <div className="container mx-auto">
@@ -64,9 +62,8 @@ function HomePage() {
           </div>
         </div>
       </section>
-      <Footer/>
+      <Footer />
     </div>
-    
   );
 }
 export default HomePage;
