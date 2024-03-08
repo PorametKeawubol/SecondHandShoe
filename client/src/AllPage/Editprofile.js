@@ -39,10 +39,10 @@ const EditProfile = ({ setProfile }) => {
   const fetchUserData = async () => {
     try {
       const response = await axios.get(
-        conf.apiUrlPrefix + "/users/me?populate=Profile_Picture"
+        conf.urlPrefix + "api/users/me?populate=Profile_Picture"
       );
       const getRole = await axios.get(
-        conf.apiUrlPrefix + "/users/me?populate=*"
+        conf.urlPrefix + "api/users/me?populate=*"
       );
 
       const user = getRole.data;
@@ -88,14 +88,14 @@ const EditProfile = ({ setProfile }) => {
     try {
       //Asset ID
       const response = await axios.get(
-        conf.apiUrlPrefix + "/users/me?populate=Profile_Picture"
+        conf.urlPrefix + "/api/users/me?populate=Profile_Picture"
       );
       const userData = response.data;
       const profilePicture = userData.Profile_Picture;
       const assetId = profilePicture && profilePicture.id;
 
       if (assetId) {
-        await axios.delete(`${conf.apiUrlPrefix}/upload/files/${assetId}`);
+        await axios.delete(`${conf.urlPrefix}/api/upload/files/${assetId}`);
         fetchUserData(); // Refresh user data after deletion
         console.log("Image deleted successfully");
       } else {
@@ -118,7 +118,7 @@ const EditProfile = ({ setProfile }) => {
 
     const image = inputRef.current.files[0];
     try {
-      const response = await axios.put(`${conf.apiUrlPrefix}/users/${userId}`, {
+      const response = await axios.put(`${conf.urlPrefix}/api/users/${userId}`, {
         username: username,
         email: email,
       });
@@ -137,7 +137,7 @@ const EditProfile = ({ setProfile }) => {
         formData.append("files", image);
 
         axios
-          .post(conf.apiUrlPrefix + "/upload", formData)
+          .post(conf.urlPrefix + "/api/upload", formData)
           .then((response) => {
             console.log(response);
             const imageUrl = conf.urlPrefix + response.data[0].url;
@@ -159,7 +159,7 @@ const EditProfile = ({ setProfile }) => {
 
   const handleAcceptSubmit = async () => {
     try {
-      const response = await axios.put(`${conf.apiUrlPrefix}/users/${userId}`, {
+      const response = await axios.put(`${conf.urlPrefix}/api/users/${userId}`, {
         username: username,
         email: email,
         First_Name: firstName,
@@ -223,7 +223,7 @@ const EditProfile = ({ setProfile }) => {
       setIsWaitingOpen(true);
       try {
         const response = await axios.put(
-          `${conf.apiUrlPrefix}/users/${userId}`,
+          `${conf.urlPrefix}/api/users/${userId}`,
           {
             Real_Name: realName,
             Address: address,

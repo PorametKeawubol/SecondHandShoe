@@ -16,7 +16,7 @@ const Notification = ({ message, isError }) => {
 
 // Import FaTimes for X icon
 
-const baseURL = conf.apiUrlPrefix;
+const baseURL = conf.urlPrefix;
 
 function EditItem({ itemId, onClose, user }) {
   const [shoeData, setShoeData] = useState({ picture: [] }); // Initialize shoeData.picture as an empty array
@@ -51,7 +51,7 @@ function EditItem({ itemId, onClose, user }) {
   const { setShoes } = useContext(ShoeContext);
   const handleFetchShoes = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix + "/shoes?populate=*");
+      const response = await axios.get(conf.urlPrefix + "/api/shoes?populate=*");
       if (Array.isArray(response.data.data)) {
         // Check if response.data is an array
         const shoeData = response.data.data.map((shoe) => {
@@ -133,9 +133,9 @@ function EditItem({ itemId, onClose, user }) {
       try {
         const [brandResponse, colorResponse, genderResponse] =
           await Promise.all([
-            axios.get(`${baseURL}/brands`),
-            axios.get(`${baseURL}/colors`),
-            axios.get(`${baseURL}/genders`),
+            axios.get(`${baseURL}/api/brands`),
+            axios.get(`${baseURL}/api/colors`),
+            axios.get(`${baseURL}/api/genders`),
           ]);
 
         setBrandTags(brandResponse.data.data);
@@ -208,7 +208,7 @@ function EditItem({ itemId, onClose, user }) {
       }
 
       // Send a DELETE request to your backend API to remove the image
-      await axios.delete(`${baseURL}/upload/files/${imageIdToRemove}`, {
+      await axios.delete(`${baseURL}/api/upload/files/${imageIdToRemove}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,

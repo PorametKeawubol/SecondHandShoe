@@ -28,7 +28,7 @@ function Register({ toggleModal, toggleLoginModal, onLogin }) {
 
     try {
       const response = await axios.post(
-        conf.apiUrlPrefix + "/auth/local/register",
+        conf.urlPrefix + "/api/auth/local/register",
         {
           username: firstname,
           First_Name: firstname,

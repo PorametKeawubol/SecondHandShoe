@@ -25,7 +25,7 @@ export default function Header() {
 
   const handleFetchShoes = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix + "/shoes?populate=*");
+      const response = await axios.get(conf.urlPrefix + "/api/shoes?populate=*");
       if (Array.isArray(response.data.data)) {
         // Check if response.data is an array
         const shoeData = response.data.data.map((shoe) => {

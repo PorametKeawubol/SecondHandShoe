@@ -26,7 +26,7 @@ export default function Message(id) {
     const fetchUserData = async () => {
         try {
             const response = await axios.get(
-                conf.apiUrlPrefix + "/users/me?populate=Profile_Picture",
+                conf.urlPrefix + "/api/users/me?populate=Profile_Picture",
                 {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
@@ -34,8 +34,8 @@ export default function Message(id) {
                 }
             );
             const response2 = await axios.get(
-                conf.apiUrlPrefix +
-                    `/users/${receiverID}?populate=Profile_Picture`,
+                conf.urlPrefix +
+                    `/api/users/${receiverID}?populate=Profile_Picture`,
                 {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
@@ -71,7 +71,7 @@ export default function Message(id) {
     const fetchMessages = async () => {
         try {
             const response = await axios.get(
-                conf.apiUrlPrefix + "/messages?populate=*"
+                conf.urlPrefix + "/api/messages?populate=*"
             );
             if (Array.isArray(response.data.data)) {
                 const MessagesData = response.data.data.map((chat) => {
@@ -129,7 +129,7 @@ export default function Message(id) {
             };
 
             const response = await axios.post(
-                conf.apiUrlPrefix + "/messages",
+                conf.urlPrefix + "api/messages",
                 messageData
             );
 

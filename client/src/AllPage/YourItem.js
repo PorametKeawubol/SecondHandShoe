@@ -26,7 +26,7 @@ function YourItem() {
     fetchShoes();
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(conf.apiUrlPrefix + "/users/me", {
+        const response = await axios.get(conf.urlPrefix + "/api/users/me", {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
           },
@@ -60,8 +60,8 @@ function YourItem() {
   const handleDeleteConfirmed = async () => {
     try {
       // Call the API to delete the selected item
-      await axios.delete(`${conf.apiUrlPrefix}/shoes/${selectedItemId}`, {
-        //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
+      await axios.delete(`${conf.urlPrefix}/api/shoes/${selectedItemId}`, {
+      
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },

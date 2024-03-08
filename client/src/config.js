@@ -2,8 +2,7 @@ const isProd = process.env.NODE_ENV === 'production'
 
 const config = {
   isProd,
-  apiUrlPrefix: isProd ? 'https://wd12.cloud-workshop.online/api' : 'http://localhost:1337/api',
-  urlPrefix: isProd? 'https://wd12.cloud-workshop.online':"http://localhost:1337",
+  serverUrlPrefix: isProd ? 'https://wd12.cloud-workshop.online' : 'http://localhost:1337'
   
 }
 

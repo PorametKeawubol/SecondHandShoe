@@ -15,7 +15,7 @@ export default function Confrimpayment() {
   }, []);
   const fetchShoesAdmin = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix + "/shoes?populate=*");
+      const response = await axios.get(conf.urlPrefix + "/api/shoes?populate=*");
       console.log("🚀 ~ fetchShoes ~ response:", response);
       if (Array.isArray(response.data.data)) {
         // Check if response.data is an array

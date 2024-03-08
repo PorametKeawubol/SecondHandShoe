@@ -58,7 +58,7 @@ const Rating = () => {
     event.preventDefault();
     // ส่งข้อมูลไปยัง Strapi โดยใช้ axios
     try {
-      const response = await axios.post(conf.apiUrlPrefix+"/ratings", {
+      const response = await axios.post(conf.urlPrefix+"/api/ratings", {
         data: {
           score: currentValue,
           comment: comment,

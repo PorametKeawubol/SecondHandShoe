@@ -19,7 +19,7 @@ export default function Chat(data) {
     const fetchUserData = async () => {
         try {
             const response = await axios.get(
-                conf.apiUrlPrefix + `/users/${id}?populate=Profile_Picture`,
+                conf.urlPrefix + `/api/users/${id}?populate=Profile_Picture`,
                 {
                     headers: {
                         Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,

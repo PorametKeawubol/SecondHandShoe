@@ -43,7 +43,7 @@ function Profile() {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          conf.apiUrlPrefix + "/users/me?populate=*",
+          conf.urlPrefix + "/api/users/me?populate=*",
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,

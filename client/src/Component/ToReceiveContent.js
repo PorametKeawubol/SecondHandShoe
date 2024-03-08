@@ -42,7 +42,7 @@ export default function ToReceiveContent() {
       },
     };
     try {
-      await axios.put(`${conf.apiUrlPrefix}/shoes/${id}`, payload); //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
+      await axios.put(`${conf.urlPrefix}/api/shoes/${id}`, payload); 
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
@@ -52,7 +52,7 @@ export default function ToReceiveContent() {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix + "/users/me", {
+      const response = await axios.get(conf.urlPrefix + "/api/users/me", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },
@@ -64,11 +64,11 @@ export default function ToReceiveContent() {
       console.error("Error fetching user data:", error);
     }
   };
-  //conf.apiUrlPrefix+"/users"/userId
+
   const fetchMypaydata = async () => {
     try {
       const [response1] = await Promise.all([
-        axios.get(conf.apiUrlPrefix + "/payments?populate=*", {
+        axios.get(conf.urlPrefix + "/api/payments?populate=*", {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
           },

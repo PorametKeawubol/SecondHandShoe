@@ -29,7 +29,7 @@ const Varifyconfirm = ({ setProfile }) => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix + "/users?populate=*");
+      const response = await axios.get(conf.urlPrefix + "/api/users?populate=*");
       setUsers(response.data);
       setIsLoading(false);
     } catch (error) {
@@ -40,7 +40,7 @@ const Varifyconfirm = ({ setProfile }) => {
 
   const handleRequestVerificationAccept = async (userId) => {
     try {
-      await axios.put(`${conf.apiUrlPrefix}/users/${userId}`, {
+      await axios.put(`${conf.urlPrefix}/api/users/${userId}`, {
         VerificationWaiting: false,
         Verify: true,
       });
@@ -59,7 +59,7 @@ const Varifyconfirm = ({ setProfile }) => {
 
   const handleRequestVerificationDecline = async (userId) => {
     try {
-      await axios.put(`${conf.apiUrlPrefix}/users/${userId}`, {
+      await axios.put(`${conf.urlPrefix}/api/users/${userId}`, {
         VerificationWaiting: false,
         Verify: false,
       });
@@ -156,7 +156,7 @@ const Varifyconfirm = ({ setProfile }) => {
                 >
                   {/* Default card content */}
                   <img
-                    src={`${conf.urlPrefix}${user.Profile_Picture?.url}`} //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
+                    src={`${conf.urlPrefix}${user.Profile_Picture?.url}`} 
                     alt={user.username}
                     className="w-24 h-24 object-cover rounded-full mx-auto mb-4 "
                   />

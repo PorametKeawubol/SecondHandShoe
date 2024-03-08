@@ -15,7 +15,7 @@ const ReviewProvider = ({ children }) => {
   const fetchShoes = async () => {
     try {
       const response = await axios.get(
-        conf.apiUrlPrefix + "/ratings?populate=*"
+        conf.urlPrefix + "/api/ratings?populate=*"
       );
       if (Array.isArray(response.data.data)) {
         // Check if response.data is an array

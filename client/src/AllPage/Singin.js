@@ -34,7 +34,7 @@ function Singin({
 
     try {
       delete axios.defaults.headers.common["Authorization"];
-      const response = await axios.post(conf.apiUrlPrefix + "/auth/local", {
+      const response = await axios.post(conf.urlPrefix + "/api/auth/local", {
         identifier: email,
         password: password,
       });
@@ -45,7 +45,7 @@ function Singin({
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       let response2 = await axios.get(
-        conf.apiUrlPrefix + "/users/me?populate=Profile_Picture"
+        conf.urlPrefix + "/api/users/me?populate=Profile_Picture"
       );
       let profile_picture;
       if (response2.data.Profile_Picture === null) {
@@ -54,7 +54,7 @@ function Singin({
         profile_picture = conf.urlPrefix + response2.data.Profile_Picture.url;
       }
       const response3 = await axios.get(
-        conf.apiUrlPrefix + "/users/me?populate=role"
+        conf.urlPrefix + "/api/users/me?populate=role"
       );
 
       sessionStorage.setItem("Profile_Picture", profile_picture);

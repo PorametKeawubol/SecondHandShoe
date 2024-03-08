@@ -23,7 +23,7 @@ const ShopReviewPage = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${conf.apiUrlPrefix}/users/${sellerId}?populate=Profile_Picture`
+          `${conf.urlPrefix}/api/users/${sellerId}?populate=Profile_Picture`
         );
         setSellerData(response.data);
       } catch (error) {

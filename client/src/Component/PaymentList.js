@@ -38,8 +38,8 @@ export default function PaymentList({ item, shoes, fetchList }) {
       },
     };
     try {
-      await axios.put(`${conf.apiUrlPrefix}/payments/${id}`, payload); //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
-      await axios.put(`${conf.apiUrlPrefix}/shoes/${shoe_id}`, payload1);
+      await axios.put(`${conf.urlPrefix}/api/payments/${id}`, payload); 
+      await axios.put(`${conf.urlPrefix}/api/shoes/${shoe_id}`, payload1);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
@@ -50,7 +50,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
 
   const DeletePayment = async () => {
     try {
-      await axios.delete(conf.apiUrlPrefix + "/payments" / id);
+      await axios.delete(conf.urlPrefix + "/api/payments" / id);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
@@ -61,7 +61,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
   const fetchDataForPopup = async () => {
     try {
       const response = await axios.get(
-        `${conf.apiUrlPrefix}/payments/${id}?populate=*` //(`${conf.apiUrlPrefix}/payments/${id}?populate=*`)
+        `${conf.urlPrefix}/api/payments/${id}?populate=*` 
       );
       console.log("Popup data response:", response.data);
       const { data } = response.data;

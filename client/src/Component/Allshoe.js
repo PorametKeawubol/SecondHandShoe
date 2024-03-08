@@ -13,7 +13,7 @@ export default function Allshoe() {
 
   const fetchShoesAdmin = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix + "/shoes?populate=*");
+      const response = await axios.get(conf.urlPrefix + "/api/shoes?populate=*");
       console.log("🚀 ~ fetchShoes ~ response:", response);
       if (Array.isArray(response.data.data)) {
         const shoeData = response.data.data.map((shoe) => {
@@ -44,7 +44,7 @@ export default function Allshoe() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(conf.apiUrlPrefix + "/shoes" / id);
+      await axios.delete(conf.urlPrefix + "/api/shoes" / id);
       setAdminList(adminList.filter((shoe) => shoe.id !== id));
     } catch (error) {
       console.error("Error deleting shoe:", error);

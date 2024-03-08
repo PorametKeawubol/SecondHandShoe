@@ -17,7 +17,7 @@ export default function MessageDashbord() {
   const fetchUserData = async () => {
     try {
       const response = await axios.get(
-        conf.apiUrlPrefix + "/users/me?populate=Profile_Picture",
+        conf.urlPrefix + "/api/users/me?populate=Profile_Picture",
         {
           headers: {
             Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,

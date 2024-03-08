@@ -38,7 +38,7 @@ export default function ToShipContent() {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix+"/users/me", {
+      const response = await axios.get(conf.urlPrefix+"/api/users/me", {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },

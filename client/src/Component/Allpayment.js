@@ -17,7 +17,7 @@ export default function Allpayment() {
 
   const fetchShoesAdmin = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix + "/shoes?populate=*");
+      const response = await axios.get(conf.urlPrefix + "/api/shoes?populate=*");
       console.log("🚀 ~ fetchShoes ~ response:", response);
       if (Array.isArray(response.data.data)) {
         // Check if response.data is an array
@@ -74,7 +74,7 @@ export default function Allpayment() {
   const fetchList = async () => {
     try {
       const response = await axios.get(
-        conf.apiUrlPrefix + "/payments?populate=*"
+        conf.urlPrefix + "/api/payments?populate=*"
       );
 
       if (Array.isArray(response.data.data)) {

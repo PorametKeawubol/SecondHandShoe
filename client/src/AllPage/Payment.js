@@ -35,7 +35,7 @@ function Payment() {
   }, []);
   const fetchUserFromServer = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix + "/users/me");
+      const response = await axios.get(conf.urlPrefix + "/api/users/me");
       setUser(response.data); // Assuming the response contains user details
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -89,7 +89,7 @@ function Payment() {
     console.log("Submitting form data...");
 
     try {
-      // Upload images to Strapi server
+   
       const uploadedImages = await Promise.all(images.map(uploadImage));
 
       // Create shoe entry with associated images
@@ -100,15 +100,15 @@ function Payment() {
         Price: parseFloat(price).toFixed(2),
         Address: address,
 
-        // Assuming Strapi returns image objects with an id field
+       
       };
 
-      // Post shoe data to Strapi server
+   
       const formData = new FormData();
       formData.append("data", JSON.stringify(shoeData));
 
       const response = await axios.post(
-        conf.apiUrlPrefix + "/payments",
+        conf.urlPrefix + "/api/payments",
         formData,
         {
           headers: {
@@ -132,7 +132,7 @@ function Payment() {
       const formData = new FormData();
       formData.append("files", image);
       const response = await axios.post(
-        conf.apiUrlPrefix + "/upload",
+        conf.urlPrefix + "/api/upload",
         formData,
         {
           headers: {
@@ -141,7 +141,7 @@ function Payment() {
         }
       );
 
-      return response.data[0]; // Assuming Strapi returns an array of uploaded files with metadata
+      return response.data[0]; 
     } catch (error) {
       console.error("Error uploading image:", error);
       throw error;

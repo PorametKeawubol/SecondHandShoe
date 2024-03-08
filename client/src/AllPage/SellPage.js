@@ -45,7 +45,7 @@ const ImageUploadPopup = ({ onClose }) => {
 
   const fetchUserFromServer = async () => {
     try {
-      const response = await axios.get(conf.apiUrlPrefix + "/users/me");
+      const response = await axios.get(conf.urlPrefix + "/api/users/me");
       setUser(response.data); // Assuming the response contains user details
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -54,9 +54,9 @@ const ImageUploadPopup = ({ onClose }) => {
 
   const fetchTagsFromServer = async () => {
     try {
-      const brandResponse = await axios.get(`${conf.apiUrlPrefix}/brands`);
-      const colorResponse = await axios.get(`${conf.apiUrlPrefix}/colors`);
-      const genderResponse = await axios.get(`${conf.apiUrlPrefix}/genders`);
+      const brandResponse = await axios.get(`${conf.urlPrefix}/api/brands`);
+      const colorResponse = await axios.get(`${conf.urlPrefix}/api/colors`);
+      const genderResponse = await axios.get(`${conf.urlPrefix}/api/genders`);
 
       setBrandTags(brandResponse.data.data);
       setColorTags(colorResponse.data.data);
@@ -130,7 +130,7 @@ const ImageUploadPopup = ({ onClose }) => {
       formData.append("data", JSON.stringify(shoeData));
 
       const response = await axios.post(
-        `${conf.apiUrlPrefix}/shoes`,
+        `${conf.urlPrefix}/api/shoes`,
         formData,
         {
           headers: {
@@ -155,7 +155,7 @@ const ImageUploadPopup = ({ onClose }) => {
       const formData = new FormData();
       formData.append("files", image);
       const response = await axios.post(
-        `${conf.apiUrlPrefix}/upload`,
+        `${conf.urlPrefix}/api/upload`,
         formData,
         {
           headers: {
