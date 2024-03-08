@@ -180,12 +180,6 @@ const ImageUploadPopup = ({ onClose }) => {
     }
   };
 
-  const handleOutsideClick = (e) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
   const handleClickOutside = (e) => {
     if (popupRef.current && !popupRef.current.contains(e.target)) {
       onClose();
