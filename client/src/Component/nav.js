@@ -6,7 +6,7 @@ import { Bars4Icon } from "@heroicons/react/20/solid";
 const HamburgerMenu = ({ handleLogout }) => {
   const isAdmin = sessionStorage.getItem("role");
   const userProfile = sessionStorage.getItem("Profile_Picture");
-  console.log("🚀 ~ HamburgerMenu ~ isAdmin:", isAdmin);
+
 
   return (
     <div className="relative group z-50">

@@ -6,7 +6,6 @@ export const ShoeContext = createContext();
 const ShoeProvider = ({ children }) => {
   // shoes state
   const [shoes, setShoes] = useState([]);
-  console.log("🚀 ~ ShoeProvider ~ shoes:", shoes);
 
   // fetch products
   useEffect(() => {
