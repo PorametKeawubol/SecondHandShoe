@@ -327,21 +327,7 @@ const ShoeDetails = () => {
             </div>
           </div>
         </div>
-        {showLoginModal && (
-          <Singin
-            toggleModal={toggleLoginModal}
-            toggleRegisterModal={toggleRegisterModal}
-            onLogin={handleLogin}
-            checkAuthStatus={checkAuthStatus}
-          />
-        )}
-        {showRegisterModal && (
-          <Register
-            toggleModal={toggleRegisterModal}
-            toggleLoginModal={toggleLoginModal}
-            onLogin={handleLogin}
-          />
-        )}
+        
       </section>
       <Footer />
     </div>

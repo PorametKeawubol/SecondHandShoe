@@ -188,9 +188,9 @@ function Payment() {
                     type="address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    className=" rounded-lg  mt-1 block h-20 w-80"
+                    className=" rounded-lg ring-1 ring-black  mt-1 block h-20 w-80 border-black"
                   >
-                    It was a dark and stormy night...
+                    
                   </textarea>
                 </label>
                 <p className="mb-8 ro ">
@@ -203,7 +203,7 @@ function Payment() {
                   <img className="sm:w-[30%]" src={Qrcode} alt="" />
                 </div>
 
-                <h className="mb-8  text-red-500 font-medium mb-4">
+                <h className="mb-8  text-red-500 font-medium ">
                   {parseFloat(price).toFixed(2)} THB
                 </h>
 
@@ -317,7 +317,7 @@ function Payment() {
                 )}
               </div>
             </div>
-            <div className=" drop-shadow-2xl bg-gradient-to-r from-[#355C7D] via-[#6C5B7B] to-[#C06C84] p-6 rounded-3xl text-slate-100">
+            <div className=" drop-shadow-2xl bg-gradient-to-r from-[#0f0c29] via-[#302b63] to-[#24243e] p-6 rounded-3xl text-slate-100">
               <div className="flex">
                 <div className="flex flex-col items-center mr-4">
                   <div>

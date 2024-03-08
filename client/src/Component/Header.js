@@ -9,10 +9,9 @@ import { SidebarContext } from "../contexts/SidebarContext";
 import { CartContext } from "../contexts/CartContext";
 import { useNavigate } from "react-router-dom";
 import { ShoeContext } from "../contexts/ShoeContext";
-import "./Header.css";
 import conf from "../config/main";
 
-export default function Example() {
+export default function Header() {
   const { setShoes } = useContext(ShoeContext);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);

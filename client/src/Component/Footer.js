@@ -3,7 +3,7 @@ import logo from "../Component/Picture/logoSecondHandShoe.png";
 
 function Footer() {
      return (
-          <footer className="footer p-8 mt-16 text-slate-100 bg-gradient-to-r from-[#355C7D] via-[#6C5B7B] to-[#C06C84]">
+          <footer className="footer p-8 mt-16 text-slate-100 bg-gradient-to-r from-[#0f0c29] via-[#302b63] to-[#24243e]">
                <aside className="mb-4  flex items-center items-start">
                     <div className="flex w-16">
                          <Link to="/">

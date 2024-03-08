@@ -33,6 +33,7 @@ function Singin({
     event.preventDefault();
 
     try {
+      delete axios.defaults.headers.common["Authorization"];
       const response = await axios.post(conf.apiUrlPrefix + "/auth/local", {
         identifier: email,
         password: password,

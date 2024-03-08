@@ -9,7 +9,7 @@ const HamburgerMenu = ({ handleLogout }) => {
   console.log("🚀 ~ HamburgerMenu ~ isAdmin:", isAdmin);
 
   return (
-    <div className="relative group">
+    <div className="relative group z-50">
       <Menu as="div" className="relative inline-block text-left">
         {({ open }) => (
           <>

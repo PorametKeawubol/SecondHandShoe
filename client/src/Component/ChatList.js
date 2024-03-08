@@ -43,10 +43,10 @@ export default function Chat(data) {
         }
     };
     return (
-        // <Li nk to={`/message/${userData.id1}`}>
+        <Link to={`/message/${userData.id1}`}>
         <div>
             <div
-                onClick={toggleModal}
+               
                 className="flex items-center hover:bg-slate-200 rounded-2xl"
             >
                 <div
@@ -71,8 +71,8 @@ export default function Chat(data) {
                     {userData.username}
                 </div>
             </div>
-            {showModal && <Message id={id} />}
+            
         </div>
-        // </Link>
+     </Link>
     );
 }
