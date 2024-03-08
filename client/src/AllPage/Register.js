@@ -198,7 +198,7 @@ function Register({ toggleModal, toggleLoginModal, onLogin }) {
               </form>
             </div>
           </div>
-          <div className="flex items-center  lg:w-6/12 rounded-r-lg">
+          <div className="items-center hidden md:flex  lg:w-6/12 rounded-r-lg">
             <div className="text-white w-full h-full ">
               <img
                 src="/PictureforShow/8888.png"
