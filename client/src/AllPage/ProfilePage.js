@@ -52,7 +52,6 @@ function Profile() {
         );
 
         const userData = response.data;
-        console.log("🚀 ~ fetchUserData ~ userData:", userData);
         setUsername(userData.username);
         setEmail(userData.email);
         setBio(userData.Bio);

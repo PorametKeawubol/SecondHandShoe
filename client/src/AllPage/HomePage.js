@@ -16,7 +16,6 @@ function HomePage() {
     const { handleClose } = useContext(SidebarContext);
     // const [isLoading, setIsLoading] = useState(true);
     const { shoes } = useContext(ShoeContext);
-    console.log("🚀 ~ HomePage ~ shoes:", shoes);
     const [filteredShoes, setFilteredShoes] = useState([]);
     //useEffect(() => {
     //  setIsLoading(true);

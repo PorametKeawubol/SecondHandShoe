@@ -79,7 +79,7 @@ function Register({ toggleModal, toggleLoginModal, onLogin }) {
               {/* Logo */}
               <div className="text-center">
                 <img
-                  className="mx-auto w-20"
+                  className="h-[60%] w-[30%]"
                   src="/PictureforShow/logoSecondHand.png"
                   alt="logo"
                 />
