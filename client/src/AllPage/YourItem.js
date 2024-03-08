@@ -13,7 +13,7 @@ function YourItem() {
   const [selectedItemId, setSelectedItemId] = useState(null); // State to store the selected item ID
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // State to manage delete confirmation dialog
 
-  const handleEditem = (handleEditemClose, id, useEffect) => {
+  const handleEditem = (id) => {
     setSelectedItemId(id); // Set the selected item ID
     setEditemModal(true);
   };
@@ -23,7 +23,6 @@ function YourItem() {
   };
 
   useEffect(() => {
-    fetchShoes();
     const fetchUserData = async () => {
       try {
         const response = await axios.get(conf.urlPrefix + "/api/users/me", {
@@ -61,7 +60,6 @@ function YourItem() {
     try {
       // Call the API to delete the selected item
       await axios.delete(`${conf.urlPrefix}/api/shoes/${selectedItemId}`, {
-      
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
         },

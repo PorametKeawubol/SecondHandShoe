@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Fragment, useRef, useState, useContext } from "react";
+import { Fragment, useRef, useState, useContext, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   ExclamationTriangleIcon,
@@ -8,10 +8,10 @@ import {
 import axios from "axios";
 import { ShoeContext } from "../contexts/ShoeContext";
 import conf from "../config/main";
-export default function Allpaymenlist({ item, shoes }) {
+export default function Allpaymenlist({ item }) {
   const [open, setOpen] = useState(false);
   const [openAccepted, setOpenAccepted] = useState(false);
-  const { fetchShoes } = useContext(ShoeContext);
+  const { fetchShoes, shoes } = useContext(ShoeContext);
   const cancelButtonRef = useRef(null);
   const id = item.id;
   const Buyer_id = item.Buyer_id;
@@ -20,6 +20,8 @@ export default function Allpaymenlist({ item, shoes }) {
   const shoe = shoes.filter((item) => {
     return item.id === shoe_id;
   });
+
+  useEffect(() => {}, [shoes]);
 
   const ConfirmPayment = async () => {
     const payload = {
@@ -33,7 +35,7 @@ export default function Allpaymenlist({ item, shoes }) {
       },
     };
     try {
-      await axios.put(`${conf.urlPrefix}/api/payments/${id}`, payload); 
+      await axios.put(`${conf.urlPrefix}/api/payments/${id}`, payload);
       await axios.put(`${conf.urlPrefix}/api/shoes/${shoe_id}`, payload1);
     } catch (error) {
       console.error("Error fetching user:", error);

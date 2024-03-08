@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Fragment, useRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
@@ -10,12 +10,12 @@ import axios from "axios";
 import { ShoeContext } from "../contexts/ShoeContext";
 import conf from "../config/main";
 
-export default function PaymentList({ item, shoes, fetchList }) {
+export default function PaymentList({ item, fetchList }) {
   const [open, setOpen] = useState(false);
   const [openAccepted, setOpenAccepted] = useState(false);
   const [openDetail, setOpenDetail] = useState(false);
   const [popupData, setPopupData] = useState(null);
-  const { fetchShoes } = useContext(ShoeContext);
+  const { fetchShoes, shoes } = useContext(ShoeContext);
 
   const cancelButtonRef = useRef(null);
   const id = item.id;
@@ -25,6 +25,8 @@ export default function PaymentList({ item, shoes, fetchList }) {
   const shoe = shoes.filter((item) => {
     return item.id === shoe_id;
   });
+
+  useEffect(() => {}, [shoes]);
 
   const ConfirmPayment = async () => {
     const payload = {
@@ -38,7 +40,7 @@ export default function PaymentList({ item, shoes, fetchList }) {
       },
     };
     try {
-      await axios.put(`${conf.urlPrefix}/api/payments/${id}`, payload); 
+      await axios.put(`${conf.urlPrefix}/api/payments/${id}`, payload);
       await axios.put(`${conf.urlPrefix}/api/shoes/${shoe_id}`, payload1);
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -50,18 +52,20 @@ export default function PaymentList({ item, shoes, fetchList }) {
 
   const DeletePayment = async () => {
     try {
-      await axios.delete(conf.urlPrefix + "/api/payments" / id);
+      await axios.delete(`${conf.urlPrefix}/api/payments/${id}`);
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
       fetchShoes();
+      setOpen(false);
+      fetchList();
     }
   };
 
   const fetchDataForPopup = async () => {
     try {
       const response = await axios.get(
-        `${conf.urlPrefix}/api/payments/${id}?populate=*` 
+        `${conf.urlPrefix}/api/payments/${id}?populate=*`
       );
       console.log("Popup data response:", response.data);
       const { data } = response.data;
@@ -245,7 +249,6 @@ export default function PaymentList({ item, shoes, fetchList }) {
                         type="button"
                         className="inline-flex justify-center px-4 py-2 ml-4 text-sm font-medium text-white bg-red-500 border border-transparent rounded-md hover:bg-red-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={() => {
-                          setOpen(false);
                           DeletePayment();
                         }}
                       >

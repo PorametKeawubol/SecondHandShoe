@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Header from "../Component/Header";
 import axios from "axios";
 import {
@@ -20,6 +20,7 @@ import ToRate from "../Component/ToRateContent";
 import ImageUploadPopup from "../AllPage/SellPage"; // Import the ImageUploadPopup component
 import styled from "styled-components";
 import conf from "../config/main";
+import { ShoeContext } from "../contexts/ShoeContext";
 
 function Profile() {
   const [username, setUsername] = useState("");
@@ -31,6 +32,8 @@ function Profile() {
   const userProfile = sessionStorage.getItem("Profile_Picture");
   const [isVerified, setIsVerified] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { fetchShoes } = useContext(ShoeContext);
+
   const handleToRateOpen = () => {
     setShowToRateModal(true);
   };
@@ -333,6 +336,7 @@ function Profile() {
           <p style={{ fontSize: "20px" }}>Post sell</p>
         </div>
         <Link
+          onClick={fetchShoes}
           to="/YourItem"
           className="bg-white hover:bg-gray-200 text-black font-bold py-2 px-4 rounded-md mr-8 border border-black"
           style={{
