@@ -129,7 +129,7 @@ export default function Message(id) {
             };
 
             const response = await axios.post(
-                conf.urlPrefix + "api/messages",
+                conf.urlPrefix + "/api/messages",
                 messageData
             );
 
