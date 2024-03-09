@@ -15,7 +15,6 @@ function YourItem() {
 
   const handleEditem = (id,andleEditemClose) => {
     setSelectedItemId(id); // Set the selected item ID
-    console.log(id)
     setEditemModal(true);
   };
 

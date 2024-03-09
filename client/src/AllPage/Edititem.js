@@ -16,7 +16,6 @@ const Notification = ({ message, isError }) => {
 
 // Import FaTimes for X icon
 
-const baseURL = conf.urlPrefix;
 
 function EditItem({ itemId, onClose}) {
   const [shoeData, setShoeData] = useState({ picture: [] }); // Initialize shoeData.picture as an empty array
@@ -111,7 +110,7 @@ function EditItem({ itemId, onClose}) {
   useEffect(() => {
     const fetchShoeData = async () => {
       try {
-        const response = await axios.get(`${baseURL}/api/shoes/${itemId}`, {
+        const response = await axios.get(`${conf.urlPrefix}/api/shoes/${itemId}`, {
           params: {
             populate: [
               "brand",
@@ -133,9 +132,9 @@ function EditItem({ itemId, onClose}) {
       try {
         const [brandResponse, colorResponse, genderResponse] =
           await Promise.all([
-            axios.get(`${baseURL}/api/brands`),
-            axios.get(`${baseURL}/api/colors`),
-            axios.get(`${baseURL}/api/genders`),
+            axios.get(`${conf.urlPrefix}/api/brands`),
+            axios.get(`${conf.urlPrefix}/api/colors`),
+            axios.get(`${conf.urlPrefix}/api/genders`),
           ]);
 
         setBrandTags(brandResponse.data.data);
@@ -208,7 +207,7 @@ function EditItem({ itemId, onClose}) {
       }
 
       // Send a DELETE request to your backend API to remove the image
-      await axios.delete(`${baseURL}/api/upload/files/${imageIdToRemove}`, {
+      await axios.delete(`${conf.urlPrefix}/api/upload/files/${imageIdToRemove}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${sessionStorage.getItem("authToken")}`,
@@ -242,7 +241,7 @@ function EditItem({ itemId, onClose}) {
       const formData = new FormData();
       images.forEach((image) => formData.append("files", image)); // Append each image to FormData
 
-      const response = await axios.post(`${baseURL}/upload`, formData, {
+      const response = await axios.post(`${conf.urlPrefix}/api/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -327,7 +326,7 @@ function EditItem({ itemId, onClose}) {
 
       const requestBody = { data: requestData };
 
-      await axios.put(`${baseURL}/shoes/${itemId}`, requestBody, {
+      await axios.put(`${conf.urlPrefix}/api/shoes/${itemId}`, requestBody, {
         headers: {
           "Content-Type": "application/json",
         },
