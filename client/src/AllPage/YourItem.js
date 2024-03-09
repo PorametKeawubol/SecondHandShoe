@@ -13,8 +13,9 @@ function YourItem() {
   const [selectedItemId, setSelectedItemId] = useState(null); // State to store the selected item ID
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // State to manage delete confirmation dialog
 
-  const handleEditem = (id) => {
+  const handleEditem = (id,andleEditemClose) => {
     setSelectedItemId(id); // Set the selected item ID
+    console.log(id)
     setEditemModal(true);
   };
 
@@ -123,11 +124,12 @@ function YourItem() {
                         <FaTrash className="h-6 w-6 text-white" />
                       </button>
                       <button
-                        onClick={() => handleEditem(handleEditemClose, shoe.id)}
+                        onClick={() => handleEditem(shoe.id)}
                         className="mr-9 bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center"
                       >
                         <FaEdit className="h-6 w-6 text-white" />
                       </button>
+
                     </>
                   )}
                 </div>

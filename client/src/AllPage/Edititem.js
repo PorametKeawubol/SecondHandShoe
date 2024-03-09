@@ -18,7 +18,7 @@ const Notification = ({ message, isError }) => {
 
 const baseURL = conf.urlPrefix;
 
-function EditItem({ itemId, onClose, user }) {
+function EditItem({ itemId, onClose}) {
   const [shoeData, setShoeData] = useState({ picture: [] }); // Initialize shoeData.picture as an empty array
   const [editedData, setEditedData] = useState({});
   const [selectedImages, setSelectedImages] = useState([]); // State for selected images
@@ -111,7 +111,7 @@ function EditItem({ itemId, onClose, user }) {
   useEffect(() => {
     const fetchShoeData = async () => {
       try {
-        const response = await axios.get(`${baseURL}/shoes/${itemId}`, {
+        const response = await axios.get(`${baseURL}/api/shoes/${itemId}`, {
           params: {
             populate: [
               "brand",
