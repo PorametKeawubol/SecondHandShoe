@@ -303,7 +303,7 @@ export default function PaymentList({ item, fetchList }) {
                         <p>Shoe: {popupData.shoe}</p>
                         {popupData.image && (
                           <img
-                            src={`http://localhost:1337${popupData.image}`}
+                            src={`${conf.urlPrefix}${popupData.image}`}
                             style={{ maxWidth: "100%" }}
                           />
                         )}

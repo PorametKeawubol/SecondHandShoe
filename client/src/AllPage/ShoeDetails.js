@@ -34,9 +34,7 @@ const ShoeDetails = () => {
 
   const checkAuthStatus = () => {
     const token = sessionStorage.getItem("authToken");
-    const authTokenInHeaders = axios.defaults.headers.common["Authorization"];
-    if (token || authTokenInHeaders !== null) {
-      console.log(token, authTokenInHeaders);
+    if (token !== null) {
       setIsLoggedIn(true);
     } else {
       setIsLoggedIn(false);
