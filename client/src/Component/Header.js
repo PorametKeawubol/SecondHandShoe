@@ -131,7 +131,7 @@ export default function Header() {
   };
 
   return (
-    <header className="top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#0f0c29] via-[#302b63] to-[#24243e] bg-opacity-50">
+    <header className=" top-0 left-0 right-0 z-[51] bg-gradient-to-r from-[#0f0c29] via-[#302b63] to-[#24243e] bg-opacity-50">
       <div className="">
         <nav
           className="flex items-center justify-between mx-auto py-4 mr-5"

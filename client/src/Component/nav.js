@@ -9,7 +9,7 @@ const HamburgerMenu = ({ handleLogout }) => {
 
 
   return (
-    <div className="relative group z-50">
+    <div className="relative group z-[52]">
       <Menu as="div" className="relative inline-block text-left">
         {({ open }) => (
           <>

@@ -1,13 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, } from "react";
 import MyMessage from "./message/MyMessage";
 import YourMessage from "./message/YourMessage";
 import axios from "axios";
 import conf from "../config/main";
 import { useParams } from "react-router-dom";
 import Header from "./Header";
-import Chat from "./ChatList";
+
 export default function Message(id) {
-    const modalRef = useRef(null);
+  
     const [Message, setMessage] = useState();
     const [inputText, setInputText] = useState("");
     const [userData, setUserdata] = useState("");
@@ -71,7 +71,7 @@ export default function Message(id) {
     const fetchMessages = async () => {
         try {
             const response = await axios.get(
-                conf.urlPrefix + "/api/messages?populate=*"
+                conf.urlPrefix + "/api/messages?populate=*&?pagination[start]=0&pagination[limit]=999"
             );
             if (Array.isArray(response.data.data)) {
                 const MessagesData = response.data.data.map((chat) => {
@@ -135,6 +135,7 @@ export default function Message(id) {
 
             // Handle response if needed
             setInputText("");
+            fetchMessages()
         } catch (err) {
             console.error("Error:", err);
             // Handle error if needed
@@ -151,9 +152,10 @@ export default function Message(id) {
     return (
         <div className="">
             <Header />
-            <div className=" w-full  flex flex-col  justify-items-center overflow-y-scroll">
-                <div className="fixed flex  w-full px-[15%] min-h-100vh flex-col  bottom-0">
-                    {Message &&
+            <div className=" w-full  flex flex-col max-h-100vh justify-items-center overflow-auto">
+                <div className="fixed flex  w-full px-[15%] min-h-100vh max-h-100vh flex-col  bottom-0">
+                    <div>
+                        {Message &&
                         Message.map((chat) => {
                             if (chat.Sender.id === userData.id1) {
                                 return (
@@ -212,6 +214,8 @@ export default function Message(id) {
                             </div>
                         </div>
                     </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
