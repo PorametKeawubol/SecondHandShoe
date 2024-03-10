@@ -1,19 +1,7 @@
-import { Carousel } from "react-responsive-carousel";
-import { useState, useContext, useEffect } from "react";
-import { ShoeContext } from "../contexts/ShoeContext";
-import Shoe from "../Component/Shoe";
+
 
 export default function TitleHome() {
-    const [filteredShoes, setFilteredShoes] = useState([]);
-    const { shoes } = useContext(ShoeContext);
-
-    useEffect(() => {
-        const shoesfiltered = shoes.filter((item) => {
-            return item.status === false; // &&คือ and , ||คือ or
-        });
-        setFilteredShoes(shoesfiltered);
-    }, [shoes]);
-
+    
     return (
         <div className="flex flex-col md:flex-row justify-center bg-neutral-100 text-black w-[80%]   my-6 rounded-3xl bg-opacity-70 drop-shadow-2xl">
             <div className="w-[full] p-10 flex flex-col md:justify-center">
