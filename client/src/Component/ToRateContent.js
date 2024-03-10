@@ -1,4 +1,3 @@
-//ToRate.js
 import React, { useState } from 'react';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'; 
 import './css/ToRate.css';
@@ -28,7 +27,7 @@ function ToRate(props) {
             <div className="modal-content">
                 <span className="close" onClick={props.onClose}>&times;</span>
                 <h2 style={{textAlign:'center'}}>Rating our app</h2>
-                <div className="rating-container">
+                <div className="rating-container" data-testid="rating-stars">
                     {[...Array(5)].map((_, index) =>
                         index < rating ? (
                             <AiFillStar key={index} onClick={() => handleStarClick(index)} />
